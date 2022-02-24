@@ -1,3 +1,5 @@
+use std::fmt;
+
 mod utils;
 
 use wasm_bindgen::prelude::*;
@@ -31,7 +33,9 @@ impl Universe {
         (row * self.columns + column) as usize
     }
 
-    fn get_living_neighbor_count(&self, row: u32, column: u32) -> u8 {
+    fn get_living_neighbor_count(&self, i: u64) -> u8 {
+        let row = (i / self.columns as u64) as u32;
+        let column = (i % self.columns as u64) as u32;
         let mut count = 0;
 
         for row_delta in [self.rows - 1, 0, 1] {
@@ -51,7 +55,7 @@ impl Universe {
         count
     }
 
-    fn calculate_left(&self, i: u64) -> u64 {
+    fn get_left_neighbor(&self, i: u64) -> u64 {
         let columns = self.columns as u64;
         if i % columns == 0 {
             i + columns - 1
@@ -60,7 +64,7 @@ impl Universe {
         }
     }
 
-    fn calculate_right(&self, i: u64) -> u64 {
+    fn get_right_neighbor(&self, i: u64) -> u64 {
         let columns = self.columns as u64;
         if i % columns == columns - 1 {
             i + 1 - columns
@@ -70,33 +74,27 @@ impl Universe {
     }
 
     fn get_living_neighbors(&self, i: u64) -> u8 {
-        let row = i / self.columns as u64;
-        let column = i % self.columns as u64;
+        let rows = self.rows as u64;
+        let columns = self.columns as u64;
+        let row = i / columns;
+        let column = i % columns;
 
-        let left = if column == 0 {
-            i + self.columns as u64 - 1
-        } else {
-            i - 1
-        };
-        let right = if column == self.columns as u64 - 1 {
-            i + 1 - self.columns as u64
+        let left = if column == 0 { i + columns - 1 } else { i - 1 };
+        let right = if column == columns - 1 {
+            i + 1 - columns
         } else {
             i + 1
         };
         let top = if row == 0 {
-            (self.columns * (self.rows - 1)) as u64 + i
+            columns * (rows - 1) + i
         } else {
-            i - self.columns as u64
+            i - columns
         };
-        let bottom = if row == self.rows as u64 - 1 {
-            column
-        } else {
-            i + self.columns as u64
-        };
-        let upper_left = self.calculate_left(top);
-        let upper_right = self.calculate_right(top);
-        let lower_left = self.calculate_left(bottom);
-        let lower_right = self.calculate_right(bottom);
+        let bottom = if row == rows - 1 { column } else { i + columns };
+        let upper_left = self.get_left_neighbor(top);
+        let upper_right = self.get_right_neighbor(top);
+        let lower_left = self.get_left_neighbor(bottom);
+        let lower_right = self.get_right_neighbor(bottom);
 
         return self.cells[upper_left as usize] as u8
             + self.cells[top as usize] as u8
@@ -111,9 +109,63 @@ impl Universe {
 
 #[wasm_bindgen]
 impl Universe {
-    pub fn tick(&mut self) {
-        let mut next_universe = self.cells.clone();
+    pub fn new(rows: u32, columns: u32) -> Self {
+        let cells = (0..rows * columns)
+            .map(|i| {
+                if i % 2 == 0 || i % 7 == 0 {
+                    Cell::Alive
+                } else {
+                    Cell::Dead
+                }
+            })
+            .collect();
 
-        for i in 0..self.rows * self.columns {}
+        Universe {
+            rows,
+            columns,
+            cells,
+        }
+    }
+
+    pub fn tick(&mut self) {
+        let mut next_cells = self.cells.clone();
+
+        for i in 0..self.rows * self.columns {
+            let i = i as usize;
+            let cell = self.cells[i];
+            let living_neighbors = self.get_living_neighbor_count(i as u64);
+
+            let next_cell = match (cell, living_neighbors) {
+                (_, 3) | (Cell::Alive, 2) => Cell::Alive,
+                (_, _) => Cell::Dead,
+            };
+
+            next_cells[i] = next_cell;
+        }
+
+        self.cells = next_cells;
+    }
+
+    pub fn render(&self) -> String {
+        self.to_string()
+    }
+}
+
+impl fmt::Display for Universe {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for row in 0..self.rows {
+            for column in 0..self.columns {
+                let i = self.get_index(row, column);
+                let icon = if self.cells[i] == Cell::Alive {
+                    '1'
+                } else {
+                    '0'
+                };
+                write!(f, "{}", icon)?;
+            }
+            write!(f, "\n")?;
+        }
+
+        Ok(())
     }
 }

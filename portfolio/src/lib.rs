@@ -33,77 +33,45 @@ impl Universe {
         (row * self.columns + column) as usize
     }
 
-    fn get_living_neighbor_count(&self, i: u64) -> u8 {
-        let row = (i / self.columns as u64) as u32;
-        let column = (i % self.columns as u64) as u32;
-        let mut count = 0;
-
-        for row_delta in [self.rows - 1, 0, 1] {
-            for column_delta in [self.columns - 1, 0, 1] {
-                if row_delta == 0 && column_delta == 0 {
-                    continue;
-                }
-
-                let neighboring_row = (row + row_delta) % self.rows;
-                let neighboring_column = (column + column_delta) % self.columns;
-                let i = self.get_index(neighboring_row, neighboring_column);
-
-                count += self.cells[i] as u8;
-            }
-        }
-
-        count
-    }
-
-    fn get_left_neighbor(&self, i: u64) -> u64 {
-        let columns = self.columns as u64;
-        if i % columns == 0 {
-            i + columns - 1
-        } else {
-            i - 1
-        }
-    }
-
-    fn get_right_neighbor(&self, i: u64) -> u64 {
-        let columns = self.columns as u64;
-        if i % columns == columns - 1 {
-            i + 1 - columns
-        } else {
-            i + 1
-        }
-    }
-
-    fn get_living_neighbors(&self, i: u64) -> u8 {
-        let rows = self.rows as u64;
-        let columns = self.columns as u64;
+    fn get_upper_and_lower_indices(&self, i: usize) -> (usize, usize) {
+        let rows = self.rows as usize;
+        let columns = self.columns as usize;
         let row = i / columns;
-        let column = i % columns;
 
-        let left = if column == 0 { i + columns - 1 } else { i - 1 };
-        let right = if column == columns - 1 {
-            i + 1 - columns
+        if row == 0 {
+            (columns * (rows - 1) + i, i + columns)
+        } else if row == rows - 1 {
+            (i - columns, i % columns)
         } else {
-            i + 1
-        };
-        let top = if row == 0 {
-            columns * (rows - 1) + i
-        } else {
-            i - columns
-        };
-        let bottom = if row == rows - 1 { column } else { i + columns };
-        let upper_left = self.get_left_neighbor(top);
-        let upper_right = self.get_right_neighbor(top);
-        let lower_left = self.get_left_neighbor(bottom);
-        let lower_right = self.get_right_neighbor(bottom);
+            (i - columns, i + columns)
+        }
+    }
 
-        return self.cells[upper_left as usize] as u8
-            + self.cells[top as usize] as u8
-            + self.cells[upper_right as usize] as u8
-            + self.cells[left as usize] as u8
-            + self.cells[right as usize] as u8
-            + self.cells[lower_left as usize] as u8
-            + self.cells[bottom as usize] as u8
-            + self.cells[lower_right as usize] as u8;
+    fn get_left_and_right_indices(&self, i: usize) -> (usize, usize) {
+        let columns = self.columns as usize;
+        if i % columns == columns - 1 {
+            (i - 1, i + 1 - columns)
+        } else if i % columns == 0 {
+            (i + columns - 1, i + 1)
+        } else {
+            (i - 1, i + 1)
+        }
+    }
+
+    fn get_living_neighbors(&self, i: usize) -> u8 {
+        let (upper, lower) = self.get_upper_and_lower_indices(i);
+        let (left, right) = self.get_left_and_right_indices(i);
+        let (upper_left, upper_right) = self.get_left_and_right_indices(upper);
+        let (lower_left, lower_right) = self.get_left_and_right_indices(lower);
+
+        return self.cells[upper_left] as u8
+            + self.cells[upper] as u8
+            + self.cells[upper_right] as u8
+            + self.cells[left] as u8
+            + self.cells[right] as u8
+            + self.cells[lower_left] as u8
+            + self.cells[lower] as u8
+            + self.cells[lower_right] as u8;
     }
 }
 
@@ -133,7 +101,7 @@ impl Universe {
         for i in 0..self.rows * self.columns {
             let i = i as usize;
             let cell = self.cells[i];
-            let living_neighbors = self.get_living_neighbor_count(i as u64);
+            let living_neighbors = self.get_living_neighbors(i);
 
             let next_cell = match (cell, living_neighbors) {
                 (_, 3) | (Cell::Alive, 2) => Cell::Alive,

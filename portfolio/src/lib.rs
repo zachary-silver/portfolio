@@ -1,8 +1,10 @@
 use std::fmt;
 
-mod utils;
-
 use wasm_bindgen::prelude::*;
+
+use js_sys::Math::random;
+
+mod utils;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -86,8 +88,8 @@ impl Universe {
         }
         let columns = columns * 2;
         let cells = (0..rows * columns)
-            .map(|i| {
-                if (i / 2) % 2 == 0 || (i / 2) % 7 == 0 {
+            .map(|_| {
+                if (random() * 4.0) as u8 % 2 == 0 {
                     Cell::Alive
                 } else {
                     Cell::Dead

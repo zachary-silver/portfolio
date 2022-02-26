@@ -1,5 +1,7 @@
 use std::fmt;
 
+use rand::Rng;
+
 mod utils;
 
 use wasm_bindgen::prelude::*;
@@ -26,6 +28,7 @@ pub struct Universe {
     rows: u32,
     columns: u32,
     cells: Vec<Cell>,
+    cell_offset: usize,
 }
 
 impl Universe {
@@ -49,12 +52,14 @@ impl Universe {
 
     fn get_left_and_right_indices(&self, i: usize) -> (usize, usize) {
         let columns = self.columns as usize;
-        if i % columns == columns - 1 {
-            (i - 1, i + 1 - columns)
-        } else if i % columns == 0 {
-            (i + columns - 1, i + 1)
+        let column = i % columns;
+
+        if column >= columns - 2 {
+            (i - 2, i + 2 - columns)
+        } else if column <= 1 {
+            (i + columns - 2, i + 2)
         } else {
-            (i - 1, i + 1)
+            (i - 2, i + 2)
         }
     }
 
@@ -78,9 +83,14 @@ impl Universe {
 #[wasm_bindgen]
 impl Universe {
     pub fn new(rows: u32, columns: u32) -> Self {
+        if rows < 3 || columns < 3 {
+            panic!("Universes must be at least 3x3 in size");
+        }
+        let mut rng = rand::thread_rng();
+        let columns = columns * 2;
         let cells = (0..rows * columns)
-            .map(|i| {
-                if i % 2 == 0 || i % 7 == 0 {
+            .map(|_| {
+                if rng.gen_range(0..10) % 10 == 0 {
                     Cell::Alive
                 } else {
                     Cell::Dead
@@ -92,14 +102,16 @@ impl Universe {
             rows,
             columns,
             cells,
+            cell_offset: 0,
         }
     }
 
     pub fn tick(&mut self) {
-        let mut next_cells = self.cells.clone();
+        let start = 0 + self.cell_offset;
+        let stop = (self.rows * self.columns) as usize;
+        let next_cell_index_offset = if self.cell_offset == 1 { -1 } else { 1 };
 
-        for i in 0..self.rows * self.columns {
-            let i = i as usize;
+        for i in (start..stop).step_by(2) {
             let cell = self.cells[i];
             let living_neighbors = self.get_living_neighbors(i);
 
@@ -108,10 +120,11 @@ impl Universe {
                 (_, _) => Cell::Dead,
             };
 
-            next_cells[i] = next_cell;
+            let next_cell_index = (i as i64 + next_cell_index_offset) as usize;
+            self.cells[next_cell_index] = next_cell;
         }
 
-        self.cells = next_cells;
+        self.cell_offset = (self.cell_offset + 1) % 2;
     }
 
     pub fn render(&self) -> String {
@@ -121,13 +134,14 @@ impl Universe {
 
 impl fmt::Display for Universe {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let starting_column = 0 + self.cell_offset as u32;
+
         for row in 0..self.rows {
-            for column in 0..self.columns {
+            for column in (starting_column..self.columns).step_by(2) {
                 let i = self.get_index(row, column);
-                let icon = if self.cells[i] == Cell::Alive {
-                    '1'
-                } else {
-                    '0'
+                let icon = match self.cells[i] {
+                    Cell::Alive => '1',
+                    _ => '0',
                 };
                 write!(f, "{}", icon)?;
             }

@@ -1,7 +1,5 @@
 use std::fmt;
 
-// use rand::Rng;
-
 mod utils;
 
 use wasm_bindgen::prelude::*;
@@ -86,7 +84,6 @@ impl Universe {
         if rows < 3 || columns < 3 {
             panic!("Universes must be at least 3x3 in size");
         }
-        // let mut rng = rand::thread_rng();
         let columns = columns * 2;
         let cells = (0..rows * columns)
             .map(|i| {
@@ -129,6 +126,22 @@ impl Universe {
 
     pub fn render(&self) -> String {
         self.to_string()
+    }
+
+    pub fn rows(&self) -> u32 {
+        self.rows
+    }
+
+    pub fn columns(&self) -> u32 {
+        self.columns
+    }
+
+    pub fn cell_offset(&self) -> usize {
+        self.cell_offset
+    }
+
+    pub fn cells(&self) -> *const Cell {
+        self.cells.as_ptr()
     }
 }
 

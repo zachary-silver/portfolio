@@ -8,8 +8,7 @@ fn main() {
     // println!("{}", universe.render());
     // universe.tick();
 
-    println!("{}", universe.render());
-    for _ in 0..1000 {
+    loop {
         universe.tick();
         println!("{}", universe.render());
         // thread::sleep(sleep_time);

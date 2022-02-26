@@ -1,6 +1,6 @@
 use std::fmt;
 
-use rand::Rng;
+// use rand::Rng;
 
 mod utils;
 
@@ -86,11 +86,11 @@ impl Universe {
         if rows < 3 || columns < 3 {
             panic!("Universes must be at least 3x3 in size");
         }
-        let mut rng = rand::thread_rng();
+        // let mut rng = rand::thread_rng();
         let columns = columns * 2;
         let cells = (0..rows * columns)
-            .map(|_| {
-                if rng.gen_range(0..10) % 10 == 0 {
+            .map(|i| {
+                if (i / 2) % 2 == 0 || (i / 2) % 7 == 0 {
                     Cell::Alive
                 } else {
                     Cell::Dead
@@ -140,8 +140,8 @@ impl fmt::Display for Universe {
             for column in (starting_column..self.columns).step_by(2) {
                 let i = self.get_index(row, column);
                 let icon = match self.cells[i] {
-                    Cell::Alive => '1',
-                    _ => '0',
+                    Cell::Alive => '◼',
+                    _ => '◻',
                 };
                 write!(f, "{}", icon)?;
             }

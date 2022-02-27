@@ -1,6 +1,6 @@
 import { Universe } from "portfolio";
 
-const memory = require("portfolio/portfolio_bg").memory;
+import { memory } from "portfolio/portfolio_bg.wasm";
 
 interface CellClusterArray {
    getCellValue: (row: number, column: number) => number;

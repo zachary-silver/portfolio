@@ -53,17 +53,23 @@ impl Universe {
     }
 
     fn get_cell_value(&self, cell_position: CellPosition) -> u8 {
-        self.cell_clusters[cell_position.cluster_index] >> cell_position.cell_index & 1
+        self.cell_clusters[cell_position.cluster_index]
+            >> cell_position.cell_index
+            & 1
     }
 
     fn set_cell_value(&mut self, cell_position: CellPosition, value: u8) {
         let cluster_mask: u8 = !(1 << cell_position.cell_index);
         let mut cell_cluster = self.cell_clusters[cell_position.cluster_index];
-        cell_cluster = (cell_cluster & cluster_mask) | (value << cell_position.cell_index);
+        cell_cluster =
+            (cell_cluster & cluster_mask) | (value << cell_position.cell_index);
         self.cell_clusters[cell_position.cluster_index] = cell_cluster;
     }
 
-    fn get_upper_and_lower_positions(&self, cell_number: usize) -> (CellPosition, CellPosition) {
+    fn get_upper_and_lower_positions(
+        &self,
+        cell_number: usize,
+    ) -> (CellPosition, CellPosition) {
         let rows = self.rows as usize;
         let columns = self.columns as usize;
         let row = cell_number / columns;
@@ -86,7 +92,10 @@ impl Universe {
         }
     }
 
-    fn get_left_and_right_positions(&self, cell_number: usize) -> (CellPosition, CellPosition) {
+    fn get_left_and_right_positions(
+        &self,
+        cell_number: usize,
+    ) -> (CellPosition, CellPosition) {
         let columns = self.columns as usize;
         let column = cell_number % columns;
 
@@ -113,8 +122,10 @@ impl Universe {
         let (left, right) = self.get_left_and_right_positions(cell_number);
         let (upper_cell_number, lower_cell_number) =
             (upper.get_cell_number(), lower.get_cell_number());
-        let (upper_left, upper_right) = self.get_left_and_right_positions(upper_cell_number);
-        let (lower_left, lower_right) = self.get_left_and_right_positions(lower_cell_number);
+        let (upper_left, upper_right) =
+            self.get_left_and_right_positions(upper_cell_number);
+        let (lower_left, lower_right) =
+            self.get_left_and_right_positions(lower_cell_number);
 
         return self.get_cell_value(upper_left)
             + self.get_cell_value(upper)
@@ -146,7 +157,8 @@ impl Universe {
             panic!("Universes must be at least 4x4 in size");
         }
         let columns = columns * 2;
-        let cell_cluster_count = (rows * columns + (CELLS_PER_CLUSTER - 1)) / CELLS_PER_CLUSTER;
+        let cell_cluster_count =
+            (rows * columns + (CELLS_PER_CLUSTER - 1)) / CELLS_PER_CLUSTER;
         let cell_clusters = (0..cell_cluster_count)
             .map(Universe::get_random_cell_cluster)
             .collect();
@@ -174,8 +186,10 @@ impl Universe {
                 (_, _) => 0,
             };
 
-            let next_cell_number = (cell_number as i64 + next_cell_index_offset) as usize;
-            let next_cell_position = Universe::get_cell_position(next_cell_number);
+            let next_cell_number =
+                (cell_number as i64 + next_cell_index_offset) as usize;
+            let next_cell_position =
+                Universe::get_cell_position(next_cell_number);
             self.set_cell_value(next_cell_position, next_cell_value);
         }
 

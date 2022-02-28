@@ -1,8 +1,16 @@
 'use strict';
 
+import regeneratorRuntime from "regenerator-runtime";
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import Portfolio from './components/Portfolio';
 
-ReactDOM.render(<Portfolio />, document.getElementById('root'));
+ReactDOM.render(
+   <React.StrictMode>
+      <Portfolio />
+   </React.StrictMode>,
+   document.getElementById('root')
+);
 

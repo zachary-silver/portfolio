@@ -1,26 +1,26 @@
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 module.exports = {
    devtool: 'eval-source-map',
-   entry: "./src/bootstrap.js",
+   entry: './src/bootstrap.js',
    output: {
-      path: path.resolve(__dirname, "dist"),
-      filename: "bundle.js",
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'bundle.js',
    },
    module: {
       rules: [
          {
-            test: /\.tsx?$/,
-            use: 'ts-loader',
+            test: /\.(js|jsx|ts|tsx)$/,
+            use: ['babel-loader'],
             exclude: /node_modules/,
          },
       ],
    },
    resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: ['*', '.tsx', '.ts', '.js', 'jsx'],
    },
-   mode: "development",
+   mode: 'development',
    plugins: [
       new CopyWebpackPlugin(['./src/index.html'])
    ],

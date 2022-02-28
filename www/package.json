@@ -1,29 +1,14 @@
 {
-  "name": "create-wasm-app",
-  "version": "0.1.0",
-  "description": "create an app to consume rust-generated wasm packages",
-  "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "start": "webpack serve"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rustwasm/create-wasm-app.git"
-  },
-  "keywords": [
-    "webassembly",
-    "wasm",
-    "rust",
-    "webpack"
-  ],
-  "author": "Ashley Williams <ashley666ashley@gmail.com>",
-  "license": "(MIT OR Apache-2.0)",
-  "bugs": {
-    "url": "https://github.com/rustwasm/create-wasm-app/issues"
-  },
-  "homepage": "https://github.com/rustwasm/create-wasm-app#readme",
   "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@types/react": "^17.0.39",
+    "babel-loader": "^8.2.3",
     "copy-webpack-plugin": "^5.0.0",
     "hello-wasm-pack": "^0.1.0",
     "webpack": "^4.44.2",
@@ -32,6 +17,7 @@
   },
   "dependencies": {
     "portfolio": "file:../pkg",
-    "ts-loader": "~8.2.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

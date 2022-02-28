@@ -1,3 +1,8 @@
-import { renderLoop } from "./game-of-life/index";
+'use strict';
 
-renderLoop();
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Portfolio from './components/Portfolio';
+
+ReactDOM.render(<Portfolio />, document.getElementById('root'));
+

@@ -6,17 +6,11 @@ import { Universe } from './game-of-life/Universe';
 
 import './index.css';
 
-// import React from 'react';
-// import ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-// import Portfolio from './components/Portfolio';
+import Portfolio from './components/Portfolio';
 
-// ReactDOM.render(
-//    <React.StrictMode>
-//       <Portfolio />
-//    </React.StrictMode>,
-//    document.getElementById('root')
-// );
 const PIXELS_PER_CELL = 5;
 
 const UNIVERSE = new Universe({
@@ -28,4 +22,11 @@ const UNIVERSE = new Universe({
 });
 
 UNIVERSE.render();
+
+ReactDOM.render(
+   <React.StrictMode>
+      <Portfolio />
+   </React.StrictMode>,
+   document.getElementById('root')
+);
 

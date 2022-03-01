@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
-import Universe from './Universe';
+import Universe from '../../game-of-life/Universe';
 
 const GameOfLife: () => React.ReactElement = () => {
    const universeRef = useRef(new Universe(512, 1024));
 
-   universeRef.current.render();
+   useEffect(() => {
+      universeRef.current.render();
+   }, []);
 
    return null;
 };

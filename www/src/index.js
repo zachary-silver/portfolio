@@ -2,15 +2,30 @@
 
 import regeneratorRuntime from "regenerator-runtime";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { Universe } from './game-of-life/Universe';
 
-import Portfolio from './components/Portfolio';
+import './index.css';
 
-ReactDOM.render(
-   <React.StrictMode>
-      <Portfolio />
-   </React.StrictMode>,
-   document.getElementById('root')
-);
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+
+// import Portfolio from './components/Portfolio';
+
+// ReactDOM.render(
+//    <React.StrictMode>
+//       <Portfolio />
+//    </React.StrictMode>,
+//    document.getElementById('root')
+// );
+const PIXELS_PER_CELL = 5;
+
+const UNIVERSE = new Universe({
+   rows: window.screen.height * window.devicePixelRatio / PIXELS_PER_CELL,
+   columns: window.screen.width * window.devicePixelRatio / PIXELS_PER_CELL,
+   pixelsPerCell: PIXELS_PER_CELL,
+   liveCellColor: "#e8e8e8",
+   deadCellColor: "#232731",
+});
+
+UNIVERSE.render();
 

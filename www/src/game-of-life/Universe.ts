@@ -4,26 +4,37 @@ import { memory } from "portfolio/portfolio_bg.wasm";
 
 import { sleep } from './util';
 
-const PIXELS_PER_CELL = 1;
-const DEAD_COLOR = "#FFFFFF";
-const ALIVE_COLOR = "#000000";
-
 interface IUniverse {
    render: () => void,
-}
+};
+
+interface IUniverseConfig {
+   rows: number,
+   columns: number,
+   pixelsPerCell: number,
+   liveCellColor: string,
+   deadCellColor: string,
+};
 
 class Universe implements IUniverse {
    private universe: asmUniverse;
-   private rows: number;
-   private columns: number;
    private cells: Cell[];
    private canvas: HTMLCanvasElement;
    private context: CanvasRenderingContext2D;
 
-   constructor(rows: number, columns: number) {
-      this.universe = asmUniverse.new(rows, columns);
+   private rows: number;
+   private columns: number;
+   private pixelsPerCell: number;
+   private liveCellColor: string;
+   private deadCellColor: string;
+
+   constructor(config: IUniverseConfig) {
+      this.universe = asmUniverse.new(config.rows, config.columns);
       this.rows = this.universe.rows();
       this.columns = this.universe.columns();
+      this.pixelsPerCell = config.pixelsPerCell;
+      this.liveCellColor = config.liveCellColor;
+      this.deadCellColor = config.deadCellColor;
 
       this.cells = new Uint8Array(
          memory.buffer,
@@ -32,8 +43,8 @@ class Universe implements IUniverse {
       ) as unknown as Cell[];
 
       this.canvas = document.getElementById("universe-canvas") as HTMLCanvasElement;
-      this.canvas.height = (PIXELS_PER_CELL + 1) * this.rows + 1;
-      this.canvas.width = (PIXELS_PER_CELL + 1) * (this.columns / 2) + 1;
+      this.canvas.height = (this.pixelsPerCell + 1) * this.rows + 1;
+      this.canvas.width = (this.pixelsPerCell + 1) * (this.columns / 2) + 1;
       this.context = this.canvas.getContext('2d');
 
       this.getIndex = this.getIndex.bind(this);
@@ -52,12 +63,13 @@ class Universe implements IUniverse {
       for (let row = 0; row < this.rows; row++) {
          for (let column = starting_column; column < this.columns; column += 2) {
             const cell = this.cells[this.getIndex(row, column)];
-            this.context.fillStyle = cell === Cell.Alive ? ALIVE_COLOR : DEAD_COLOR;
+
+            this.context.fillStyle = cell === Cell.Alive ? this.liveCellColor : this.deadCellColor;
             this.context.fillRect(
-               column * (PIXELS_PER_CELL + 1) + 1,
-               row * (PIXELS_PER_CELL + 1) + 1,
-               PIXELS_PER_CELL,
-               PIXELS_PER_CELL
+               column * (this.pixelsPerCell + 1) + 1,
+               row * (this.pixelsPerCell + 1) + 1,
+               this.pixelsPerCell,
+               this.pixelsPerCell
             );
          }
       }
@@ -69,11 +81,15 @@ class Universe implements IUniverse {
       this.universe.tick();
 
       this.drawCells();
-      await sleep(50);
+      await sleep(16);
 
       requestAnimationFrame(this.render);
    }
-}
+};
 
-export default Universe;
+export {
+   Universe,
+   IUniverse,
+   IUniverseConfig,
+};
 

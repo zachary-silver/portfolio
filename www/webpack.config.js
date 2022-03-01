@@ -32,6 +32,9 @@ module.exports = {
             {
                from: path.resolve(__dirname, './src/index.html'),
             },
+            {
+               from: path.resolve(__dirname, './public/favicon.ico'),
+            },
          ],
       })
    ],

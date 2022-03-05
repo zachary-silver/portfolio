@@ -17,7 +17,6 @@ interface IUniverseConfig {
 class Universe implements IUniverse {
    private universe: asmUniverse;
    private cells: Cell[];
-   private previousCells: Cell[];
 
    private canvas: HTMLCanvasElement;
    private context: CanvasRenderingContext2D;
@@ -41,49 +40,36 @@ class Universe implements IUniverse {
          this.universe.cells(),
          this.rows * this.columns
       ) as unknown as Cell[];
-      this.previousCells = [...this.cells];
 
-      this.canvas = document.getElementById("universe-canvas") as HTMLCanvasElement;
-      this.canvas.height = (this.pixelsPerCell + 1) * this.rows + 1;
-      this.canvas.width = (this.pixelsPerCell + 1) * (this.columns / 2) + 1;
+      this.canvas = document.getElementById('universe-canvas') as HTMLCanvasElement;
+      this.canvas.height = config.rows * (this.pixelsPerCell + 1) + 1;
+      this.canvas.width = config.columns * (this.pixelsPerCell + 1) + 1;
       this.context = this.canvas.getContext('2d');
 
-      this.getIndex = this.getIndex.bind(this);
       this.drawCells = this.drawCells.bind(this);
       this.render = this.render.bind(this);
    }
 
-   private getIndex(row: number, column: number) {
-      return row * this.columns + column;
-   }
-
    private drawCells() {
-      this.context.beginPath();
-
       const startingColumn = this.universe.cell_offset();
-      const previousCellIndexOffset = startingColumn === 1 ? -1 : 1;
+      const previousCellIndexOffset = startingColumn ? -1 : 1;
       for (let row = 0; row < this.rows; row++) {
+         const y = row * (this.pixelsPerCell + 1) + 1;
          for (let column = startingColumn; column < this.columns; column += 2) {
-            const i = this.getIndex(row, column);
+            const i = row * this.columns + column;
             const cell = this.cells[i];
-            // const previousCell = this.previousCells[i];
             const previousCell = this.cells[i + previousCellIndexOffset];
 
             if (cell !== previousCell) {
-               this.context.fillStyle = cell === Cell.Alive ? this.liveCellColor : this.deadCellColor;
-               this.context.fillRect(
-                  column * (this.pixelsPerCell + 1) + 1,
-                  row * (this.pixelsPerCell + 1) + 1,
-                  this.pixelsPerCell,
-                  this.pixelsPerCell
-               );
+               // ((column / 2) | 0) === Faster Math.floor(column / 2)
+               const x = ((column / 2) | 0) * (this.pixelsPerCell + 1) + 1;
+               this.context.fillStyle = cell === Cell.Alive
+                  ? this.liveCellColor
+                  : this.deadCellColor;
+               this.context.fillRect(x, y, this.pixelsPerCell, this.pixelsPerCell);
             }
-
-            this.previousCells[i] = cell;
          }
       }
-
-      this.context.stroke();
    }
 
    public render() {
@@ -91,7 +77,9 @@ class Universe implements IUniverse {
 
       this.drawCells();
 
-      setTimeout(() => requestAnimationFrame(this.render), 1000 / 60);
+      // requestAnimationFrame aims to run 60 times per second.
+      // Moving it behind setTimeout allows us to limit fps.
+      setTimeout(() => requestAnimationFrame(this.render), 1000 / 30);
    }
 };
 

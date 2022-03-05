@@ -14,8 +14,8 @@ import Portfolio from './components/Portfolio';
 const PIXELS_PER_CELL = 4;
 
 const UNIVERSE = new Universe({
-   rows: window.screen.height * window.devicePixelRatio / PIXELS_PER_CELL,
-   columns: window.screen.width * window.devicePixelRatio / PIXELS_PER_CELL,
+   rows: Math.ceil(window.screen.height * window.devicePixelRatio / PIXELS_PER_CELL),
+   columns: Math.ceil(window.screen.width * window.devicePixelRatio / PIXELS_PER_CELL),
    pixelsPerCell: PIXELS_PER_CELL,
    liveCellColor: "#e8e8e8",
    deadCellColor: "#232731",

@@ -15,4 +15,7 @@
 ```npm install```
 
 #### Run
+##### inside www/
 ```npm run start```
+
+Then, navigate to http://localhost:8080 in your web browser.

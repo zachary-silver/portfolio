@@ -2,8 +2,6 @@ import { Universe as asmUniverse, Cell } from "portfolio";
 
 import { memory } from "portfolio/portfolio_bg.wasm";
 
-import { sleep } from './util';
-
 interface IUniverse {
    render: () => void,
 };
@@ -19,6 +17,8 @@ interface IUniverseConfig {
 class Universe implements IUniverse {
    private universe: asmUniverse;
    private cells: Cell[];
+   private previousCells: Cell[];
+
    private canvas: HTMLCanvasElement;
    private context: CanvasRenderingContext2D;
 
@@ -41,6 +41,7 @@ class Universe implements IUniverse {
          this.universe.cells(),
          this.rows * this.columns
       ) as unknown as Cell[];
+      this.previousCells = [...this.cells];
 
       this.canvas = document.getElementById("universe-canvas") as HTMLCanvasElement;
       this.canvas.height = (this.pixelsPerCell + 1) * this.rows + 1;
@@ -59,31 +60,38 @@ class Universe implements IUniverse {
    private drawCells() {
       this.context.beginPath();
 
-      const starting_column = this.universe.cell_offset();
+      const startingColumn = this.universe.cell_offset();
+      const previousCellIndexOffset = startingColumn === 1 ? -1 : 1;
       for (let row = 0; row < this.rows; row++) {
-         for (let column = starting_column; column < this.columns; column += 2) {
-            const cell = this.cells[this.getIndex(row, column)];
+         for (let column = startingColumn; column < this.columns; column += 2) {
+            const i = this.getIndex(row, column);
+            const cell = this.cells[i];
+            // const previousCell = this.previousCells[i];
+            const previousCell = this.cells[i + previousCellIndexOffset];
 
-            this.context.fillStyle = cell === Cell.Alive ? this.liveCellColor : this.deadCellColor;
-            this.context.fillRect(
-               column * (this.pixelsPerCell + 1) + 1,
-               row * (this.pixelsPerCell + 1) + 1,
-               this.pixelsPerCell,
-               this.pixelsPerCell
-            );
+            if (cell !== previousCell) {
+               this.context.fillStyle = cell === Cell.Alive ? this.liveCellColor : this.deadCellColor;
+               this.context.fillRect(
+                  column * (this.pixelsPerCell + 1) + 1,
+                  row * (this.pixelsPerCell + 1) + 1,
+                  this.pixelsPerCell,
+                  this.pixelsPerCell
+               );
+            }
+
+            this.previousCells[i] = cell;
          }
       }
 
       this.context.stroke();
    }
 
-   public async render() {
+   public render() {
       this.universe.tick();
 
       this.drawCells();
-      await sleep(16);
 
-      requestAnimationFrame(this.render);
+      setTimeout(() => requestAnimationFrame(this.render), 1000 / 60);
    }
 };
 

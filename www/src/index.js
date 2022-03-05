@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom';
 
 import Portfolio from './components/Portfolio';
 
-const PIXELS_PER_CELL = 5;
+const PIXELS_PER_CELL = 4;
 
 const UNIVERSE = new Universe({
    rows: window.screen.height * window.devicePixelRatio / PIXELS_PER_CELL,

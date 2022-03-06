@@ -1,3 +1,14 @@
 #portfolio {
-  background: yellow;
+  background: #3c4556;
+  font-family: system-ui, sans-serif;
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#portfolio p {
+  color: white;
 }

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import './Greeting.css';
+
 import TerminalText, { ITerminalTextProps } from './common/TerminalText';
 
 const GREETINGS = [
@@ -28,11 +30,9 @@ export const Greeting = () => {
    };
 
    return (
-      <div id='greeting'>
-         <p>
-            <TerminalText {...props} />
-         </p>
-      </div>
+      <p id='greeting'>
+         {'> '}<TerminalText {...props} />
+      </p>
    );
 };
 

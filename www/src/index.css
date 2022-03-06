@@ -1,4 +1,5 @@
 body, #root {
+  font-family: system-ui, sans-serif;
   position: absolute;
   width: 100%;
   height: 100%;

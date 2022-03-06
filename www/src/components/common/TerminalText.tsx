@@ -45,7 +45,11 @@ export const TerminalText = ({
       setCurrentText(currentText.substring(0, currentText.length - 1));
    };
 
-   return <React.Fragment>{currentText}{showCursor ? '_' : '\u00a0\u00a0'}</React.Fragment>;
+   return (
+      <React.Fragment>
+         {currentText}{showCursor ? '_' : '\u00a0\u00a0'}
+      </React.Fragment>
+   );
 };
 
 export {

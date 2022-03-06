@@ -4,12 +4,12 @@ import regeneratorRuntime from "regenerator-runtime";
 
 import { Universe } from './game-of-life/Universe';
 
-import './index.css';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Portfolio from './components/Portfolio';
+
+import './index.css';
 
 const PIXELS_PER_CELL = 4;
 

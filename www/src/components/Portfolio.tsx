@@ -1,8 +1,8 @@
 import React from 'react';
 
-import './Portfolio.css';
-
 import Greeting from './Greeting';
+
+import './Portfolio.css';
 
 export const Portfolio = () => {
    return (

@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
-import './Greeting.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+   faTwitter,
+   faLinkedin,
+   faGithub,
+} from '@fortawesome/free-brands-svg-icons'
 
 import TerminalText, { ITerminalTextProps } from './common/TerminalText';
 
-const GREETINGS = [
-   "Hi, I'm Zack",
-   "Thanks for taking the time to check out my portfolio!",
-];
+import {
+   GREETINGS,
+   TWITTER_LINK,
+   LINKEDIN_LINK,
+   GITHUB_LINK,
+} from './constants';
+
+import './Greeting.css';
 
 const getTypingRate = (text: string) => 30 + 1000 * (1 / (text.length * text.length));
 
@@ -30,9 +39,26 @@ export const Greeting = () => {
    };
 
    return (
-      <p id='greeting'>
-         {'> '}<TerminalText {...props} />
-      </p>
+      <div id='greeting'>
+         <div id='description'>
+            <h1>Zachary Silver</h1>
+            <h3>Software Developer</h3>
+            <div id='social-media-icons'>
+               <a href={TWITTER_LINK}>
+                  <FontAwesomeIcon icon={faTwitter} />
+               </a>
+               <a href={LINKEDIN_LINK}>
+                  <FontAwesomeIcon icon={faLinkedin} />
+               </a>
+               <a href={GITHUB_LINK}>
+                  <FontAwesomeIcon icon={faGithub} />
+               </a>
+            </div>
+         </div>
+         <p id='terminal'>
+            {'> '}<TerminalText {...props} />
+         </p>
+      </div>
    );
 };
 

@@ -79,7 +79,7 @@ class Universe implements IUniverse {
 
       // requestAnimationFrame aims to run 60 times per second.
       // Moving it behind setTimeout allows us to limit fps.
-      setTimeout(() => requestAnimationFrame(this.render), 1000 / 30);
+      setTimeout(() => requestAnimationFrame(this.render), 1000 / 60);
    }
 };
 

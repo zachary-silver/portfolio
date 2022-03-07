@@ -75,7 +75,7 @@ impl Universe {
         let rows = if rows < 4 { 4 } else { rows };
         let columns = if columns < 4 { 4 * 2 } else { columns * 2 };
         let cells = (0..rows * columns)
-            .map(|_| match (random() * 2.0) as u8 {
+            .map(|_| match (random() * 8.0) as u8 {
                 0 => Cell::Alive,
                 _ => Cell::Dead,
             })

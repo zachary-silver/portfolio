@@ -1,0 +1,14 @@
+#description h1, #description h3 {
+  margin: 0.2rem;
+}
+
+#social-media-icons a {
+  color: white;
+  margin: 0rem 0.5rem 0rem 0.5rem;
+  font-size: 1.5rem;
+  transition: var(--default-transition-speed);
+}
+
+#social-media-icons a:hover {
+  opacity: 0.2;
+}

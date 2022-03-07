@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import {
+   Link,
+   Outlet,
+   useLocation,
+} from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -24,6 +28,7 @@ const getTypingRate = (text: string) => 30 + 1000 * (1 / (text.length * text.len
 const Greeting = () => {
    const [greetingIndex, setGreetingIndex] = useState(0);
    const [text, setText] = useState(GREETINGS[0]);
+   const location = useLocation();
 
    useEffect(() => {
       setText(GREETINGS[greetingIndex]);
@@ -56,9 +61,10 @@ const Greeting = () => {
                </a>
             </div>
          </div>
-         <p id='terminal' className='text-container'>
-            {'> '}<TerminalText {...props} />
-         </p>
+         {location.pathname !== '/about' &&
+            <p id='terminal' className='text-container'>
+               {'> '}<TerminalText {...props} />
+            </p>}
          <Link to="/about" className='text-container'>About Me</Link>
          <Outlet />
       </div>

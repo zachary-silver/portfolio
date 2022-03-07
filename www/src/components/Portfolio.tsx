@@ -12,11 +12,17 @@ import './Portfolio.css';
 
 const PIXELS_PER_CELL = 5;
 const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
+const ROWS = Math.ceil(
+   window.screen.height * window.devicePixelRatio / PIXELS_PER_CELL
+);
+const COLUMNS = Math.ceil(
+   window.screen.width * window.devicePixelRatio / PIXELS_PER_CELL
+);
 
 const Portfolio = () => {
    const universeRef = useRef(new Universe({
-      rows: Math.ceil(window.screen.height * window.devicePixelRatio / PIXELS_PER_CELL),
-      columns: Math.ceil(window.screen.width * window.devicePixelRatio / PIXELS_PER_CELL),
+      rows: ROWS,
+      columns: COLUMNS,
       pixelsPerCell: PIXELS_PER_CELL,
       liveCellColor: DOCUMENT_STYLE.getPropertyValue('--main-text-color'),
       deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),

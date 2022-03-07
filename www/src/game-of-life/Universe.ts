@@ -31,7 +31,7 @@ class Universe implements IUniverse {
       this.universe = asmUniverse.new(config.rows, config.columns);
       this.rows = this.universe.rows();
       this.columns = this.universe.columns();
-      this.pixelsPerCell = config.pixelsPerCell;
+      this.pixelsPerCell = config.pixelsPerCell - 1;
       this.liveCellColor = config.liveCellColor;
       this.deadCellColor = config.deadCellColor;
 

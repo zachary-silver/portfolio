@@ -5,12 +5,11 @@ import {
 } from 'react-router-dom';
 
 import { Universe } from '../game-of-life/Universe';
-import Greeting from './home/Greeting';
-import About from './about/About';
+import Header from './header/Header';
+import Greeting from './main/Greeting';
+import About from './main/About';
 
-import './Portfolio.css';
-
-const PIXELS_PER_CELL = 5;
+const PIXELS_PER_CELL = 4;
 const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
 const ROWS = Math.ceil(
    window.screen.height * window.devicePixelRatio / PIXELS_PER_CELL
@@ -31,12 +30,14 @@ const Portfolio = () => {
    useEffect(universeRef.current.render, []);
 
    return (
-      <div id='portfolio'>
-         <Routes>
-            <Route path='/' element={<Greeting />}>
+      <div id='portfolio' className='container'>
+         <Header />
+         <main>
+            <Routes>
+               <Route path='/' element={<Greeting />} />
                <Route path='about' element={<About />} />
-            </Route>
-         </Routes>
+            </Routes>
+         </main>
       </div>
    );
 };

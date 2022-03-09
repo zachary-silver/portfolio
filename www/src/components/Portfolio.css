@@ -1,0 +1,8 @@
+header {
+  z-index: 1;
+}
+
+main {
+  position: relative;
+  top: 0px;
+}

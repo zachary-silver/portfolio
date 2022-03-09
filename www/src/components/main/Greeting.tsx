@@ -6,6 +6,11 @@ import {
    GREETINGS,
 } from './constants';
 
+import {
+   transitionIn,
+   transitionOut,
+} from '../common/util';
+
 import './Greeting.css';
 
 const getTypingRate = (text: string) => 30 + 1000 * (1 / (text.length * text.length));
@@ -15,7 +20,17 @@ const Greeting = () => {
    const [greeting, setGreeting] = useState(GREETINGS[0]);
 
    useEffect(() => {
-      setGreeting(GREETINGS[greetingIndex]);
+      transitionIn('main');
+
+      return () => transitionOut('main');
+   }, []);
+
+   useEffect(() => {
+      const timeoutId = setTimeout(() => {
+         setGreeting(GREETINGS[greetingIndex]);
+      }, 500);
+
+      return () => clearTimeout(timeoutId);
    }, [greetingIndex]);
 
    const showNextGreeting = () => {
@@ -25,7 +40,7 @@ const Greeting = () => {
    const props: ITerminalTextProps = {
       text: greeting,
       rate: getTypingRate(greeting),
-      done: () => setTimeout(showNextGreeting, 500)
+      done: showNextGreeting,
    };
 
    return (

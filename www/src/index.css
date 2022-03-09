@@ -17,7 +17,7 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  /* overflow: hidden; */
+  overflow: hidden;
   background: var(--main-bg-color);
 }
 
@@ -46,4 +46,14 @@ body {
   margin: 0.5rem;
   padding: 0.5rem;
   box-shadow: var(--default-box-shadow);
+}
+
+.transition-in {
+  transition: transform 2s ease-in-out;
+  /* transform: translateY(-10rem); */
+}
+
+.transition-out {
+  transition: transform 2s ease-in-out;
+  /* transform: translateY(10rem); */
 }

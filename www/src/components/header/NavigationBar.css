@@ -1,0 +1,13 @@
+nav {
+  flex-direction: row !important;
+  margin: 1.5rem;
+}
+
+nav a {
+  text-decoration: none;
+  transition: var(--alt-transition-speed);
+}
+
+nav a:hover {
+  box-shadow: var(--alt-box-shadow);
+}

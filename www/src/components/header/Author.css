@@ -1,22 +1,9 @@
-#header {
+#author {
   width: fit-content;
   margin-top: 1rem;
 }
 
-nav {
-  margin: 1.5rem;
-}
-
-nav a {
-  text-decoration: none;
-  transition: var(--alt-transition-speed);
-}
-
-nav a:hover {
-  box-shadow: var(--alt-box-shadow);
-}
-
-#header h1, #header h3 {
+#name, #occupation {
   margin: 0.2rem 1rem 0rem 1rem;
 }
 

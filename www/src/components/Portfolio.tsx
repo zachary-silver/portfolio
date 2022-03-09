@@ -5,9 +5,12 @@ import {
 } from 'react-router-dom';
 
 import { Universe } from '../game-of-life/Universe';
-import Header from './header/Header';
+import Author from './header/Author';
+import NavigationBar from './header/NavigationBar';
 import Greeting from './main/Greeting';
 import About from './main/About';
+
+import './Portfolio.css';
 
 const PIXELS_PER_CELL = 4;
 const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
@@ -30,15 +33,18 @@ const Portfolio = () => {
    useEffect(universeRef.current.render, []);
 
    return (
-      <div id='portfolio' className='container'>
-         <Header />
+      <React.Fragment>
+         <header>
+            <Author />
+            <NavigationBar />
+         </header>
          <main>
             <Routes>
                <Route path='/' element={<Greeting />} />
                <Route path='about' element={<About />} />
             </Routes>
          </main>
-      </div>
+      </React.Fragment>
    );
 };
 

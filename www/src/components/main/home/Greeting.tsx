@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
-import TerminalText, { ITerminalTextProps } from '../common/TerminalText';
+import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
 
-import {
-   GREETINGS,
-} from './constants';
-
-import {
-   transitionIn,
-   transitionOut,
-} from '../common/util';
+// import {
+//    transitionIn,
+//    transitionOut,
+// } from '../../common/util';
 
 import './Greeting.css';
+
+const GREETINGS = [
+   "Hi, I'm Zack",
+   "Thanks for taking the time to check out my portfolio!",
+];
 
 const getTypingRate = (text: string) => 30 + 1000 * (1 / (text.length * text.length));
 
@@ -19,11 +20,11 @@ const Greeting = () => {
    const [greetingIndex, setGreetingIndex] = useState(0);
    const [greeting, setGreeting] = useState(GREETINGS[0]);
 
-   useEffect(() => {
-      transitionIn('main');
+   // useEffect(() => {
+   //    transitionIn('main');
 
-      return () => transitionOut('main');
-   }, []);
+   //    return () => transitionOut('main');
+   // }, []);
 
    useEffect(() => {
       const timeoutId = setTimeout(() => {

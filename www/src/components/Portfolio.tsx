@@ -1,14 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import {
-   Routes,
-   Route,
-} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { Universe } from '../game-of-life/Universe';
-import Author from './header/Author';
 import NavigationBar from './header/NavigationBar';
-import Greeting from './main/Greeting';
-import About from './main/About';
+import Home from './main/home/Home';
+import About from './main/about/About';
+import Work from './main/work/Work';
+import Resume from './main/resume/Resume';
+import Contact from './main/contact/Contact';
 
 import './Portfolio.css';
 
@@ -35,15 +34,19 @@ const Portfolio = () => {
    return (
       <React.Fragment>
          <header>
-            <Author />
             <NavigationBar />
          </header>
          <main>
             <Routes>
-               <Route path='/' element={<Greeting />} />
+               <Route path='/' element={<Home />} />
                <Route path='about' element={<About />} />
+               <Route path='work' element={<Work />} />
+               <Route path='resume' element={<Resume />} />
+               <Route path='contact' element={<Contact />} />
             </Routes>
          </main>
+         <footer>
+         </footer>
       </React.Fragment>
    );
 };

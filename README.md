@@ -5,7 +5,7 @@
 * [npm](https://docs.npmjs.com/getting-started)
 
 #### Setup
-* ```npm install npm@latest -g```
+```npm install npm@latest -g```
 
 #### Build
 ##### inside src/

@@ -1,14 +1,13 @@
-#author {
-  width: fit-content;
-  margin-top: 1rem;
+#name, #occupation {
+  margin: var(--default-margin);
 }
 
-#name, #occupation {
-  margin: 0.2rem 1rem 0rem 1rem;
+#occupation {
+  margin-top: 0.2rem;
 }
 
 #social-media-links {
-  margin: 0.5rem 0rem 0rem 0rem
+  margin-top: 0.5rem;
 }
 
 #social-media-links a {

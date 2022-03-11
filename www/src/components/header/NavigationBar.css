@@ -1,11 +1,13 @@
 nav {
   flex-direction: row !important;
-  margin: 1.5rem;
 }
 
 nav a {
+  display: flex;
+  justify-content: center;
   text-decoration: none;
   transition: var(--alt-transition-speed);
+  width: 5rem;
 }
 
 nav a:hover {

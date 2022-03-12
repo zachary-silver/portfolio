@@ -29,7 +29,11 @@ const Portfolio = () => {
       deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
    }));
 
-   useEffect(universeRef.current.render, []);
+   useEffect(() => {
+      const timeoutId = setTimeout(universeRef.current.render, 2000);
+
+      return () => clearTimeout(timeoutId);
+   }, []);
 
    return (
       <React.Fragment>

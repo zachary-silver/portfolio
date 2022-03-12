@@ -33,8 +33,9 @@ body {
 }
 
 #universe-canvas {
-  opacity: 0.5;
   z-index: -1;
+  opacity: 0;
+  transition: opacity 1.5s;
 }
 
 .container {
@@ -47,7 +48,6 @@ body {
 .text-container {
   background: var(--secondary-bg-color);
   color: var(--main-text-color);
-  margin: 0.5rem;
   padding: 0.5rem;
   box-shadow: var(--default-box-shadow);
 }

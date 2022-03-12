@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
 
-import { transitionIn, transitionOut } from './util';
-
 interface IWithTransitionProps {
+   id: string,
    children: any,
    className: string,
 };
 
-const WithTransition = ({ children, className }: IWithTransitionProps) => {
+const WithTransition = ({ id, children, className }: IWithTransitionProps) => {
    useEffect(() => {
-      transitionIn(className);
+      document.getElementById(id).classList.add(className);
 
-      return () => transitionOut(className);
+      return () => {
+         document.getElementById(id).classList.remove(className);
+      };
    }, []);
 
    return (
@@ -21,9 +22,9 @@ const WithTransition = ({ children, className }: IWithTransitionProps) => {
    );
 };
 
-const withTransition = (Component: React.ComponentType, className: string) => {
+const withTransition = (Component: React.ComponentType, id: string, className: string) => {
    const componentWithTransition = ({ ...props }) => (
-      <WithTransition className={className}>
+      <WithTransition id={id} className={className}>
          <Component {...props} />
       </WithTransition>
    );

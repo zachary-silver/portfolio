@@ -34,7 +34,7 @@ body {
 
 #universe-canvas {
   z-index: -1;
-  opacity: 0;
+  opacity: 0.5;
   transition: opacity 1.5s;
 }
 
@@ -50,6 +50,24 @@ body {
   color: var(--main-text-color);
   padding: 0.5rem;
   box-shadow: var(--default-box-shadow);
+}
+
+.main-enter {
+  opacity: 0;
+}
+
+.main-enter-active {
+  opacity: 1;
+  transition: opacity 0.4s;
+}
+
+.main-exit {
+  opacity: 1;
+}
+
+.main-exit-active {
+  opacity: 0;
+  transition: opacity 0.4s;
 }
 
 .transition-in {

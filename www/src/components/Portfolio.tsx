@@ -13,13 +13,13 @@ import Contact from './main/contact/Contact';
 import './Portfolio.css';
 
 const PIXELS_PER_CELL = 4;
-const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
 const ROWS = Math.ceil(
    window.screen.height * window.devicePixelRatio / PIXELS_PER_CELL
 );
 const COLUMNS = Math.ceil(
    window.screen.width * window.devicePixelRatio / PIXELS_PER_CELL
 );
+const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
 const TRANSITION_TIME = 500;
 
 const getMainComponent = (pathname: string) => {
@@ -40,23 +40,23 @@ const getMainComponent = (pathname: string) => {
 }
 
 const Portfolio = () => {
-   const universeRef = useRef(new Universe({
+   const [universe, _] = useState(() => new Universe({
       rows: ROWS,
       columns: COLUMNS,
       pixelsPerCell: PIXELS_PER_CELL,
       liveCellColor: DOCUMENT_STYLE.getPropertyValue('--main-text-color'),
       deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
    }));
-   const nodeRef = useRef(null);
-   const [MainComponent, setMainComponent] = useState<JSX.Element>(<Home />);
+   const [MainComponent, setMainComponent] = useState(Home);
    const [transition, setTransition] = useState(false);
    const pathname = useLocation().pathname;
+   const nodeRef = useRef(null);
 
    useEffect(() => {
-      const timeoutId = setTimeout(universeRef.current.render, 2000);
+      const timeoutId = setTimeout(universe.render, TRANSITION_TIME);
 
       return () => clearTimeout(timeoutId);
-   }, []);
+   }, [universe]);
 
    useEffect(() => {
       setTransition(false);
@@ -74,20 +74,17 @@ const Portfolio = () => {
          <header>
             <NavigationBar />
          </header>
-         <main>
-            <CSSTransition
-               in={transition}
-               appear={transition}
-               timeout={TRANSITION_TIME}
-               classNames='main'
-               unmountOnExit
-               nodeRef={nodeRef}
-            >
-               <div ref={nodeRef}>
-                  {MainComponent}
-               </div>
-            </CSSTransition>
-         </main>
+         <CSSTransition
+            in={transition}
+            appear={true}
+            timeout={TRANSITION_TIME}
+            classNames='main'
+            nodeRef={nodeRef}
+         >
+            <main ref={nodeRef}>
+               {MainComponent}
+            </main>
+         </CSSTransition>
          <footer>
          </footer>
       </React.Fragment>

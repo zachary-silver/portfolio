@@ -34,8 +34,8 @@ body {
 
 #universe-canvas {
   z-index: -1;
-  opacity: 0.5;
-  transition: opacity 1.5s;
+  opacity: 0;
+  transition: opacity var(--default-transition-speed);
 }
 
 .container {
@@ -52,30 +52,35 @@ body {
   box-shadow: var(--default-box-shadow);
 }
 
+.main-appear {
+  transform: translateX(100vw);
+  background: yellow;
+}
+
+.main-appear-active {
+  transform: translateX(0vw);
+  transition: transform 0.5s ease-in-out;
+  background: yellow;
+}
+
 .main-enter {
-  opacity: 0;
+  transform: translateX(100vw);
 }
 
 .main-enter-active {
-  opacity: 1;
-  transition: opacity 0.4s;
+  transform: translateX(0vw);
+  transition: transform 0.5s ease-in-out;
+}
+
+.main-enter-done {
+  transform: translateX(0vw);
 }
 
 .main-exit {
-  opacity: 1;
+  transform: translateX(0vw);
 }
 
 .main-exit-active {
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-
-.transition-in {
-  transition: transform 2s ease-in-out;
-  transform: translateY(-10rem);
-}
-
-.transition-out {
-  transition: transform 2s ease-in-out;
-  transform: translateY(10rem);
+  transform: translateX(-100vw);
+  transition: transform 0.5s ease-in-out;
 }

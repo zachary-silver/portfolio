@@ -3,17 +3,47 @@ import { Link } from 'react-router-dom';
 
 import './NavigationBar.css';
 
+interface INavigationLink {
+   pathname: string,
+   label: string,
+   position?: number,
+   link?: JSX.Element,
+};
+
+const navigationLinks: INavigationLink[] = [
+   { pathname: '/', label: 'Home' },
+   { pathname: '/about', label: 'About Me' },
+   { pathname: '/work', label: 'My Work' },
+   { pathname: '/resume', label: 'Resumé' },
+   { pathname: '/contact', label: 'Contact' },
+];
+
+const PathnameToLink = navigationLinks.reduce((obj, navigationLink, i) => {
+   navigationLink.position = i;
+   navigationLink.link = (
+      <Link to={navigationLink.pathname} key={i} className='text-container'>
+         {navigationLink.label}
+      </Link>
+   );
+   return { ...obj, [navigationLink.pathname]: navigationLink };
+}, {} as any);
+
+console.log(JSON.stringify(PathnameToLink, null, 2));
+
 const NavigationBar = () => {
    return (
       <nav className='container'>
-         <Link to="/" className='text-container'>Home</Link>
-         <Link to="/about" className='text-container'>About Me</Link>
-         <Link to="/work" className='text-container'>My Work</Link>
-         <Link to="/resume" className='text-container'>Resumé</Link>
-         <Link to="/contact" className='text-container'>Contact</Link>
+         {Object.values(PathnameToLink).map(
+            (navigationLink: INavigationLink) => navigationLink.link
+         )}
       </nav>
    );
 }
+
+export {
+   PathnameToLink,
+   INavigationLink,
+};
 
 export default NavigationBar;
 

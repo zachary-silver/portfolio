@@ -3,12 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
 import { Universe } from '../game-of-life/Universe';
-import NavigationBar from './header/NavigationBar';
-import Home from './main/home/Home';
-import About from './main/about/About';
-import Work from './main/work/Work';
-import Resume from './main/resume/Resume';
-import Contact from './main/contact/Contact';
+import NavigationBar, { PathnameToLink, INavigationLink } from './header/NavigationBar';
+import { usePrevious } from './common/Util';
 
 import './Portfolio.css';
 
@@ -22,22 +18,18 @@ const COLUMNS = Math.ceil(
 const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
 const TRANSITION_TIME = 500;
 
-const getMainComponent = (pathname: string) => {
-   switch (pathname) {
-      case '/':
-         return <Home />;
-      case '/about':
-         return <About />;
-      case '/work':
-         return <Work />;
-      case '/resume':
-         return <Resume />;
-      case '/contact':
-         return <Contact />;
-      default:
-         throw new Error('Reached default case in getMainComponent');
+const getClassNames = (
+   link: INavigationLink,
+   previousLink: INavigationLink
+) => {
+   if (previousLink &&
+      link.pathname !== previousLink.pathname &&
+      link.position < previousLink.position) {
+      return 'main-reverse';
+   } else {
+      return 'main';
    }
-}
+};
 
 const Portfolio = () => {
    const [universe, _] = useState(() => new Universe({
@@ -47,8 +39,9 @@ const Portfolio = () => {
       liveCellColor: DOCUMENT_STYLE.getPropertyValue('--main-text-color'),
       deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
    }));
-   const [MainComponent, setMainComponent] = useState(Home);
-   const [transition, setTransition] = useState(false);
+   const [mainComponent, setMainComponent] = useState(null);
+   const [showComponent, setShowComponent] = useState(false);
+   const [classNames, setClassNames] = useState('main');
    const pathname = useLocation().pathname;
    const nodeRef = useRef(null);
 
@@ -59,15 +52,21 @@ const Portfolio = () => {
    }, [universe]);
 
    useEffect(() => {
-      setTransition(false);
+      setShowComponent(false);
 
       const timeoutId = setTimeout(() => {
-         setTransition(true);
-         setMainComponent(getMainComponent(pathname));
+         setMainComponent(link.component);
+         setShowComponent(true);
       }, TRANSITION_TIME);
 
       return () => clearTimeout(timeoutId);
    }, [pathname]);
+
+   const link = PathnameToLink[pathname];
+   const previousLink: INavigationLink = usePrevious(link);
+   useEffect(() => {
+      setClassNames(getClassNames(link, previousLink));
+   }, [link.pathname]);
 
    return (
       <React.Fragment>
@@ -75,14 +74,14 @@ const Portfolio = () => {
             <NavigationBar />
          </header>
          <CSSTransition
-            in={transition}
-            appear={true}
+            in={showComponent}
             timeout={TRANSITION_TIME}
-            classNames='main'
+            classNames={classNames}
             nodeRef={nodeRef}
+            unmountOnExit
          >
             <main ref={nodeRef}>
-               {MainComponent}
+               {mainComponent}
             </main>
          </CSSTransition>
          <footer>

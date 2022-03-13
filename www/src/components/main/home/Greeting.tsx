@@ -2,11 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
 
-// import {
-//    transitionIn,
-//    transitionOut,
-// } from '../../common/util';
-
 import './Greeting.css';
 
 const GREETINGS = [
@@ -19,12 +14,6 @@ const getTypingRate = (text: string) => 30 + 1000 * (1 / (text.length * text.len
 const Greeting = () => {
    const [greetingIndex, setGreetingIndex] = useState(0);
    const [greeting, setGreeting] = useState(GREETINGS[0]);
-
-   // useEffect(() => {
-   //    transitionIn('main');
-
-   //    return () => transitionOut('main');
-   // }, []);
 
    useEffect(() => {
       const timeoutId = setTimeout(() => {
@@ -41,6 +30,7 @@ const Greeting = () => {
    const props: ITerminalTextProps = {
       text: greeting,
       rate: getTypingRate(greeting),
+      delay: 1500,
       done: showNextGreeting,
    };
 

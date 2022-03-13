@@ -1,9 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import Home from '../main/home/Home';
+import About from '../main/about/About';
+import Work from '../main/work/Work';
+import Resume from '../main/resume/Resume';
+import Contact from '../main/contact/Contact';
+
 import './NavigationBar.css';
 
 interface INavigationLink {
+   component: JSX.Element,
    pathname: string,
    label: string,
    position?: number,
@@ -11,11 +18,11 @@ interface INavigationLink {
 };
 
 const navigationLinks: INavigationLink[] = [
-   { pathname: '/', label: 'Home' },
-   { pathname: '/about', label: 'About Me' },
-   { pathname: '/work', label: 'My Work' },
-   { pathname: '/resume', label: 'Resumé' },
-   { pathname: '/contact', label: 'Contact' },
+   { pathname: '/', label: 'Home', component: <Home /> },
+   { pathname: '/about', label: 'About Me', component: <About /> },
+   { pathname: '/work', label: 'My Work', component: <Work /> },
+   { pathname: '/resume', label: 'Resumé', component: <Resume /> },
+   { pathname: '/contact', label: 'Contact', component: <Contact /> },
 ];
 
 const PathnameToLink = navigationLinks.reduce((obj, navigationLink, i) => {
@@ -26,9 +33,7 @@ const PathnameToLink = navigationLinks.reduce((obj, navigationLink, i) => {
       </Link>
    );
    return { ...obj, [navigationLink.pathname]: navigationLink };
-}, {} as any);
-
-console.log(JSON.stringify(PathnameToLink, null, 2));
+}, {} as { [key: string]: INavigationLink });
 
 const NavigationBar = () => {
    return (

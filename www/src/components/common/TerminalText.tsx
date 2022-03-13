@@ -7,12 +7,14 @@ const CURSOR = '_';
 interface ITerminalTextProps {
    text: string,
    rate: number,
+   delay?: number,
    done?: Function,
 };
 
 const TerminalText = ({
    text,
    rate,
+   delay,
    done
 }: ITerminalTextProps) => {
    const [currentText, setCurrentText] = useState('');
@@ -22,7 +24,9 @@ const TerminalText = ({
    // When given new text to display, restart the process.
    useEffect(() => {
       setReverse(false);
-      growText();
+      const timeoutId = setTimeout(growText, delay / 2);
+
+      return () => clearTimeout(timeoutId);
    }, [text]);
 
    // Blink the cursor.
@@ -32,17 +36,19 @@ const TerminalText = ({
       return () => clearTimeout(timeoutId);
    }, [showCursor]);
 
-   // Execute typing effect.
+   // Type the text.
    useEffect(() => {
-      let timeoutId: any;
+      let timeoutId: NodeJS.Timeout;
 
       if (currentText.length === 0 && reverse) {
          done?.();
       } else if (currentText.length === text.length) {
          setReverse(true);
-         timeoutId = setTimeout(shrinkText, 2000);
+         timeoutId = setTimeout(shrinkText, delay);
       } else if (reverse) {
          timeoutId = setTimeout(shrinkText, 10);
+      } else if (currentText.length === 0) {
+         timeoutId = setTimeout(growText, delay / 2);
       } else {
          timeoutId = setTimeout(growText, rate);
       }

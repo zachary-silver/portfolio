@@ -52,17 +52,6 @@ body {
   box-shadow: var(--default-box-shadow);
 }
 
-.main-appear {
-  transform: translateX(100vw);
-  background: yellow;
-}
-
-.main-appear-active {
-  transform: translateX(0vw);
-  transition: transform 0.5s ease-in-out;
-  background: yellow;
-}
-
 .main-enter {
   transform: translateX(100vw);
 }
@@ -82,5 +71,27 @@ body {
 
 .main-exit-active {
   transform: translateX(-100vw);
+  transition: transform 0.5s ease-in-out;
+}
+
+.main-reverse-enter {
+  transform: translateX(-100vw);
+}
+
+.main-reverse-enter-active {
+  transform: translateX(0vw);
+  transition: transform 0.5s ease-in-out;
+}
+
+.main-reverse-enter-done {
+  transform: translateX(0vw);
+}
+
+.main-reverse-exit {
+  transform: translateX(0vw);
+}
+
+.main-reverse-exit-active {
+  transform: translateX(100vw);
   transition: transform 0.5s ease-in-out;
 }

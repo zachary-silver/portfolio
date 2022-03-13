@@ -10,7 +10,7 @@ const Work = () => {
    }, []);
 
    return (
-      <div />
+      <p className='text-container'>My Work</p>
    );
 }
 

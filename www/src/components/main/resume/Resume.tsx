@@ -2,7 +2,9 @@ import React from 'react';
 
 const Resume = () => {
    return (
-      <p className='text-container'>Resume</p>
+      <div id='resume' className='container'>
+         <p className='text-container'>Resume</p>
+      </div>
    );
 }
 

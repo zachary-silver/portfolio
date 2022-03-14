@@ -1,0 +1,17 @@
+.about-text {
+  width: 50vw;
+}
+
+.about-text p {
+  align-self: start;
+  margin: 0.4rem 0rem 0rem 0rem;
+  padding: 0rem 0.2rem 0.2rem 0.2rem;
+}
+
+#description {
+  margin: 0;
+}
+
+#hobbies {
+  margin-top: 2rem;
+}

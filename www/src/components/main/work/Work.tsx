@@ -10,7 +10,9 @@ const Work = () => {
    }, []);
 
    return (
-      <p className='text-container'>My Work</p>
+      <div id='work' className='container'>
+         <p className='text-container'>My Work</p>
+      </div>
    );
 }
 

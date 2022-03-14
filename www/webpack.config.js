@@ -7,6 +7,7 @@ module.exports = {
    output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'bundle.js',
+      publicPath: '/',
    },
    module: {
       rules: [
@@ -26,6 +27,9 @@ module.exports = {
       extensions: ['*', '.tsx', '.ts', '.js', 'jsx'],
    },
    mode: 'development',
+   devServer: {
+      historyApiFallback: true,
+   },
    plugins: [
       new CopyWebpackPlugin({
          patterns: [

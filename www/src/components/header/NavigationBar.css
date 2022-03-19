@@ -13,4 +13,5 @@ nav a {
 
 nav a:hover {
   box-shadow: var(--alt-box-shadow);
+  color: var(--ice);
 }

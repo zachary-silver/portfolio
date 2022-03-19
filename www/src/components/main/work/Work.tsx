@@ -16,14 +16,16 @@ const Work = () => {
       rows: ROWS,
       columns: COLUMNS,
       pixelsPerCell: PIXELS_PER_CELL,
-      liveCellColor: DOCUMENT_STYLE.getPropertyValue('--main-text-color'),
+      liveCellColor: DOCUMENT_STYLE.getPropertyValue('--ice'),
       deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
    }));
 
    useEffect(() => {
       // Gives time for other canvas renders to finish.
-      const timeoutId = setTimeout(universe.startRendering, 10);
-      document.getElementById('canvas').style.opacity = '0.5';
+      const timeoutId = setTimeout(() => {
+         universe.startRendering();
+         document.getElementById('canvas').style.opacity = '0.9';
+      }, 400);
 
       return () => {
          clearTimeout(timeoutId);

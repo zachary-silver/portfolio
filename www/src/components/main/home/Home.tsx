@@ -35,44 +35,22 @@ const Home = () => {
       height: HEIGHT,
       width: WIDTH,
       trunkWidth: WIDTH / 10,
-      treeColor: DOCUMENT_STYLE.getPropertyValue('--main-text-color'),
+      treeColor: DOCUMENT_STYLE.getPropertyValue('--ice'),
    }));
-   const [grown, setGrown] = useState(false);
 
    useEffect(() => {
-      if (grown) {
+      const timeoutId = setTimeout(() => {
          render = true;
          renderTree();
+         document.getElementById('canvas').style.opacity = '1.0';
+      }, 400);
 
-         return () => {
-            render = false;
-            document.getElementById('canvas').style.opacity = '0';
-         };
-      } else {
-         document.getElementById('canvas').style.opacity = '0.5';
-
-         growTree();
-      }
-   }, [grown]);
-
-   const growTree = () => {
-      let order = 1;
-
-      const grow = () => {
-         if (order < MAX_TREE_ORDER) {
-            tree.render(
-               WIDTH / 2,
-               HEIGHT / 2,
-               order++
-            );
-            setTimeout(grow, 50);
-         } else {
-            setGrown(true);
-         }
+      return () => {
+         document.getElementById('canvas').style.opacity = '0';
+         clearTimeout(timeoutId);
+         render = false;
       };
-
-      grow();
-   };
+   }, []);
 
    const renderTree = () => {
       if (render) {

@@ -23,6 +23,9 @@ class Universe implements IUniverse {
    private context: CanvasRenderingContext2D;
 
    private config: IUniverseConfig;
+   private rows: number;
+   private columns: number;
+   private pixelsPerCell: number;
 
    private rerender: boolean;
    private rendered: boolean;
@@ -35,11 +38,9 @@ class Universe implements IUniverse {
          this.universe.rows() * this.universe.columns()
       ) as unknown as Cell[];
 
-      this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
-      this.canvas.height = config.rows * config.pixelsPerCell + 1;
-      this.canvas.width = config.columns * config.pixelsPerCell + 1;
-      this.context = this.canvas.getContext('2d');
-
+      this.rows = config.rows;
+      this.columns = config.columns;
+      this.pixelsPerCell = config.pixelsPerCell;
       config.rows = this.universe.rows();
       config.columns = this.universe.columns();
       config.pixelsPerCell -= 1;
@@ -49,6 +50,7 @@ class Universe implements IUniverse {
       this.rendered = false;
 
       this.draw = this.draw.bind(this);
+      this.initializeCanvas = this.initializeCanvas.bind(this);
       this.clearCanvas = this.clearCanvas.bind(this);
       this.startRendering = this.startRendering.bind(this);
       this.stopRendering = this.stopRendering.bind(this);
@@ -83,6 +85,13 @@ class Universe implements IUniverse {
       }
    }
 
+   private initializeCanvas() {
+      this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
+      this.canvas.height = this.rows * this.pixelsPerCell + 1;
+      this.canvas.width = this.columns * this.pixelsPerCell + 1;
+      this.context = this.canvas.getContext('2d');
+   }
+
    private clearCanvas() {
       this.context.setTransform(1, 0, 0, 1, 0, 0);
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -91,8 +100,11 @@ class Universe implements IUniverse {
    public startRendering() {
       if (!this.rerender) {
          this.rerender = true;
-         this.rendered = false;
          return;
+      }
+
+      if (!this.canvas) {
+         this.initializeCanvas();
       }
 
       if (!this.rendered) {
@@ -111,6 +123,7 @@ class Universe implements IUniverse {
 
    public stopRendering() {
       this.rerender = false;
+      this.rendered = false;
    }
 };
 

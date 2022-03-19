@@ -1,13 +1,12 @@
-import { TreeTrunk, Canvas } from 'portfolio';
+import { TreeTrunk } from 'portfolio';
 
 interface ITreeOfPythagoras {
-   render: (row: number, column: number) => void,
+   render: (x: number, y: number, order: number) => void,
 };
 
 interface ITreeOfPythagorasConfig {
-   rows: number,
-   columns: number,
-   pixelsPerCell: number,
+   width: number,
+   height: number,
    treeColor: string,
    backgroundColor: string,
 };
@@ -22,17 +21,16 @@ class TreeOfPythagoras implements ITreeOfPythagoras {
    private baseColumns: number;
 
    constructor(config: ITreeOfPythagorasConfig) {
-      const canvas = Canvas.new(config.rows, config.columns);
-      this.trunk = TreeTrunk.new(canvas, 500, 500, 10);
+      this.trunk = TreeTrunk.new(config.width, config.height);
 
       this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
-      this.canvas.height = config.rows;
-      this.canvas.width = config.columns;
+      this.canvas.height = config.height;
+      this.canvas.width = config.width;
       this.context = this.canvas.getContext('2d');
       this.context.fillStyle = config.treeColor;
 
       this.config = config;
-      this.baseColumns = config.columns / 8;
+      this.baseColumns = config.width / 8;
 
       this.drawBranches = this.drawBranches.bind(this);
       this.drawTrunk = this.drawTrunk.bind(this);
@@ -75,20 +73,20 @@ class TreeOfPythagoras implements ITreeOfPythagoras {
       this.context.restore();
    }
 
-   private drawTrunk(row: number, column: number) {
-      this.trunk.update(row, column);
+   private drawTrunk(x: number, y: number, order: number) {
+      this.trunk.update(x, y, order);
 
       this.context.translate(
-         (this.config.columns / 2) - (this.baseColumns / 2),
-         this.config.rows - this.baseColumns
+         (this.config.width / 2) - (this.baseColumns / 2),
+         this.config.height - this.baseColumns
       );
       this.context.fillRect(0, 0, this.baseColumns, this.baseColumns);
    }
 
-   public render(row: number, column: number) {
+   public render(row: number, column: number, order: number) {
       console.log(this.trunk.order());
       requestAnimationFrame(() => {
-         this.drawTrunk(row, column);
+         this.drawTrunk(row, column, order);
          this.drawBranches(1, this.baseColumns);
       });
    }

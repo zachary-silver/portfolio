@@ -5,3 +5,47 @@ header {
 main {
   width: 100%;
 }
+
+.main-enter {
+  transform: translateX(100vw);
+}
+
+.main-enter-active {
+  transform: translateX(0vw);
+  transition: transform 0.5s;
+}
+
+.main-enter-done {
+  transform: translateX(0vw);
+}
+
+.main-exit {
+  transform: translateX(0vw);
+}
+
+.main-exit-active {
+  transform: translateX(-100vw);
+  transition: transform 0.5s;
+}
+
+.main-reverse-enter {
+  transform: translateX(-100vw);
+}
+
+.main-reverse-enter-active {
+  transform: translateX(0vw);
+  transition: transform 0.5s;
+}
+
+.main-reverse-enter-done {
+  transform: translateX(0vw);
+}
+
+.main-reverse-exit {
+  transform: translateX(0vw);
+}
+
+.main-reverse-exit-active {
+  transform: translateX(100vw);
+  transition: transform 0.5s;
+}

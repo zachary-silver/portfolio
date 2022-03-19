@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Home from '../main/home/Home';
 import About from '../main/about/About';
-import Work from '../main/work/Work';
-import Resume from '../main/resume/Resume';
 import Contact from '../main/contact/Contact';
+import Home from '../main/home/Home';
+import Resume from '../main/resume/Resume';
+import Work from '../main/work/Work';
 
 import './NavigationBar.css';
 
@@ -25,25 +25,32 @@ const navigationLinks: INavigationLink[] = [
    { pathname: '/contact', label: 'Contact', component: <Contact /> },
 ];
 
-const PathnameToLink = navigationLinks.reduce((obj, navigationLink, i) => {
-   navigationLink.position = i;
-   navigationLink.link = (
-      <Link to={navigationLink.pathname} key={i} className='text-container'>
-         {navigationLink.label}
-      </Link>
-   );
-   return { ...obj, [navigationLink.pathname]: navigationLink };
-}, {} as { [key: string]: INavigationLink });
+const PathnameToLink = navigationLinks.reduce(
+   (navigationLinks, navigationLink, index) => {
+      navigationLink.position = index;
+      navigationLink.link = (
+         <Link
+            to={navigationLink.pathname}
+            key={index}
+            className='text-container'
+         >
+            {navigationLink.label}
+         </Link>
+      );
+      return { ...navigationLinks, [navigationLink.pathname]: navigationLink };
+   },
+   {} as { [key: string]: INavigationLink }
+);
 
 const NavigationBar = () => {
    return (
       <nav className='container'>
          {Object.values(PathnameToLink).map(
-            (navigationLink: INavigationLink) => navigationLink.link
+            (navigationLink) => navigationLink.link
          )}
       </nav>
    );
-}
+};
 
 export {
    PathnameToLink,

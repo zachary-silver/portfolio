@@ -21,10 +21,12 @@ const Work = () => {
    }));
 
    useEffect(() => {
-      universe.startRendering();
+      // Gives time for other canvas renders to finish.
+      const timeoutId = setTimeout(universe.startRendering, 10);
       document.getElementById('canvas').style.opacity = '0.5';
 
       return () => {
+         clearTimeout(timeoutId);
          document.getElementById('canvas').style.opacity = '0';
          universe.stopRendering();
       };

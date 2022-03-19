@@ -1,14 +1,14 @@
 import { TreeTrunk } from 'portfolio';
 
 interface ITreeOfPythagoras {
-   render: (x: number, y: number, order: number) => void,
+   render: (x: number, y: number, maxOrder: number) => void,
 };
 
 interface ITreeOfPythagorasConfig {
    width: number,
    height: number,
+   trunkWidth: number,
    treeColor: string,
-   backgroundColor: string,
 };
 
 class TreeOfPythagoras implements ITreeOfPythagoras {
@@ -18,7 +18,6 @@ class TreeOfPythagoras implements ITreeOfPythagoras {
    private context: CanvasRenderingContext2D;
 
    private config: ITreeOfPythagorasConfig;
-   private baseColumns: number;
 
    constructor(config: ITreeOfPythagorasConfig) {
       this.trunk = TreeTrunk.new(config.width, config.height);
@@ -30,16 +29,16 @@ class TreeOfPythagoras implements ITreeOfPythagoras {
       this.context.fillStyle = config.treeColor;
 
       this.config = config;
-      this.baseColumns = config.width / 8;
 
       this.drawBranches = this.drawBranches.bind(this);
       this.drawTrunk = this.drawTrunk.bind(this);
+      this.clearCanvas = this.clearCanvas.bind(this);
       this.render = this.render.bind(this);
    }
 
-   private drawBranches(order: number, columns: number) {
-      const leftColumns = this.trunk.left_ratio() * columns;
-      const rightColumns = this.trunk.right_ratio() * columns;
+   private drawBranches(order: number, width: number) {
+      const leftWidth = this.trunk.left_ratio() * width;
+      const rightWidth = this.trunk.right_ratio() * width;
 
       if (order > this.trunk.order()) {
          return;
@@ -49,27 +48,17 @@ class TreeOfPythagoras implements ITreeOfPythagoras {
 
       this.context.save();
       this.context.rotate(-this.trunk.left_angle());
-      this.context.translate(0, -leftColumns);
-      this.context.fillRect(
-         0,
-         0,
-         leftColumns,
-         leftColumns ,
-      );
-      this.drawBranches(order, leftColumns);
+      this.context.translate(0, -leftWidth);
+      this.context.fillRect(0, 0, leftWidth, leftWidth);
+      this.drawBranches(order, leftWidth);
       this.context.restore();
 
       this.context.save();
-      this.context.translate(columns, 0);
+      this.context.translate(width, 0);
       this.context.rotate(this.trunk.right_angle());
-      this.context.translate(-rightColumns, -leftColumns);
-      this.context.fillRect(
-         0,
-         0,
-         rightColumns,
-         rightColumns,
-      );
-      this.drawBranches(order, rightColumns);
+      this.context.translate(-rightWidth, -rightWidth);
+      this.context.fillRect(0, 0, rightWidth, rightWidth);
+      this.drawBranches(order, rightWidth);
       this.context.restore();
    }
 
@@ -77,17 +66,27 @@ class TreeOfPythagoras implements ITreeOfPythagoras {
       this.trunk.update(x, y, order);
 
       this.context.translate(
-         (this.config.width / 2) - (this.baseColumns / 2),
-         this.config.height - this.baseColumns
+         (this.config.width / 2) - (this.config.trunkWidth / 2),
+         this.config.height - this.config.trunkWidth
       );
-      this.context.fillRect(0, 0, this.baseColumns, this.baseColumns);
+      this.context.fillRect(
+         0,
+         0,
+         this.config.trunkWidth,
+         this.config.trunkWidth
+      );
    }
 
-   public render(row: number, column: number, order: number) {
-      console.log(this.trunk.order());
+   private clearCanvas() {
+      this.context.setTransform(1, 0, 0, 1, 0, 0);
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+   }
+
+   public render(x: number, y: number, maxOrder: number) {
       requestAnimationFrame(() => {
-         this.drawTrunk(row, column, order);
-         this.drawBranches(1, this.baseColumns);
+         this.clearCanvas();
+         this.drawTrunk(x, y, maxOrder);
+         this.drawBranches(1, this.config.trunkWidth);
       });
    }
 }

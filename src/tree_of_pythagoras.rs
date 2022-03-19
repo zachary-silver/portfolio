@@ -27,14 +27,13 @@ impl TreeTrunk {
         }
     }
 
-    pub fn update(&mut self, x: u32, y: u32, max_order: u32) {
-        let ratio = max(0.35, min(0.65, x as f32 / self.width as f32));
+    pub fn update(&mut self, x: f32, y: f32, max_order: u32) {
+        let ratio = max(0.35, min(0.65, x / self.width as f32));
         let order = max(
             0,
             min(
                 max_order,
-                (2.0 * max_order as f32
-                    * (1.0 - (y as f32 / self.height as f32)))
+                (2.0 * max_order as f32 * (1.0 - y / self.height as f32))
                     as u32,
             ),
         );

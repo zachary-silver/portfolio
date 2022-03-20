@@ -13,7 +13,7 @@ const COLUMNS = Math.ceil(
 const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
 
 const Work = () => {
-   const [universe, _] = useState(() => new GameOfLife({
+   const [gameOfLife, _] = useState(() => new GameOfLife({
       rows: ROWS,
       columns: COLUMNS,
       pixelsPerCell: PIXELS_PER_CELL,
@@ -24,14 +24,14 @@ const Work = () => {
    useEffect(() => {
       // Gives time for other canvas renders to finish.
       const timeoutId = setTimeout(() => {
-         universe.initializeCanvas();
-         universe.startRendering();
+         gameOfLife.initializeCanvas();
+         gameOfLife.startRendering();
          showCanvas('0.5');
       }, 10);
 
       return () => {
          clearTimeout(timeoutId);
-         universe.stopRendering();
+         gameOfLife.stopRendering();
       };
    }, []);
 

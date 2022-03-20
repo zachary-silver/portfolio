@@ -3,9 +3,9 @@ import { memory } from 'portfolio/portfolio_bg.wasm';
 
 import { Canvas, ICanvas, ICanvasConfig } from './Canvas';
 
-interface IUniverse extends ICanvas { };
+interface IGameOfLife extends ICanvas { };
 
-interface IUniverseConfig {
+interface IGameOfLifeConfig {
    rows: number,
    columns: number,
    pixelsPerCell: number,
@@ -13,31 +13,31 @@ interface IUniverseConfig {
    deadCellColor: string,
 };
 
-class Universe extends Canvas {
+class GameOfLife extends Canvas {
    private universe: asmUniverse;
    private cells: Cell[];
 
-   private universeConfig: IUniverseConfig;
+   private gameOfLifeConfig: IGameOfLifeConfig;
 
-   constructor(universeConfig: IUniverseConfig) {
+   constructor(gameOfLifeConfig: IGameOfLifeConfig) {
       const canvasConfig: ICanvasConfig = {
-         height: universeConfig.rows * universeConfig.pixelsPerCell + 1,
-         width: universeConfig.columns * universeConfig.pixelsPerCell + 1,
+         height: gameOfLifeConfig.rows * gameOfLifeConfig.pixelsPerCell + 1,
+         width: gameOfLifeConfig.columns * gameOfLifeConfig.pixelsPerCell + 1,
          id: 'canvas',
       };
       super(canvasConfig);
 
-      this.universe = asmUniverse.new(universeConfig.rows, universeConfig.columns);
+      this.universe = asmUniverse.new(gameOfLifeConfig.rows, gameOfLifeConfig.columns);
       this.cells = new Uint8Array(
          memory.buffer,
          this.universe.cells(),
          this.universe.rows() * this.universe.columns()
       ) as unknown as Cell[];
 
-      universeConfig.rows = this.universe.rows();
-      universeConfig.columns = this.universe.columns();
-      universeConfig.pixelsPerCell -= 1;
-      this.universeConfig = universeConfig;
+      gameOfLifeConfig.rows = this.universe.rows();
+      gameOfLifeConfig.columns = this.universe.columns();
+      gameOfLifeConfig.pixelsPerCell -= 1;
+      this.gameOfLifeConfig = gameOfLifeConfig;
 
       this.draw = this.draw.bind(this);
 
@@ -48,25 +48,25 @@ class Universe extends Canvas {
       const startingColumn = this.universe.cell_offset();
       const previousCellIndexOffset = startingColumn ? -1 : 1;
 
-      for (let row = 0; row < this.universeConfig.rows; row++) {
-         const y = row * (this.universeConfig.pixelsPerCell + 1) + 1;
+      for (let row = 0; row < this.gameOfLifeConfig.rows; row++) {
+         const y = row * (this.gameOfLifeConfig.pixelsPerCell + 1) + 1;
 
-         for (let column = startingColumn; column < this.universeConfig.columns; column += 2) {
-            const i = row * this.universeConfig.columns + column;
+         for (let column = startingColumn; column < this.gameOfLifeConfig.columns; column += 2) {
+            const i = row * this.gameOfLifeConfig.columns + column;
             const cell = this.cells[i];
             const previousCell = this.cells[i + previousCellIndexOffset];
 
             if (cell !== previousCell) {
                // ((column / 2) | 0) === Faster Math.floor(column / 2)
-               const x = ((column / 2) | 0) * (this.universeConfig.pixelsPerCell + 1) + 1;
+               const x = ((column / 2) | 0) * (this.gameOfLifeConfig.pixelsPerCell + 1) + 1;
                this.context.fillStyle = cell === Cell.Alive
-                  ? this.universeConfig.liveCellColor
-                  : this.universeConfig.deadCellColor;
+                  ? this.gameOfLifeConfig.liveCellColor
+                  : this.gameOfLifeConfig.deadCellColor;
                this.context.fillRect(
                   x,
                   y,
-                  this.universeConfig.pixelsPerCell,
-                  this.universeConfig.pixelsPerCell
+                  this.gameOfLifeConfig.pixelsPerCell,
+                  this.gameOfLifeConfig.pixelsPerCell
                );
             }
          }
@@ -88,17 +88,17 @@ class Universe extends Canvas {
    public initializeCanvas() {
       this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
       this.canvas.height =
-         this.universeConfig.rows * (this.universeConfig.pixelsPerCell + 1) + 1;
+         this.gameOfLifeConfig.rows * (this.gameOfLifeConfig.pixelsPerCell + 1) + 1;
       this.canvas.width =
-         this.universeConfig.columns / 2 *
-         (this.universeConfig.pixelsPerCell + 1) + 1;
+         this.gameOfLifeConfig.columns / 2 *
+         (this.gameOfLifeConfig.pixelsPerCell + 1) + 1;
       this.context = this.canvas.getContext('2d');
    }
 };
 
 export {
-   Universe,
-   IUniverse,
-   IUniverseConfig,
+   GameOfLife,
+   IGameOfLife,
+   IGameOfLifeConfig,
 };
 

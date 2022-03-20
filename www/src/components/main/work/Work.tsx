@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Universe } from '../../../canvas/Universe';
+import { GameOfLife } from '../../../canvas/GameOfLife';
 import { showCanvas } from '../../common/Util';
 
 const PIXELS_PER_CELL = 4;
@@ -13,7 +13,7 @@ const COLUMNS = Math.ceil(
 const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
 
 const Work = () => {
-   const [universe, _] = useState(() => new Universe({
+   const [universe, _] = useState(() => new GameOfLife({
       rows: ROWS,
       columns: COLUMNS,
       pixelsPerCell: PIXELS_PER_CELL,

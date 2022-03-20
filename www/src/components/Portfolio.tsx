@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
 import NavigationBar, { PathnameToLink, INavigationLink } from './header/NavigationBar';
-import { usePrevious } from './common/Util';
+import { usePrevious, hideCanvas } from './common/Util';
 
 import './Portfolio.css';
 
@@ -57,6 +57,7 @@ const Portfolio = () => {
             classNames={classNames}
             nodeRef={nodeRef}
             unmountOnExit
+            onExiting={hideCanvas}
          >
             <main ref={nodeRef}>
                {mainComponent}

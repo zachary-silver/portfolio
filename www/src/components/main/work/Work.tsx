@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { Universe } from '../../../game-of-life/Universe';
+import { Universe } from '../../../canvas/Universe';
+import { showCanvas } from '../../common/Util';
 
 const PIXELS_PER_CELL = 4;
 const ROWS = Math.ceil(
@@ -23,13 +24,13 @@ const Work = () => {
    useEffect(() => {
       // Gives time for other canvas renders to finish.
       const timeoutId = setTimeout(() => {
+         universe.initializeCanvas();
          universe.startRendering();
-         document.getElementById('canvas').style.opacity = '0.9';
-      }, 400);
+         showCanvas('0.5');
+      }, 10);
 
       return () => {
          clearTimeout(timeoutId);
-         document.getElementById('canvas').style.opacity = '0';
          universe.stopRendering();
       };
    }, []);

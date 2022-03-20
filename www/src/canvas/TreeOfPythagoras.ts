@@ -1,37 +1,56 @@
 import { TreeTrunk } from 'portfolio';
 
+import { Canvas, ICanvas, ICanvasConfig } from './Canvas';
+
 const TREE_COLOR_RGB = '167, 195, 217';
 
-interface ITreeOfPythagoras {
-   render: (x: number, y: number, maxOrder: number) => void,
+interface IPosition {
+   x: number,
+   y: number,
 };
+
+let mousePosition: IPosition = {
+   x: 0,
+   y: 0,
+};
+
+onmousemove = (event) => {
+   mousePosition.x = event.clientX;
+   mousePosition.y = event.clientY;
+};
+
+interface ITreeOfPythagoras extends ICanvas { };
 
 interface ITreeOfPythagorasConfig {
    width: number,
    height: number,
    trunkWidth: number,
+   maxOrder: number,
    treeColor: string,
 };
 
-class TreeOfPythagoras implements ITreeOfPythagoras {
+class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
    private trunk: TreeTrunk;
 
-   private canvas: HTMLCanvasElement;
-   private context: CanvasRenderingContext2D;
+   private treeConfig: ITreeOfPythagorasConfig;
 
-   private config: ITreeOfPythagorasConfig;
+   constructor(treeConfig: ITreeOfPythagorasConfig) {
+      const canvasConfig: ICanvasConfig = {
+         width: treeConfig.width,
+         height: treeConfig.height,
+         id: 'canvas',
+      };
+      super(canvasConfig);
 
-   constructor(config: ITreeOfPythagorasConfig) {
-      this.trunk = TreeTrunk.new(config.width, config.height);
+      this.trunk = TreeTrunk.new(treeConfig.width, treeConfig.height);
 
-      this.config = config;
+      this.treeConfig = treeConfig;
 
       this.drawLeftBranch = this.drawLeftBranch.bind(this);
       this.drawRightBranch = this.drawRightBranch.bind(this);
       this.drawBranches = this.drawBranches.bind(this);
       this.drawTrunk = this.drawTrunk.bind(this);
-      this.initializeCanvas = this.initializeCanvas.bind(this);
-      this.clearCanvas = this.clearCanvas.bind(this);
+
       this.render = this.render.bind(this);
    }
 
@@ -75,40 +94,30 @@ class TreeOfPythagoras implements ITreeOfPythagoras {
       this.trunk.update(x, y, order);
 
       this.context.translate(
-         (this.config.width / 2) - (this.config.trunkWidth / 2),
-         this.config.height - this.config.trunkWidth
+         (this.treeConfig.width / 2) - (this.treeConfig.trunkWidth / 2),
+         this.treeConfig.height - this.treeConfig.trunkWidth
       );
       this.context.fillStyle = `rgba(${TREE_COLOR_RGB}, 0.1)`;
       this.context.fillRect(
          0,
          0,
-         this.config.trunkWidth,
-         this.config.trunkWidth
+         this.treeConfig.trunkWidth,
+         this.treeConfig.trunkWidth
       );
    }
 
-   private initializeCanvas() {
-      this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
-      this.canvas.height = this.config.height;
-      this.canvas.width = this.config.width;
-      this.context = this.canvas.getContext('2d');
-   }
-
-   private clearCanvas() {
-      this.context.setTransform(1, 0, 0, 1, 0, 0);
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-   }
-
-   public render(x: number, y: number, maxOrder: number) {
-      requestAnimationFrame(() => {
-         if (!this.canvas) {
-            this.initializeCanvas();
-         }
-
-         this.clearCanvas();
-         this.drawTrunk(x, y, maxOrder);
-         this.drawBranches(1, this.config.trunkWidth);
-      });
+   protected render() {
+      setTimeout(() => {
+         requestAnimationFrame(() => {
+            if (this.shouldRender) {
+               console.log(mousePosition.x, mousePosition.y);
+               this.clearCanvas();
+               this.drawTrunk(mousePosition.x, mousePosition.y + this.treeConfig.trunkWidth * 2, this.treeConfig.maxOrder);
+               this.drawBranches(1, this.treeConfig.trunkWidth);
+               this.render();
+            }
+         });
+      }, 1000 / 60);
    }
 }
 

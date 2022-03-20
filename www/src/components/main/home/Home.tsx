@@ -16,7 +16,7 @@ const Home = () => {
    const [tree, _] = useState(() => new TreeOfPythagoras({
       height: HEIGHT,
       width: WIDTH,
-      trunkWidth: WIDTH / 10,
+      trunkWidth: WIDTH / 9,
       maxOrder: 9,
       treeColor: DOCUMENT_STYLE.getPropertyValue('--ice'),
    }));
@@ -26,7 +26,7 @@ const Home = () => {
       const timeoutId = setTimeout(() => {
          tree.initializeCanvas();
          tree.startRendering();
-         showCanvas('1.0');
+         showCanvas('0.5');
       }, 10);
 
       return () => {

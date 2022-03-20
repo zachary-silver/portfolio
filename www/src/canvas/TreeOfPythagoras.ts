@@ -110,7 +110,6 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
       setTimeout(() => {
          requestAnimationFrame(() => {
             if (this.shouldRender) {
-               console.log(mousePosition.x, mousePosition.y);
                this.clearCanvas();
                this.drawTrunk(mousePosition.x, mousePosition.y + this.treeConfig.trunkWidth * 2, this.treeConfig.maxOrder);
                this.drawBranches(1, this.treeConfig.trunkWidth);

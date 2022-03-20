@@ -8,10 +8,18 @@
   padding: 0rem 0.2rem 0.2rem 0.2rem;
 }
 
-#description {
+.description {
   margin: 0;
 }
 
 #hobbies {
   margin-top: 2rem;
+}
+
+#hobbies-list {
+  margin-top: -0.5rem;
+}
+
+#hobby-description {
+  margin: -0.8rem 0rem -0.8rem 0rem;
 }

@@ -10,12 +10,12 @@ import './Portfolio.css';
 const TRANSITION_TIME = 500;
 
 const getClassNames = (
-   link: INavigationLink,
+   currentLink: INavigationLink,
    previousLink: INavigationLink
 ) => {
    if (previousLink &&
-      link.pathname !== previousLink.pathname &&
-      link.position < previousLink.position) {
+      currentLink.pathname !== previousLink.pathname &&
+      currentLink.position < previousLink.position) {
       return 'main-reverse';
    } else {
       return 'main';
@@ -33,18 +33,18 @@ const Portfolio = () => {
       setShowComponent(false);
 
       const timeoutId = setTimeout(() => {
-         setMainComponent(link.component);
+         setMainComponent(currentLink.component);
          setShowComponent(true);
       }, TRANSITION_TIME);
 
       return () => clearTimeout(timeoutId);
    }, [pathname]);
 
-   const link = PathnameToLink[pathname];
-   const previousLink: INavigationLink = usePrevious(link);
+   const currentLink = PathnameToLink[pathname];
+   const previousLink: INavigationLink = usePrevious(currentLink);
    useEffect(() => {
-      setClassNames(getClassNames(link, previousLink));
-   }, [link.pathname]);
+      setClassNames(getClassNames(currentLink, previousLink));
+   }, [currentLink.pathname]);
 
    return (
       <React.Fragment>

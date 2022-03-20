@@ -5,7 +5,7 @@ import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
 import './Greeting.css';
 
 const GREETINGS = [
-   "Hi, I'm Zack",
+   "Hi, I'm Zack.",
    "Thanks for taking the time to check out my portfolio!",
 ];
 

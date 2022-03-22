@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { GameOfLife } from '../../../canvas/GameOfLife';
+import { SierpinskiTree } from '../../../canvas/SierpinskiTree';
+import {
+   DOCUMENT_STYLE,
+   VIEWPORT_HEIGHT,
+   VIEWPORT_WIDTH
+} from '../../../common/util';
 import { showCanvas } from '../../common/Util';
 
 import './About.css';
@@ -33,8 +38,8 @@ guitarist.
    'Programming': `
 In addition to being my profession, I have the privilege of calling
 programming a hobby of mine. I love staying up to date with current
-technologies and practices in the software development space. I'm constantly
-working on new personal projects and exploring unfamiliar technologies.
+technologies and practices in the software development space and I'm constantly
+developing new personal projects.
 `,
    'Video Games': `
 For better or for worse, my older brother handing me that GameBoy marked the
@@ -44,22 +49,16 @@ learning and mastering how to play these games to the best of my ability.
 `,
 };
 
-const PIXELS_PER_CELL = 4;
-const ROWS = Math.ceil(
-   window.screen.height * window.devicePixelRatio / PIXELS_PER_CELL
-);
-const COLUMNS = Math.ceil(
-   window.screen.width * window.devicePixelRatio / PIXELS_PER_CELL
-);
-const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
-
 const About = () => {
-   const [gameOfLife, _] = useState(() => new GameOfLife({
-      rows: ROWS,
-      columns: COLUMNS,
-      pixelsPerCell: PIXELS_PER_CELL,
-      liveCellColor: DOCUMENT_STYLE.getPropertyValue('--ice'),
-      deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
+   const [gameOfLife, _] = useState(() => new SierpinskiTree({
+      x: VIEWPORT_WIDTH / 4,
+      y: VIEWPORT_HEIGHT,
+      height: VIEWPORT_HEIGHT,
+      width: VIEWPORT_WIDTH,
+      branchLength: 200,
+      branchWidth: 10,
+      maxOrder: 10,
+      treeColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
    }));
 
    useEffect(() => {
@@ -67,7 +66,7 @@ const About = () => {
       const timeoutId = setTimeout(() => {
          gameOfLife.initializeCanvas();
          gameOfLife.startRendering();
-         showCanvas('0.2');
+         showCanvas('0.5');
       }, 10);
 
       return () => {

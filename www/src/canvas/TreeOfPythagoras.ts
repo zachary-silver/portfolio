@@ -1,23 +1,10 @@
 import { TreeTrunk } from 'portfolio';
 
 import { Canvas, ICanvas, ICanvasConfig } from './Canvas';
+import { mousePosition } from '../common/util';
 
-const TREE_COLOR_RGB = '167, 195, 217';
-
-interface IPosition {
-   x: number,
-   y: number,
-};
-
-let mousePosition: IPosition = {
-   x: 0,
-   y: 0,
-};
-
-onmousemove = (event) => {
-   mousePosition.x = event.clientX;
-   mousePosition.y = event.clientY;
-};
+// const TREE_COLOR_RGB = '167, 195, 217';
+const TREE_COLOR_RGB = '104, 167, 212';
 
 interface ITreeOfPythagoras extends ICanvas { };
 
@@ -111,7 +98,11 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
          requestAnimationFrame(() => {
             if (this.shouldRender) {
                this.clearCanvas();
-               this.drawTrunk(mousePosition.x, mousePosition.y + this.treeConfig.trunkWidth * 2, this.treeConfig.maxOrder);
+               this.drawTrunk(
+                  mousePosition.x,
+                  mousePosition.y + this.treeConfig.trunkWidth * 2,
+                  this.treeConfig.maxOrder
+               );
                this.drawBranches(1, this.treeConfig.trunkWidth);
                this.render();
             }

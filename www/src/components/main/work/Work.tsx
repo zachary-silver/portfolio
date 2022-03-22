@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 
 import { GameOfLife } from '../../../canvas/GameOfLife';
 import { showCanvas } from '../../common/Util';
+import {
+   DOCUMENT_STYLE,
+   VIEWPORT_HEIGHT,
+   VIEWPORT_WIDTH
+} from '../../../common/util';
 
 const PIXELS_PER_CELL = 4;
-const ROWS = Math.ceil(
-   window.screen.height * window.devicePixelRatio / PIXELS_PER_CELL
-);
-const COLUMNS = Math.ceil(
-   window.screen.width * window.devicePixelRatio / PIXELS_PER_CELL
-);
-const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
+const ROWS = Math.ceil(VIEWPORT_HEIGHT / PIXELS_PER_CELL);
+const COLUMNS = Math.ceil(VIEWPORT_WIDTH / PIXELS_PER_CELL);
 
 const Work = () => {
    const [gameOfLife, _] = useState(() => new GameOfLife({

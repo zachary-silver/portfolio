@@ -2,21 +2,22 @@ import React, { useState, useEffect } from 'react';
 
 import { TreeOfPythagoras } from '../../../canvas/TreeOfPythagoras';
 import { showCanvas } from '../../common/Util';
+import {
+   DOCUMENT_STYLE,
+   VIEWPORT_HEIGHT,
+   VIEWPORT_WIDTH
+} from '../../../common/util';
 
 import Author from './Author';
 import Greeting from './Greeting';
 
 import './Home.css';
 
-const HEIGHT = Math.ceil(window.screen.height * window.devicePixelRatio);
-const WIDTH = Math.ceil(window.screen.width * window.devicePixelRatio);
-const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
-
 const Home = () => {
    const [tree, _] = useState(() => new TreeOfPythagoras({
-      height: HEIGHT,
-      width: WIDTH,
-      trunkWidth: WIDTH / 9,
+      height: VIEWPORT_HEIGHT,
+      width: VIEWPORT_WIDTH,
+      trunkWidth: VIEWPORT_WIDTH / 9,
       maxOrder: 9,
       treeColor: DOCUMENT_STYLE.getPropertyValue('--ice'),
    }));

@@ -17,7 +17,7 @@ const Work = () => {
       rows: ROWS,
       columns: COLUMNS,
       pixelsPerCell: PIXELS_PER_CELL,
-      liveCellColor: DOCUMENT_STYLE.getPropertyValue('--ice'),
+      liveCellColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
       deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
    }));
 

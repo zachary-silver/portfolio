@@ -1,5 +1,5 @@
 import { Canvas, ICanvas, ICanvasConfig } from './Canvas';
-import { mousePosition } from '../common/util';
+import { IPosition } from '../common/util';
 
 // const TREE_COLOR_RGB = '167, 195, 217';
 const TREE_COLOR_RGB = '104, 167, 212';
@@ -7,8 +7,7 @@ const TREE_COLOR_RGB = '104, 167, 212';
 interface ISierpinskiTree extends ICanvas { };
 
 interface ISierpinskiTreeConfig {
-   x: number,
-   y: number,
+   positions: IPosition[],
    width: number,
    height: number,
    branchLength: number,
@@ -85,30 +84,30 @@ class SierpinskiTree extends Canvas implements ISierpinskiTree {
       this.context.restore();
    }
 
-   protected render() {
+   protected render(baseAngle = 0, adjustment = .005) {
       setTimeout(() => {
          requestAnimationFrame(() => {
             if (this.shouldRender) {
                this.clearCanvas();
-               this.draw(
-                  this.treeConfig.x,
-                  this.treeConfig.y,
-                  this.treeConfig.branchLength,
-                  this.treeConfig.branchWidth,
-                  0,
-                  10 + (mousePosition.y / this.canvasConfig.height) * 35,
-                  1
-               );
-               this.draw(
-                  this.treeConfig.x * 3,
-                  this.treeConfig.y,
-                  this.treeConfig.branchLength,
-                  this.treeConfig.branchWidth,
-                  0,
-                  10 + (mousePosition.y / this.canvasConfig.height) * 35,
-                  1
-               );
-               this.render();
+
+               this.treeConfig.positions.forEach((position) => {
+                  this.draw(
+                     position.x,
+                     position.y,
+                     this.treeConfig.branchLength,
+                     this.treeConfig.branchWidth,
+                     0,
+                     baseAngle * 45,
+                     1
+                  );
+               });
+
+               if (Math.floor(Math.abs(baseAngle)) === 1) {
+                  adjustment *= -1;
+                  setTimeout(() => this.render(baseAngle + adjustment, adjustment), 4000);
+               } else {
+                  this.render(baseAngle + adjustment, adjustment);
+               }
             }
          });
       }, 1000 / 60);

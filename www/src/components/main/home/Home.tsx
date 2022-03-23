@@ -17,7 +17,7 @@ const Home = () => {
    const [tree, _] = useState(() => new TreeOfPythagoras({
       height: VIEWPORT_HEIGHT,
       width: VIEWPORT_WIDTH,
-      trunkWidth: VIEWPORT_WIDTH / 9,
+      trunkWidth: VIEWPORT_WIDTH / 11,
       maxOrder: 9,
       treeColor: DOCUMENT_STYLE.getPropertyValue('--ice'),
    }));

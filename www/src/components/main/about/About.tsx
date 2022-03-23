@@ -51,8 +51,16 @@ learning and mastering how to play these games to the best of my ability.
 
 const About = () => {
    const [gameOfLife, _] = useState(() => new SierpinskiTree({
-      x: VIEWPORT_WIDTH / 4,
-      y: VIEWPORT_HEIGHT,
+      positions: [
+         {
+            x: VIEWPORT_WIDTH / 4,
+            y: VIEWPORT_HEIGHT,
+         },
+         {
+            x: VIEWPORT_WIDTH - VIEWPORT_WIDTH / 4,
+            y: VIEWPORT_HEIGHT,
+         },
+      ],
       height: VIEWPORT_HEIGHT,
       width: VIEWPORT_WIDTH,
       branchLength: 200,

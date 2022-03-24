@@ -63,7 +63,7 @@ const About = () => {
       ],
       height: VIEWPORT_HEIGHT,
       width: VIEWPORT_WIDTH,
-      branchLength: 200,
+      branchLength: 250,
       branchWidth: 10,
       maxOrder: 10,
       treeColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),

@@ -84,7 +84,7 @@ class SierpinskiTree extends Canvas implements ISierpinskiTree {
       this.context.restore();
    }
 
-   protected render(baseAngle = 0, adjustment = .005) {
+   protected render(baseAngle = 0.13, adjustment = -.005) {
       setTimeout(() => {
          requestAnimationFrame(() => {
             if (this.shouldRender) {
@@ -102,7 +102,7 @@ class SierpinskiTree extends Canvas implements ISierpinskiTree {
                   );
                });
 
-               if (Math.floor(Math.abs(baseAngle)) === 1) {
+               if (Math.floor(Math.abs(baseAngle)) === 1 || Math.floor(Math.abs(baseAngle) * 45) === 5) {
                   adjustment *= -1;
                   setTimeout(() => this.render(baseAngle + adjustment, adjustment), 4000);
                } else {

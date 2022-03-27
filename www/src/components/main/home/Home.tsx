@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { TreeOfPythagoras } from '../../../canvas/TreeOfPythagoras';
-import { showCanvas } from '../../common/Util';
+import { useCanvas } from '../../common/Util';
 import {
    DOCUMENT_STYLE,
    VIEWPORT_HEIGHT,
-   VIEWPORT_WIDTH
+   VIEWPORT_WIDTH,
 } from '../../../common/util';
 
 import Author from './Author';
@@ -18,23 +18,10 @@ const Home = () => {
       height: VIEWPORT_HEIGHT,
       width: VIEWPORT_WIDTH,
       trunkWidth: VIEWPORT_WIDTH / 11,
-      maxOrder: 9,
+      maxDepth: 9,
       treeColor: DOCUMENT_STYLE.getPropertyValue('--ice'),
    }));
-
-   useEffect(() => {
-      // Gives time for other canvas renders to finish.
-      const timeoutId = setTimeout(() => {
-         tree.initializeCanvas();
-         tree.startRendering();
-         showCanvas('0.5');
-      }, 10);
-
-      return () => {
-         clearTimeout(timeoutId);
-         tree.stopRendering();
-      };
-   }, []);
+   useCanvas(tree, '0.5');
 
    return (
       <div id='home' className='container'>

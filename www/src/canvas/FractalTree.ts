@@ -1,25 +1,34 @@
-import { Canvas, ICanvas, ICanvasConfig } from './Canvas';
+import {
+   Canvas,
+   ICanvas,
+   ICanvasConfig,
+} from './Canvas';
 import { IPosition } from '../common/util';
 
-// const TREE_COLOR_RGB = '167, 195, 217';
 const TREE_COLOR_RGB = '104, 167, 212';
 
-interface ISierpinskiTree extends ICanvas { };
+const TRANSITION_WAIT_TIME = 4000;
+const STARTING_ANGLE_RATIO = 0.9;
+const ANGLE_OFFSET = 0.005;
 
-interface ISierpinskiTreeConfig {
+interface IFractalTree extends ICanvas { };
+
+interface IFractalTreeConfig {
    positions: IPosition[],
    width: number,
    height: number,
    branchLength: number,
    branchWidth: number,
-   maxOrder: number,
+   startingAngle: number,
+   endingAngle: number,
+   maxDepth: number,
    treeColor: string,
 };
 
-class SierpinskiTree extends Canvas implements ISierpinskiTree {
-   private treeConfig: ISierpinskiTreeConfig;
+class FractalTree extends Canvas implements IFractalTree {
+   private treeConfig: IFractalTreeConfig;
 
-   constructor(treeConfig: ISierpinskiTreeConfig) {
+   constructor(treeConfig: IFractalTreeConfig) {
       const canvasConfig: ICanvasConfig = {
          width: treeConfig.width,
          height: treeConfig.height,
@@ -30,93 +39,100 @@ class SierpinskiTree extends Canvas implements ISierpinskiTree {
       this.treeConfig = treeConfig;
 
       this.draw = this.draw.bind(this);
+      this.isTargetAngle = this.isTargetAngle.bind(this);
 
-      this.render = this.render.bind(this);
+      // this.render = this.render.bind(this);
    }
 
    private draw(
-      x: number,
-      y: number,
+      position: IPosition,
       length: number,
       width: number,
       angle: number,
       angleAdjustment: number,
-      order: number,
+      depth: number,
    ) {
       this.context.lineWidth = width;
 
       this.context.beginPath();
       this.context.save();
 
-      this.context.fillStyle = `rgba(${TREE_COLOR_RGB}, 1.0)`;
-      this.context.strokeStyle = `rgba(${TREE_COLOR_RGB}, 1.0)`;
+      this.context.strokeStyle = `rgba(${TREE_COLOR_RGB}, ${depth * 0.1})`;
 
-      this.context.translate(x, y);
+      this.context.translate(position.x, position.y);
       this.context.rotate(angle * Math.PI / 180);
       this.context.moveTo(0, 0);
       this.context.lineTo(0, -length);
       this.context.stroke();
 
-      if (order > this.treeConfig.maxOrder) {
+      if (depth > this.treeConfig.maxDepth) {
          this.context.restore();
          return;
       }
 
       this.draw(
-         0,
-         -length,
+         { x: 0, y: -length },
          length * 0.8,
          width * 0.8,
          angle - angleAdjustment,
          angleAdjustment,
-         order + 1
+         depth + 1
       );
       this.draw(
-         0,
-         -length,
+         { x: 0, y: -length },
          length * 0.8,
          width * 0.8,
          angle + angleAdjustment,
          angleAdjustment,
-         order + 1
+         depth + 1
       );
 
       this.context.restore();
    }
 
-   protected render(baseAngle = 0.13, adjustment = -.005) {
+   private isTargetAngle(angle: number) {
+      return Math.floor(angle) === this.treeConfig.startingAngle ||
+         Math.floor(angle) === this.treeConfig.endingAngle;
+   }
+
+   protected render(
+      ratio = STARTING_ANGLE_RATIO,
+      offset = ANGLE_OFFSET
+   ) {
       setTimeout(() => {
          requestAnimationFrame(() => {
             if (this.shouldRender) {
                this.clearCanvas();
 
+               const angle = ratio * this.treeConfig.endingAngle;
                this.treeConfig.positions.forEach((position) => {
                   this.draw(
-                     position.x,
-                     position.y,
+                     position,
                      this.treeConfig.branchLength,
                      this.treeConfig.branchWidth,
                      0,
-                     baseAngle * 45,
+                     angle,
                      1
                   );
                });
 
-               if (Math.floor(Math.abs(baseAngle)) === 1 || Math.floor(Math.abs(baseAngle) * 45) === 5) {
-                  adjustment *= -1;
-                  setTimeout(() => this.render(baseAngle + adjustment, adjustment), 4000);
+               if (this.isTargetAngle(angle)) {
+                  offset *= -1;
+                  setTimeout(() => {
+                     this.render(ratio + offset, offset);
+                  }, TRANSITION_WAIT_TIME);
                } else {
-                  this.render(baseAngle + adjustment, adjustment);
+                  this.render(ratio + offset, offset);
                }
             }
          });
       }, 1000 / 60);
    }
-}
+};
 
 export {
-   SierpinskiTree,
-   ISierpinskiTree,
-   ISierpinskiTreeConfig,
+   FractalTree,
+   IFractalTree,
+   IFractalTreeConfig,
 };
 

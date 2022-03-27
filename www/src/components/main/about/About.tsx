@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { SierpinskiTree } from '../../../canvas/SierpinskiTree';
+import { FractalTree } from '../../../canvas/FractalTree';
+import { useCanvas } from '../../common/Util';
 import {
    DOCUMENT_STYLE,
    VIEWPORT_HEIGHT,
-   VIEWPORT_WIDTH
+   VIEWPORT_WIDTH,
 } from '../../../common/util';
-import { showCanvas } from '../../common/Util';
 
 import './About.css';
 
@@ -45,12 +45,12 @@ developing new personal projects.
 For better or for worse, my older brother handing me that GameBoy marked the
 beginning of my time as a gamer. From Pokémon, RuneScape, and World of Warcraft,
 to Call of Duty and Battlefield, I've spent thousands of hours throughout my life
-learning and mastering how to play these games to the best of my ability.
+playing games like these.
 `,
 };
 
 const About = () => {
-   const [gameOfLife, _] = useState(() => new SierpinskiTree({
+   const [tree, _] = useState(() => new FractalTree({
       positions: [
          {
             x: VIEWPORT_WIDTH / 4,
@@ -63,30 +63,22 @@ const About = () => {
       ],
       height: VIEWPORT_HEIGHT,
       width: VIEWPORT_WIDTH,
-      branchLength: 250,
+      branchLength: VIEWPORT_HEIGHT / 5,
       branchWidth: 10,
-      maxOrder: 10,
+      startingAngle: 8,
+      endingAngle: 45,
+      maxDepth: 10,
       treeColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
    }));
+   useCanvas(tree, '0.5');
 
-   useEffect(() => {
-      // Gives time for other canvas renders to finish.
-      const timeoutId = setTimeout(() => {
-         gameOfLife.initializeCanvas();
-         gameOfLife.startRendering();
-         showCanvas('0.5');
-      }, 10);
-
-      return () => {
-         clearTimeout(timeoutId);
-         gameOfLife.stopRendering();
-      };
-   }, []);
    return (
       <div id='about' className='container'>
          <div id='bio' className='container text-container about-text'>
             <h4 className='description'>Bio</h4>
-            {BIO_PARAGRAPHS.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+            {BIO_PARAGRAPHS.map((paragraph, index) => {
+               return <p key={index}>{paragraph}</p>;
+            })}
          </div>
          <div id='hobbies' className='container text-container about-text'>
             <h4 className='description'>Hobbies</h4>

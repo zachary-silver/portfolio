@@ -1,7 +1,7 @@
 import { Canvas, ICanvas, ICanvasConfig } from './Canvas';
 import { IPosition } from '../common/util';
 
-// const TRIANGLE_COLOR_RGB = '104, 167, 212';
+const TRIANGLE_COLOR_RGB = '104, 167, 212';
 
 interface ISierpinskiTriangle extends ICanvas { };
 
@@ -14,8 +14,17 @@ interface ISierpinskiTriangleConfig {
    triangleColor: string,
 };
 
+const getDistance = (p1: IPosition, p2: IPosition) => {
+   return Math.sqrt(
+      (p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y)
+   );
+};
+
 class SierpinskiTriangle extends Canvas implements ISierpinskiTriangle {
    private triangleConfig: ISierpinskiTriangleConfig;
+   private center: IPosition;
+   private maxDistanceFromCenter: number;
+   private relativeDistanceFromCenter: number = 9999;
 
    constructor(triangleConfig: ISierpinskiTriangleConfig) {
       const canvasConfig: ICanvasConfig = {
@@ -34,6 +43,9 @@ class SierpinskiTriangle extends Canvas implements ISierpinskiTriangle {
    }
 
    private draw(position: IPosition, sideLength: number) {
+      const distance = getDistance(position, this.center);
+      const alpha = distance / this.relativeDistanceFromCenter / 4.0;
+      this.context.strokeStyle = `rgba(${TRIANGLE_COLOR_RGB}, ${alpha})`;
       this.context.beginPath();
       this.context.moveTo(position.x, position.y);
       this.context.lineTo(
@@ -73,13 +85,24 @@ class SierpinskiTriangle extends Canvas implements ISierpinskiTriangle {
       }
    }
 
-   protected render() {
+   protected render(adjustment = 20) {
+      this.center = {
+         x: this.canvas.width / 2,
+         y: this.canvas.height / 2,
+      };
+      this.maxDistanceFromCenter = getDistance(this.center, { x: 0, y: 0 });
+      if (this.relativeDistanceFromCenter > this.maxDistanceFromCenter) {
+         this.relativeDistanceFromCenter = this.maxDistanceFromCenter;
+      }
       setTimeout(() => {
          requestAnimationFrame(() => {
             if (this.shouldRender) {
                this.clearCanvas();
-               this.context.fillStyle = 'white';
-               this.context.strokeStyle = 'white';
+
+               if (this.relativeDistanceFromCenter <= Math.abs(adjustment) || this.relativeDistanceFromCenter >= this.maxDistanceFromCenter) {
+                  adjustment *= -1;
+               }
+               this.relativeDistanceFromCenter += adjustment;
 
                this.triangleConfig.positions.forEach((position) => {
                   this.drawTriangles(
@@ -89,7 +112,7 @@ class SierpinskiTriangle extends Canvas implements ISierpinskiTriangle {
                   );
                });
 
-               // this.render();
+               this.render(adjustment);
             }
          });
       }, 1000 / 60);

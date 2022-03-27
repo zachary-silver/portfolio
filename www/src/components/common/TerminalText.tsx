@@ -11,12 +11,7 @@ interface ITerminalTextProps {
    done?: Function,
 };
 
-const TerminalText = ({
-   text,
-   rate,
-   delay,
-   done
-}: ITerminalTextProps) => {
+const TerminalText = ({ text, rate, delay, done }: ITerminalTextProps) => {
    const [currentText, setCurrentText] = useState('');
    const [showCursor, setShowCursor] = useState(true);
    const [reverse, setReverse] = useState(false);

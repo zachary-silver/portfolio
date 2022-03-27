@@ -2,24 +2,43 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
-import NavigationBar, { PathnameToLink, INavigationLink } from './header/NavigationBar';
-import { usePrevious, hideCanvas } from './common/Util';
+import NavigationBar, {
+   getPathnameToLinkMap,
+   INavigationLink
+} from './header/NavigationBar';
+import { usePrevious } from './common/Util';
+import { hideCanvas } from '../common/util';
+
+import About from './main/about/About';
+import Contact from './main/contact/Contact';
+import Home from './main/home/Home';
+import Resume from './main/resume/Resume';
+import Work from './main/work/Work';
 
 import './Portfolio.css';
 
 const TRANSITION_TIME = 500;
 
-const getClassNames = (
-   currentLink: INavigationLink,
-   previousLink: INavigationLink
-) => {
-   if (previousLink &&
-      currentLink.pathname !== previousLink.pathname &&
-      currentLink.position < previousLink.position) {
-      return 'main-reverse';
-   } else {
-      return 'main';
-   }
+const navigationLinks: INavigationLink[] = [
+   { pathname: '/', label: 'Home', component: <Home /> },
+   { pathname: '/about', label: 'About Me', component: <About /> },
+   { pathname: '/work', label: 'My Work', component: <Work /> },
+   { pathname: '/resume', label: 'Resumé', component: <Resume /> },
+   { pathname: '/contact', label: 'Contact', component: <Contact /> },
+];
+const PathnameToLink = getPathnameToLinkMap(navigationLinks);
+const links = Object.values(PathnameToLink).map(
+   (navigationLink) => navigationLink.link
+);
+
+const navigatedLeft = (current: INavigationLink, previous: INavigationLink) => {
+   return previous
+      && current.pathname !== previous.pathname
+      && current.position < previous.position;
+};
+
+const getClassNames = (current: INavigationLink, previous: INavigationLink) => {
+   return navigatedLeft(current, previous) ? 'main-reverse' : 'main';
 };
 
 const Portfolio = () => {
@@ -49,7 +68,7 @@ const Portfolio = () => {
    return (
       <React.Fragment>
          <header>
-            <NavigationBar />
+            <NavigationBar links={links} />
          </header>
          <CSSTransition
             in={showComponent}

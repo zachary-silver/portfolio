@@ -1,9 +1,15 @@
 import { TreeTrunk } from 'portfolio';
 
-import { Canvas, ICanvas, ICanvasConfig } from './Canvas';
-import { mousePosition } from '../common/util';
+import {
+   Canvas,
+   ICanvas,
+   ICanvasConfig,
+} from './Canvas';
+import {
+   IPosition,
+   mousePosition,
+} from '../common/util';
 
-// const TREE_COLOR_RGB = '167, 195, 217';
 const TREE_COLOR_RGB = '104, 167, 212';
 
 interface ITreeOfPythagoras extends ICanvas { };
@@ -12,7 +18,7 @@ interface ITreeOfPythagorasConfig {
    width: number,
    height: number,
    trunkWidth: number,
-   maxOrder: number,
+   maxDepth: number,
    treeColor: string,
 };
 
@@ -41,44 +47,44 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
       this.render = this.render.bind(this);
    }
 
-   private drawLeftBranch(order: number, width: number) {
+   private drawLeftBranch(width: number, depth: number) {
       const leftWidth = this.trunk.left_ratio() * width;
 
       this.context.save();
       this.context.rotate(-this.trunk.left_angle());
       this.context.translate(0, -leftWidth);
-      this.context.fillStyle = `rgba(${TREE_COLOR_RGB}, ${order * 0.1})`;
+      this.context.fillStyle = `rgba(${TREE_COLOR_RGB}, ${depth * 0.1})`;
       this.context.fillRect(0, 0, leftWidth, leftWidth);
-      this.drawBranches(order, leftWidth);
+      this.drawBranches(leftWidth, depth);
       this.context.restore();
    }
 
-   private drawRightBranch(order: number, width: number) {
+   private drawRightBranch(width: number, depth: number) {
       const rightWidth = this.trunk.right_ratio() * width;
 
       this.context.save();
       this.context.translate(width, 0);
       this.context.rotate(this.trunk.right_angle());
       this.context.translate(-rightWidth, -rightWidth);
-      this.context.fillStyle = `rgba(${TREE_COLOR_RGB}, ${order * 0.1})`;
+      this.context.fillStyle = `rgba(${TREE_COLOR_RGB}, ${depth * 0.1})`;
       this.context.fillRect(0, 0, rightWidth, rightWidth);
-      this.drawBranches(order, rightWidth);
+      this.drawBranches(rightWidth, depth);
       this.context.restore();
    }
 
-   private drawBranches(order: number, width: number) {
-      if (order > this.trunk.order()) {
+   private drawBranches(width: number, depth: number) {
+      if (depth > this.trunk.depth()) {
          return;
       }
 
-      order++;
+      depth++;
 
-      this.drawLeftBranch(order, width);
-      this.drawRightBranch(order, width);
+      this.drawLeftBranch(width, depth);
+      this.drawRightBranch(width, depth);
    }
 
-   private drawTrunk(x: number, y: number, order: number) {
-      this.trunk.update(x, y, order);
+   private drawTrunk({ x, y }: IPosition, maxDepth: number) {
+      this.trunk.update(x, y, maxDepth);
 
       this.context.translate(
          (this.treeConfig.width / 2) - (this.treeConfig.trunkWidth / 2),
@@ -98,18 +104,22 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
          requestAnimationFrame(() => {
             if (this.shouldRender) {
                this.clearCanvas();
+
                this.drawTrunk(
-                  mousePosition.x,
-                  mousePosition.y + this.treeConfig.trunkWidth * 2,
-                  this.treeConfig.maxOrder
+                  {
+                     x: mousePosition.x,
+                     y: mousePosition.y + this.treeConfig.trunkWidth * 2,
+                  },
+                  this.treeConfig.maxDepth
                );
-               this.drawBranches(1, this.treeConfig.trunkWidth);
+               this.drawBranches(this.treeConfig.trunkWidth, 1);
+
                this.render();
             }
          });
       }, 1000 / 60);
    }
-}
+};
 
 export {
    TreeOfPythagoras,

@@ -1,7 +1,11 @@
 import { Universe as asmUniverse, Cell } from 'portfolio';
 import { memory } from 'portfolio/portfolio_bg.wasm';
 
-import { Canvas, ICanvas, ICanvasConfig } from './Canvas';
+import {
+   Canvas,
+   ICanvas,
+   ICanvasConfig
+} from './Canvas';
 
 interface IGameOfLife extends ICanvas { };
 
@@ -21,8 +25,8 @@ class GameOfLife extends Canvas {
 
    constructor(gameOfLifeConfig: IGameOfLifeConfig) {
       const canvasConfig: ICanvasConfig = {
-         height: gameOfLifeConfig.rows * gameOfLifeConfig.pixelsPerCell + 1,
-         width: gameOfLifeConfig.columns * gameOfLifeConfig.pixelsPerCell + 1,
+         height: gameOfLifeConfig.rows * gameOfLifeConfig.pixelsPerCell,
+         width: gameOfLifeConfig.columns * gameOfLifeConfig.pixelsPerCell,
          id: 'canvas',
       };
       super(canvasConfig);
@@ -45,28 +49,35 @@ class GameOfLife extends Canvas {
    }
 
    private draw() {
+      const {
+         rows,
+         columns,
+         pixelsPerCell,
+         liveCellColor,
+         deadCellColor,
+      } = this.gameOfLifeConfig;
       const startingColumn = this.universe.cell_offset();
       const previousCellIndexOffset = startingColumn ? -1 : 1;
 
-      for (let row = 0; row < this.gameOfLifeConfig.rows; row++) {
-         const y = row * (this.gameOfLifeConfig.pixelsPerCell + 1) + 1;
+      for (let row = 0; row < rows; row++) {
+         const y = row * (pixelsPerCell + 1) + 1;
 
-         for (let column = startingColumn; column < this.gameOfLifeConfig.columns; column += 2) {
-            const i = row * this.gameOfLifeConfig.columns + column;
+         for (let column = startingColumn; column < columns; column += 2) {
+            const i = row * columns + column;
             const cell = this.cells[i];
             const previousCell = this.cells[i + previousCellIndexOffset];
 
             if (cell !== previousCell) {
                // ((column / 2) | 0) === Faster Math.floor(column / 2)
-               const x = ((column / 2) | 0) * (this.gameOfLifeConfig.pixelsPerCell + 1) + 1;
+               const x = ((column / 2) | 0) * (pixelsPerCell + 1) + 1;
                this.context.fillStyle = cell === Cell.Alive
-                  ? this.gameOfLifeConfig.liveCellColor
-                  : this.gameOfLifeConfig.deadCellColor;
+                  ? liveCellColor
+                  : deadCellColor;
                this.context.fillRect(
                   x,
                   y,
-                  this.gameOfLifeConfig.pixelsPerCell,
-                  this.gameOfLifeConfig.pixelsPerCell
+                  pixelsPerCell,
+                  pixelsPerCell
                );
             }
          }
@@ -83,16 +94,6 @@ class GameOfLife extends Canvas {
          // Moving it behind setTimeout allows us to limit fps.
          setTimeout(() => requestAnimationFrame(this.render), 1000 / 10);
       }
-   }
-
-   public initializeCanvas() {
-      this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
-      this.canvas.height =
-         this.gameOfLifeConfig.rows * (this.gameOfLifeConfig.pixelsPerCell + 1) + 1;
-      this.canvas.width =
-         this.gameOfLifeConfig.columns / 2 *
-         (this.gameOfLifeConfig.pixelsPerCell + 1) + 1;
-      this.context = this.canvas.getContext('2d');
    }
 };
 

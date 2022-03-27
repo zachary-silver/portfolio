@@ -11,7 +11,7 @@ interface ICanvasConfig {
    id: string,
 }
 
-class Canvas implements ICanvas {
+abstract class Canvas implements ICanvas {
    protected canvas: HTMLCanvasElement;
    protected context: CanvasRenderingContext2D;
 
@@ -24,15 +24,13 @@ class Canvas implements ICanvas {
 
       this.render = this.render.bind(this);
 
-      this.startRendering = this.startRendering.bind(this);
-      this.stopRendering = this.stopRendering.bind(this);
       this.initializeCanvas = this.initializeCanvas.bind(this);
       this.clearCanvas = this.clearCanvas.bind(this);
+      this.startRendering = this.startRendering.bind(this);
+      this.stopRendering = this.stopRendering.bind(this);
    }
 
-   protected render() {
-      throw new Error('render() not implemented!');
-   }
+   protected abstract render(): void;
 
    public initializeCanvas() {
       this.canvas = document.getElementById(this.canvasConfig.id) as HTMLCanvasElement;

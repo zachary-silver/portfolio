@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
 
-export const usePrevious = (value: any) => {
+import { ICanvas } from '../../canvas/Canvas';
+import { showCanvas } from '../../common/util';
+
+const usePrevious = (value: any) => {
    const ref = useRef();
 
    useEffect(() => {
@@ -8,13 +11,26 @@ export const usePrevious = (value: any) => {
    }, [value]);
 
    return ref.current;
-}
-
-export const showCanvas = (opacity: string) => {
-   document.getElementById('canvas').style.opacity = opacity;
 };
 
-export const hideCanvas = () => {
-   document.getElementById('canvas').style.opacity = '0';
+const useCanvas = (canvas: ICanvas, opacity: string) => {
+   useEffect(() => {
+      // Gives time for other canvas renders to finish.
+      const timeoutId = setTimeout(() => {
+         canvas.initializeCanvas();
+         canvas.startRendering();
+         showCanvas(opacity);
+      }, 10);
+
+      return () => {
+         clearTimeout(timeoutId);
+         canvas.stopRendering();
+      };
+   }, [canvas]);
+};
+
+export {
+   usePrevious,
+   useCanvas,
 };
 

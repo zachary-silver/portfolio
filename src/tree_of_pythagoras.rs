@@ -6,7 +6,7 @@ use wasm_bindgen::prelude::*;
 pub struct TreeTrunk {
     width: u32,
     height: u32,
-    order: u32,
+    depth: u32,
     left_angle: f32,
     right_angle: f32,
     left_ratio: f32,
@@ -19,7 +19,7 @@ impl TreeTrunk {
         TreeTrunk {
             width,
             height,
-            order: 0,
+            depth: 0,
             left_angle: 0.0,
             right_angle: 0.0,
             left_ratio: 0.0,
@@ -27,31 +27,31 @@ impl TreeTrunk {
         }
     }
 
-    pub fn update(&mut self, x: f32, y: f32, max_order: u32) {
+    pub fn update(&mut self, x: f32, y: f32, max_depth: u32) {
         let ratio = max(0.35, min(0.65, x / self.width as f32));
-        let order = max(
+        let depth = max(
             0,
             min(
-                max_order,
-                (2.0 * max_order as f32 * (1.0 - y / self.height as f32))
+                max_depth,
+                (2.0 * max_depth as f32 * (1.0 - y / self.height as f32))
                     as u32,
             ),
         );
         let left_angle = PI / 2.0 * ratio;
 
-        if self.order == order && self.left_angle == left_angle {
+        if self.depth == depth && self.left_angle == left_angle {
             return;
         }
 
-        self.order = order;
+        self.depth = depth;
         self.left_angle = left_angle;
         self.right_angle = PI / 2.0 - left_angle;
         self.left_ratio = self.right_angle.sin();
         self.right_ratio = self.left_angle.sin();
     }
 
-    pub fn order(&self) -> u32 {
-        self.order
+    pub fn depth(&self) -> u32 {
+        self.depth
     }
 
     pub fn left_angle(&self) -> f32 {

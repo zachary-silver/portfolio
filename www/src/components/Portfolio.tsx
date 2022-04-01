@@ -6,7 +6,7 @@ import NavigationBar, {
    getPathnameToLinkMap,
    INavigationLink
 } from './header/NavigationBar';
-import { usePrevious } from './common/Util';
+import { usePrevious } from './common/util';
 import { hideCanvas } from '../common/util';
 
 import About from './main/about/About';

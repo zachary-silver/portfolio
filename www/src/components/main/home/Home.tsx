@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 import { TreeOfPythagoras } from '../../../canvas/TreeOfPythagoras';
-import { useCanvas } from '../../common/Util';
+import { useCanvas } from '../../common/util';
 import {
    DOCUMENT_STYLE,
    VIEWPORT_HEIGHT,
    VIEWPORT_WIDTH,
-} from '../../../common/util';
+} from '../../../common/constants';
 
 import Author from './Author';
 import Greeting from './Greeting';

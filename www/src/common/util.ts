@@ -1,22 +1,21 @@
-export const DOCUMENT_STYLE = getComputedStyle(document.documentElement);
+const getTypingRate = (text: string) => {
+   return 30 + 1000 * (1 / (text.length * text.length));
+};
 
-export const VIEWPORT_HEIGHT = window.innerHeight;
-export const VIEWPORT_WIDTH = window.innerWidth;
-
-export const showCanvas = (opacity: string) => {
+const showCanvas = (opacity: string) => {
    document.getElementById('canvas').style.opacity = opacity;
 };
 
-export const hideCanvas = () => {
+const hideCanvas = () => {
    document.getElementById('canvas').style.opacity = '0';
 };
 
-export interface IPosition {
+interface IPosition {
    x: number,
    y: number,
 };
 
-export const mousePosition: IPosition = {
+const mousePosition: IPosition = {
    x: 0,
    y: 0,
 };
@@ -24,5 +23,13 @@ export const mousePosition: IPosition = {
 onmousemove = (event) => {
    mousePosition.x = event.clientX;
    mousePosition.y = event.clientY;
+};
+
+export {
+   getTypingRate,
+   showCanvas,
+   hideCanvas,
+   IPosition,
+   mousePosition,
 };
 

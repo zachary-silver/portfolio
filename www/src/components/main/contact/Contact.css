@@ -1,0 +1,24 @@
+#email-button {
+  cursor: copy;
+  border: none;
+  transition: var(--alt-transition-speed);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#email-button:hover {
+  box-shadow: var(--alt-box-shadow);
+}
+
+#contact-terminal {
+  margin: 0.5rem 0rem 0.5rem 0rem;
+}
+
+#email-tooltip {
+  position: absolute;
+  opacity: 0;
+  top: 2rem;
+  z-index: 1;
+  transition: 1s;
+  color: var(--main-text-color);
+}

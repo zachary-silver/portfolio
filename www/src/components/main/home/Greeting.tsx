@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
+import { getTypingRate } from '../../../common/util';
 
 import './Greeting.css';
 
 const GREETINGS = [
-   "Hi, I'm Zack.",
+   "Hi, I'm Zack",
    "Thanks for taking the time to check out my portfolio!",
 ];
-
-const getTypingRate = (text: string) => 30 + 1000 * (1 / (text.length * text.length));
 
 const Greeting = () => {
    const [greetingIndex, setGreetingIndex] = useState(0);
@@ -30,7 +29,7 @@ const Greeting = () => {
    const props: ITerminalTextProps = {
       text: greeting,
       rate: getTypingRate(greeting),
-      delay: 1500,
+      delay: 2500,
       done: showNextGreeting,
    };
 

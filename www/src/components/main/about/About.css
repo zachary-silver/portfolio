@@ -1,11 +1,9 @@
-.about-text {
+#bio, #hobbies {
   width: 50vw;
 }
 
-.about-text p {
-  align-self: start;
-  margin: 0.4rem 0rem 0rem 0rem;
-  padding: 0rem 0.2rem 0.2rem 0.2rem;
+#paragraphs {
+  margin: 0rem 1.5rem 0rem 1.5rem;
 }
 
 .description {
@@ -17,7 +15,7 @@
 }
 
 #hobbies-list {
-  margin-top: -0.5rem;
+  margin: -0.5rem 1.5rem 1.5rem 0rem;
 }
 
 #hobby-description {

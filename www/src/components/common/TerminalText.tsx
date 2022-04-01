@@ -16,12 +16,22 @@ const TerminalText = ({ text, rate, delay, done }: ITerminalTextProps) => {
    const [showCursor, setShowCursor] = useState(true);
    const [reverse, setReverse] = useState(false);
 
-   // When given new text to display, restart the process.
    useEffect(() => {
-      setReverse(false);
-      const timeoutId = setTimeout(growText, delay / 2);
+      let timeoutId: NodeJS.Timeout;
+
+      if (reverse) {
+         timeoutId = setTimeout(shrinkText, delay || 2000);
+      } else {
+         timeoutId = setTimeout(growText, 400);
+      }
 
       return () => clearTimeout(timeoutId);
+   }, [reverse]);
+
+   // When given new text to display, start the process by
+   // first reversing if there's existing text.
+   useEffect(() => {
+      setReverse(currentText.length > 0);
    }, [text]);
 
    // Blink the cursor.
@@ -35,16 +45,13 @@ const TerminalText = ({ text, rate, delay, done }: ITerminalTextProps) => {
    useEffect(() => {
       let timeoutId: NodeJS.Timeout;
 
-      if (currentText.length === 0 && reverse) {
+      if (currentText.length === text.length && !reverse) {
          done?.();
-      } else if (currentText.length === text.length) {
-         setReverse(true);
-         timeoutId = setTimeout(shrinkText, delay);
+      } else if (currentText.length === 0 && reverse) {
+         setReverse(false);
       } else if (reverse) {
          timeoutId = setTimeout(shrinkText, 10);
-      } else if (currentText.length === 0) {
-         timeoutId = setTimeout(growText, delay / 2);
-      } else {
+      } else if (currentText.length > 0) {
          timeoutId = setTimeout(growText, rate);
       }
 

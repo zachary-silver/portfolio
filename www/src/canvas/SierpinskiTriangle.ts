@@ -22,9 +22,9 @@ const getDistance = (p1: IPosition, p2: IPosition) => {
 
 class SierpinskiTriangle extends Canvas implements ISierpinskiTriangle {
    private triangleConfig: ISierpinskiTriangleConfig;
-   private center: IPosition;
-   private maxDistanceFromCenter: number;
-   private relativeDistanceFromCenter: number = 9999;
+   private referencePosition: IPosition;
+   private maxDistance: number;
+   private relativeDistance: number;
 
    constructor(triangleConfig: ISierpinskiTriangleConfig) {
       const canvasConfig: ICanvasConfig = {
@@ -36,6 +36,17 @@ class SierpinskiTriangle extends Canvas implements ISierpinskiTriangle {
 
       this.triangleConfig = triangleConfig;
 
+      this.referencePosition = {
+         x: canvasConfig.width / 2,
+         y: canvasConfig.height,
+      };
+
+      this.maxDistance = getDistance(
+         this.referencePosition,
+         { x: 0, y: canvasConfig.width / 2 }
+      );
+      this.relativeDistance = 0;
+
       this.draw = this.draw.bind(this);
       this.drawTriangles = this.drawTriangles.bind(this);
 
@@ -43,8 +54,8 @@ class SierpinskiTriangle extends Canvas implements ISierpinskiTriangle {
    }
 
    private draw(position: IPosition, sideLength: number) {
-      const distance = getDistance(position, this.center);
-      const alpha = distance / this.relativeDistanceFromCenter / 4.0;
+      const distance = getDistance(position, this.referencePosition);
+      const alpha = distance / this.relativeDistance / 4.0;
       this.context.strokeStyle = `rgba(${TRIANGLE_COLOR_RGB}, ${alpha})`;
       this.context.beginPath();
       this.context.moveTo(position.x, position.y);
@@ -85,24 +96,23 @@ class SierpinskiTriangle extends Canvas implements ISierpinskiTriangle {
       }
    }
 
-   protected render(adjustment = 20) {
-      this.center = {
-         x: this.canvas.width / 2,
-         y: this.canvas.height / 2,
-      };
-      this.maxDistanceFromCenter = getDistance(this.center, { x: 0, y: 0 });
-      if (this.relativeDistanceFromCenter > this.maxDistanceFromCenter) {
-         this.relativeDistanceFromCenter = this.maxDistanceFromCenter;
+   protected render(adjustment = 4) {
+      if (this.relativeDistance === 0) {
+         this.relativeDistance = adjustment * 2;
       }
+
       setTimeout(() => {
          requestAnimationFrame(() => {
             if (this.shouldRender) {
                this.clearCanvas();
 
-               if (this.relativeDistanceFromCenter <= Math.abs(adjustment) || this.relativeDistanceFromCenter >= this.maxDistanceFromCenter) {
+               if (
+                  this.relativeDistance <= Math.abs(adjustment) ||
+                  this.relativeDistance >= this.maxDistance
+               ) {
                   adjustment *= -1;
                }
-               this.relativeDistanceFromCenter += adjustment;
+               this.relativeDistance += adjustment;
 
                this.triangleConfig.positions.forEach((position) => {
                   this.drawTriangles(

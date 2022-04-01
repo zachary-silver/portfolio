@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 import { FractalTree } from '../../../canvas/FractalTree';
-import { useCanvas } from '../../common/Util';
+import { useCanvas } from '../../common/util';
 import {
    DOCUMENT_STYLE,
    VIEWPORT_HEIGHT,
    VIEWPORT_WIDTH,
-} from '../../../common/util';
+} from '../../../common/constants';
 
 import './About.css';
 
@@ -76,9 +76,11 @@ const About = () => {
       <div id='about' className='container'>
          <div id='bio' className='container text-container about-text'>
             <h4 className='description'>Bio</h4>
-            {BIO_PARAGRAPHS.map((paragraph, index) => {
-               return <p key={index}>{paragraph}</p>;
-            })}
+            <div id='paragraphs'>
+               {BIO_PARAGRAPHS.map((paragraph, index) => {
+                  return <p key={index}>{paragraph}</p>;
+               })}
+            </div>
          </div>
          <div id='hobbies' className='container text-container about-text'>
             <h4 className='description'>Hobbies</h4>

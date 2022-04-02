@@ -28,7 +28,7 @@ const getPathnameToLinkMap = (navigationLinks: INavigationLink[]) => {
                   key={index}
                   className='text-container'
                >
-                  {navigationLink.label}
+                  <h4>{navigationLink.label}</h4>
                </Link>
             )
          }

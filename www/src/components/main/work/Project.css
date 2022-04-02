@@ -1,0 +1,15 @@
+#project-name-container {
+  width: 100%;
+}
+
+#project-name {
+  width: auto;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+#project-image {
+  width: 100%;
+  box-shadow: var(--default-box-shadow);
+}

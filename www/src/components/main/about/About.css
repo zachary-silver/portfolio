@@ -2,12 +2,13 @@
   width: 50vw;
 }
 
-#paragraphs {
-  margin: 0rem 1.5rem 0rem 1.5rem;
+#bio-paragraphs {
+  margin: 1.5rem 1.5rem 1.5rem 1.5rem;
 }
 
 .description {
   margin: 0;
+  text-align: center;
 }
 
 #hobbies {
@@ -15,9 +16,13 @@
 }
 
 #hobbies-list {
-  margin: -0.5rem 1.5rem 1.5rem 0rem;
+  margin: -0.5rem 1.5rem 1.5rem -0.5rem;
 }
 
-#hobby-description {
+.hobby-description {
   margin: -0.8rem 0rem -0.8rem 0rem;
+}
+
+.description-container {
+  margin-bottom: 0.5rem;
 }

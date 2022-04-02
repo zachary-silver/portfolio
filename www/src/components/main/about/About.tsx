@@ -7,8 +7,10 @@ import {
    VIEWPORT_HEIGHT,
    VIEWPORT_WIDTH,
 } from '../../../common/constants';
+import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
 
 import './About.css';
+import { getTypingRate } from '../../../common/util';
 
 const BIO_PARAGRAPHS = [
    `
@@ -31,9 +33,9 @@ I've been developing software for school, work, and fun ever since I wrote my fi
 
 const HOBBIES: { [key: string]: string } = {
    'Guitar': `
-I started teaching myself how to play guitar in 2015 and constantly aspire to
-get better. I love playing the blues and Jimi Hendrix is my all time favorite
-guitarist.
+I started teaching myself how to play guitar in 2015 and I'm always learning
+how to play new songs. I love playing the blues and Jimi Hendrix is my all time
+favorite guitarist.
 `,
    'Programming': `
 In addition to being my profession, I have the privilege of calling
@@ -48,6 +50,19 @@ to Call of Duty and Battlefield, I've spent thousands of hours throughout my lif
 playing games like these.
 `,
 };
+
+const bioParagraphs = BIO_PARAGRAPHS.map(
+   (paragraph, index) => <p key={index}>{paragraph}</p>
+);
+
+const hobbies = Object.entries(HOBBIES).map(
+   ([hobby, description], index) => (
+      <li key={index}>
+         <h5>{hobby}</h5>
+         <p className='hobby-description'>{description}</p>
+      </li>
+   )
+);
 
 const About = () => {
    const [tree, _] = useState(() => new FractalTree({
@@ -74,26 +89,29 @@ const About = () => {
 
    return (
       <div id='about' className='container'>
-         <div id='bio' className='container text-container about-text'>
-            <h4 className='description'>Bio</h4>
-            <div id='paragraphs'>
-               {BIO_PARAGRAPHS.map((paragraph, index) => {
-                  return <p key={index}>{paragraph}</p>;
-               })}
+         <div id='bio' className='container'>
+            <div className='description-container'>
+               <h4 className='description text-container'>
+                  {'> '}<TerminalText text={'Bio'} rate={getTypingRate('Bio')} />
+               </h4>
+            </div>
+            <div className='text-container'>
+               <div id='bio-paragraphs'>
+                  {bioParagraphs}
+               </div>
             </div>
          </div>
-         <div id='hobbies' className='container text-container about-text'>
-            <h4 className='description'>Hobbies</h4>
-            <ul id='hobbies-list'>
-               {Object.entries(HOBBIES).map(([hobby, description], index) => {
-                  return (
-                     <li key={index} id='hobby'>
-                        <h5>{hobby}</h5>
-                        <p id='hobby-description'>{description}</p>
-                     </li>
-                  );
-               })}
-            </ul>
+         <div id='hobbies' className='container'>
+            <div className='description-container'>
+               <h4 className='description text-container'>
+                  {'> '}<TerminalText text={'Hobbies'} rate={getTypingRate('Hobbies')} />
+               </h4>
+            </div>
+            <div className='text-container'>
+               <ul id='hobbies-list'>
+                  {hobbies}
+               </ul>
+            </div>
          </div>
       </div>
    );

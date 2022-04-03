@@ -1,4 +1,10 @@
 import React, { useState } from 'react';
+import {
+   IconDefinition,
+   faGuitar,
+   faTerminal,
+   faGamepad,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { FractalTree } from '../../../canvas/FractalTree';
 import { useCanvas } from '../../common/util';
@@ -52,21 +58,24 @@ playing games like these.
 `,
 };
 
-// const bioParagraphs = BIO_PARAGRAPHS.map(
-//    (paragraph, index) => <p key={index}>{paragraph}</p>
-// );
-
-const bioParagraphs = BIO_PARAGRAPHS.reduce(
-   (prev, curr) => prev + ' ' + curr,
-   ''
+const bioParagraphs = BIO_PARAGRAPHS.map(
+   (paragraph, index) => <p key={index} className='bio-paragraph'>{paragraph}</p>
 );
+
+const HobbyToIcon: { [hobby: string]: IconDefinition } = {
+   'Guitar': faGuitar,
+   'Programming': faTerminal,
+   'Video Games': faGamepad,
+};
 
 const hobbies = Object.entries(HOBBIES).map(
    ([hobby, description], index) => (
-      <li key={index}>
-         <h5>{hobby}</h5>
-         <p className='hobby-description'>{description}</p>
-      </li>
+      <Hobby
+         key={index}
+         name={hobby}
+         description={description}
+         icon={HobbyToIcon[hobby] as any}
+      />
    )
 );
 
@@ -74,11 +83,7 @@ const About = () => {
    const [tree, _] = useState(() => new FractalTree({
       positions: [
          {
-            x: VIEWPORT_WIDTH / 4,
-            y: VIEWPORT_HEIGHT,
-         },
-         {
-            x: VIEWPORT_WIDTH - VIEWPORT_WIDTH / 4,
+            x: VIEWPORT_WIDTH / 2,
             y: VIEWPORT_HEIGHT,
          },
       ],
@@ -92,43 +97,30 @@ const About = () => {
       treeColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
    }));
    useCanvas(tree, '0.5');
-   const [showBio, setShowBio] = useState(false);
-   const [showHobbies, setShowHobbies] = useState(false);
 
    return (
       <div id='about' className='container'>
          <div id='bio' className='container'>
-            <button
-               id='bio-button'
-               onClick={() => setShowBio(!showBio)}
-               className='text-container'
-            >
-               <h2 className='description'>
-                  <span>{'> Bio.exe'}{!showBio && <TerminalText text={''} rate={getTypingRate('')} />}</span>
-               </h2>
-            </button>
-            {showBio &&
-               <div id='bio-paragraphs' className='text-container'>
-                  {'> '}<TerminalText text={bioParagraphs} rate={getTypingRate(bioParagraphs)} />
+            <h4 id='bio-description' className='description text-container'>
+               <span>
+                  {'> Bio.exe'}
+                  {<TerminalText text={''} rate={getTypingRate('')} />}
+               </span>
+            </h4>
+            <div id='bio-paragraphs-container' className='text-container'>
+               <div id='bio-paragraphs'>
+                  {bioParagraphs}
                </div>
-            }
+            </div>
          </div>
          <div id='hobbies' className='container'>
-            <button
-               id='bio-button'
-               onClick={() => setShowHobbies(!showHobbies)}
-               className='text-container'
-            >
-               <h2 className='description'>
-                  <span>{'> Hobbies.exe'}{!showHobbies && <TerminalText text={''} rate={getTypingRate('')} />}</span>
-               </h2>
-            </button>
-            <div className='text-container'>
-               <ul id='hobbies-list'>
-                  {hobbies}
-               </ul>
-            </div>
-            <Hobby description={HOBBIES['Guitar']} imageSrc={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHNj1sugtt-8Pq7MIYl2YG75PT5EeqSbM75ioeIH5IghTBEOkNuy_9jwVgopsUqurnh4g&usqp=CAU'} />
+            <h4 className='description text-container'>
+               <span>
+                  {'> Hobbies.exe'}
+                  {<TerminalText text={''} rate={getTypingRate('')} />}
+               </span>
+            </h4>
+            {hobbies}
          </div>
       </div>
    );

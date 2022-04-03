@@ -7,6 +7,10 @@
 }
 
 #email-button:hover {
+  color: var(--light-blue);
+}
+
+#email-button:active {
   box-shadow: var(--alt-box-shadow);
 }
 

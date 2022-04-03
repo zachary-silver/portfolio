@@ -1,0 +1,11 @@
+#hobby {
+  flex-direction: row;
+  justify-content: start;
+  margin-bottom: -1rem;
+}
+
+#hobby-icon {
+  height: 2.4rem;
+  width: 2.4rem;
+  margin-right: 0.5rem;
+}

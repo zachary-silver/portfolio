@@ -1,19 +1,25 @@
 import React from 'react';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import TerminalText from '../../common/TerminalText';
-import { getTypingRate } from '../../../common/util';
+import './Hobby.css';
 
 interface IHobbyProps {
+   name: string,
    description: string,
-   imageSrc: string,
+   icon: IconDefinition,
 };
 
-const Hobby = ({ description, imageSrc }: IHobbyProps) => {
+const Hobby = ({ description, icon }: IHobbyProps) => {
    return (
-      <div id='hobby'>
-         <img src={imageSrc} />
+      <div id='hobby' className='container'>
+         <FontAwesomeIcon
+            id='hobby-icon'
+            icon={icon}
+            className='text-container'
+         />
          <p className='text-container'>
-            {'> '}<TerminalText text={description} rate={getTypingRate(description)} />
+            {description}
          </p>
       </div>
    );

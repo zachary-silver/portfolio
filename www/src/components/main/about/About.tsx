@@ -7,10 +7,11 @@ import {
    VIEWPORT_HEIGHT,
    VIEWPORT_WIDTH,
 } from '../../../common/constants';
-import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
+import TerminalText from '../../common/TerminalText';
+import { getTypingRate } from '../../../common/util';
+import Hobby from './Hobby';
 
 import './About.css';
-import { getTypingRate } from '../../../common/util';
 
 const BIO_PARAGRAPHS = [
    `
@@ -51,8 +52,13 @@ playing games like these.
 `,
 };
 
-const bioParagraphs = BIO_PARAGRAPHS.map(
-   (paragraph, index) => <p key={index}>{paragraph}</p>
+// const bioParagraphs = BIO_PARAGRAPHS.map(
+//    (paragraph, index) => <p key={index}>{paragraph}</p>
+// );
+
+const bioParagraphs = BIO_PARAGRAPHS.reduce(
+   (prev, curr) => prev + ' ' + curr,
+   ''
 );
 
 const hobbies = Object.entries(HOBBIES).map(
@@ -86,32 +92,43 @@ const About = () => {
       treeColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
    }));
    useCanvas(tree, '0.5');
+   const [showBio, setShowBio] = useState(false);
+   const [showHobbies, setShowHobbies] = useState(false);
 
    return (
       <div id='about' className='container'>
          <div id='bio' className='container'>
-            <div className='description-container'>
-               <h4 className='description text-container'>
-                  {'> '}<TerminalText text={'Bio'} rate={getTypingRate('Bio')} />
-               </h4>
-            </div>
-            <div className='text-container'>
-               <div id='bio-paragraphs'>
-                  {bioParagraphs}
+            <button
+               id='bio-button'
+               onClick={() => setShowBio(!showBio)}
+               className='text-container'
+            >
+               <h2 className='description'>
+                  <span>{'> Bio.exe'}{!showBio && <TerminalText text={''} rate={getTypingRate('')} />}</span>
+               </h2>
+            </button>
+            {showBio &&
+               <div id='bio-paragraphs' className='text-container'>
+                  {'> '}<TerminalText text={bioParagraphs} rate={getTypingRate(bioParagraphs)} />
                </div>
-            </div>
+            }
          </div>
          <div id='hobbies' className='container'>
-            <div className='description-container'>
-               <h4 className='description text-container'>
-                  {'> '}<TerminalText text={'Hobbies'} rate={getTypingRate('Hobbies')} />
-               </h4>
-            </div>
+            <button
+               id='bio-button'
+               onClick={() => setShowHobbies(!showHobbies)}
+               className='text-container'
+            >
+               <h2 className='description'>
+                  <span>{'> Hobbies.exe'}{!showHobbies && <TerminalText text={''} rate={getTypingRate('')} />}</span>
+               </h2>
+            </button>
             <div className='text-container'>
                <ul id='hobbies-list'>
                   {hobbies}
                </ul>
             </div>
+            <Hobby description={HOBBIES['Guitar']} imageSrc={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHNj1sugtt-8Pq7MIYl2YG75PT5EeqSbM75ioeIH5IghTBEOkNuy_9jwVgopsUqurnh4g&usqp=CAU'} />
          </div>
       </div>
    );

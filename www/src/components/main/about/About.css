@@ -3,7 +3,9 @@
 }
 
 #bio-paragraphs {
-  margin: 1.5rem 1.5rem 1.5rem 1.5rem;
+  /* margin: 1.5rem 1.5rem 1.5rem 1.5rem; */
+  align-self: start;
+  margin-top: 0.5rem;
 }
 
 .description {
@@ -25,4 +27,15 @@
 
 .description-container {
   margin-bottom: 0.5rem;
+  align-self: start;
+}
+
+#bio-button {
+  align-self: start;
+  /* cursor: copy; */
+  border: none;
+  /* margin-bottom: 0.5rem; */
+  transition: var(--alt-transition-speed);
+  /* padding-top: 0; */
+  /* padding-bottom: 0; */
 }

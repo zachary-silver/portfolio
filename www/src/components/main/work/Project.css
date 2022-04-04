@@ -1,3 +1,8 @@
+#project {
+  width: 50vw;
+  height: 100%;
+}
+
 #project-name-container {
   width: 100%;
 }
@@ -12,4 +17,10 @@
 #project-image {
   width: 100%;
   box-shadow: var(--default-box-shadow);
+  margin-bottom: 1rem;
+}
+
+#project-name-container a {
+  text-decoration: none;
+  cursor: alias;
 }

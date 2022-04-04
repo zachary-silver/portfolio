@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 
-import { SierpinskiTriangle } from '../../../canvas/SierpinskiTriangle';
+import { FractalTree } from '../../../canvas/FractalTree';
 import { useCanvas } from '../../common/util';
 import {
    VIEWPORT_WIDTH,
    VIEWPORT_HEIGHT,
+   DOCUMENT_STYLE,
 } from '../../../common/constants';
-import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
 import { getTypingRate } from '../../../common/util';
+import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
 
 import './Contact.css';
 
-const SIDE_LENGTH = VIEWPORT_HEIGHT;
 const EMAIL = 'zmansilver@gmail.com';
 
 const copyEmailToClipboard = (_event?: React.MouseEvent<HTMLElement>) => {
@@ -26,20 +26,23 @@ const showTooltip = () => {
 };
 
 const Contact = () => {
-   const [triangle, _] = useState(() => new SierpinskiTriangle({
-      height: VIEWPORT_HEIGHT,
-      width: VIEWPORT_WIDTH,
-      sideLength: SIDE_LENGTH,
+   const [tree, _] = useState(() => new FractalTree({
       positions: [
          {
-            x: VIEWPORT_WIDTH / 2 - SIDE_LENGTH / 2,
-            y: VIEWPORT_HEIGHT
+            x: VIEWPORT_WIDTH / 2,
+            y: VIEWPORT_HEIGHT,
          },
       ],
-      maxDepth: 7,
-      triangleColor: 'green',
+      height: VIEWPORT_HEIGHT,
+      width: VIEWPORT_WIDTH,
+      branchLength: VIEWPORT_HEIGHT / 5,
+      branchWidth: 10,
+      startingAngle: 8,
+      endingAngle: 45,
+      maxDepth: 10,
+      treeColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
    }));
-   useCanvas(triangle, '0.5');
+   useCanvas(tree, '0.5');
 
    const props: ITerminalTextProps = {
       text: EMAIL,
@@ -48,15 +51,15 @@ const Contact = () => {
 
    return (
       <div id='contact' className='container'>
-         <button
-            id='email-button'
+         <a
+            href={`mailto:${EMAIL}`}
+            className='text-container clickable'
             onClick={() => { copyEmailToClipboard(); showTooltip(); }}
-            className='text-container'
          >
-            <h2 id='contact-terminal'>
+            <h4 id='contact-terminal'>
                {'> '}<TerminalText {...props} />
-            </h2>
-         </button>
+            </h4>
+         </a>
          <p id='email-tooltip'>Copied to clipboard!</p>
       </div>
    );

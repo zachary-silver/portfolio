@@ -26,7 +26,7 @@ const getPathnameToLinkMap = (navigationLinks: INavigationLink[]) => {
                <Link
                   to={navigationLink.pathname}
                   key={index}
-                  className='text-container'
+                  className='text-container clickable'
                >
                   <h4>{navigationLink.label}</h4>
                </Link>

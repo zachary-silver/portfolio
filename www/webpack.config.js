@@ -42,6 +42,21 @@ module.exports = {
             {
                from: path.resolve(__dirname, './public/ZacharySilverResume.pdf'),
             },
+            {
+               from: path.resolve(__dirname, './public/twitch-chat-sentiment-analysis.jpg'),
+            },
+            {
+               from: path.resolve(__dirname, './public/dwmstatus.jpg'),
+            },
+            {
+               from: path.resolve(__dirname, './public/tic-tac-toe.jpg'),
+            },
+            {
+               from: path.resolve(__dirname, './public/silver-calculator.jpg'),
+            },
+            {
+               from: path.resolve(__dirname, './public/music.jpg'),
+            },
          ],
       })
    ],

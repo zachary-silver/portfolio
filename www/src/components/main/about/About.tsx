@@ -80,24 +80,6 @@ const hobbies = Object.entries(HOBBIES).map(
 );
 
 const About = () => {
-   const [tree, _] = useState(() => new FractalTree({
-      positions: [
-         {
-            x: VIEWPORT_WIDTH / 2,
-            y: VIEWPORT_HEIGHT,
-         },
-      ],
-      height: VIEWPORT_HEIGHT,
-      width: VIEWPORT_WIDTH,
-      branchLength: VIEWPORT_HEIGHT / 5,
-      branchWidth: 10,
-      startingAngle: 8,
-      endingAngle: 45,
-      maxDepth: 10,
-      treeColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
-   }));
-   useCanvas(tree, '0.5');
-
    return (
       <div id='about' className='container'>
          <div id='bio' className='container'>

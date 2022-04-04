@@ -56,3 +56,15 @@ body {
   padding: 0.5rem;
   box-shadow: var(--default-box-shadow);
 }
+
+.clickable {
+  transition: var(--alt-transition-speed);
+}
+
+.clickable:hover {
+  color: var(--light-blue);
+}
+
+.clickable:active {
+  box-shadow: var(--alt-box-shadow);
+}

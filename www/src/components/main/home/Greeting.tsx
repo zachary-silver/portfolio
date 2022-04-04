@@ -29,7 +29,7 @@ const Greeting = () => {
    const props: ITerminalTextProps = {
       text: greeting,
       rate: getTypingRate(greeting),
-      delay: 2500,
+      delay: 1500,
       done: showNextGreeting,
    };
 

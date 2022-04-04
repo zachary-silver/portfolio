@@ -20,13 +20,13 @@ const Author = () => {
          <h1 id='name'>Zachary Silver</h1>
          <h3 id='occupation'>Software Developer</h3>
          <div id='social-media-links'>
-            <a href={TWITTER_LINK}>
+            <a href={TWITTER_LINK} target='_blank'>
                <FontAwesomeIcon icon={faTwitter} />
             </a>
-            <a href={LINKEDIN_LINK}>
+            <a href={LINKEDIN_LINK} target='_blank'>
                <FontAwesomeIcon icon={faLinkedin} />
             </a>
-            <a href={GITHUB_LINK}>
+            <a href={GITHUB_LINK} target='_blank'>
                <FontAwesomeIcon icon={faGithub} />
             </a>
          </div>

@@ -1,21 +1,11 @@
-#email-button {
-  cursor: copy;
-  border: none;
-  transition: var(--alt-transition-speed);
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-#email-button:hover {
-  color: var(--light-blue);
-}
-
-#email-button:active {
-  box-shadow: var(--alt-box-shadow);
+#contact a {
+  text-decoration: none;
+  cursor: alias;
 }
 
 #contact-terminal {
-  margin: 0.5rem 0rem 0.5rem 0rem;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
 }
 
 #email-tooltip {

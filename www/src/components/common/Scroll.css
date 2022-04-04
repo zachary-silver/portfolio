@@ -1,0 +1,8 @@
+#scroll {
+  flex-direction: row;
+}
+
+#caret-left, #caret-right {
+  width: 5rem;
+  height: 5rem;
+}

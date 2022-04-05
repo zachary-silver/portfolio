@@ -1,8 +1,35 @@
 #scroll {
   flex-direction: row;
+  max-width: 100%;
+}
+
+#components {
+  flex-direction: row;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.component {
+  margin-left: 30rem;
+  margin-right: 30rem;
 }
 
 #caret-left, #caret-right {
-  width: 5rem;
-  height: 5rem;
+  width: 2.5rem;
+  height: auto;
+}
+
+#scroll-left, #scroll-right {
+  border: none;
+  cursor: pointer;
+}
+
+#scroll-left {
+  margin-right: 1rem;
+  padding-right: 0;
+}
+
+#scroll-right {
+  margin-left: 1rem;
+  padding-left: 0;
 }

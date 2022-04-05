@@ -2,10 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
-import NavigationBar, {
-   getPathnameToLinkMap,
-   INavigationLink
-} from './header/NavigationBar';
+import NavigationBar, { INavigationLink } from './header/NavigationBar';
 import { usePrevious } from './common/util';
 import { hideCanvas } from '../common/util';
 
@@ -25,50 +22,53 @@ const navigationLinks: INavigationLink[] = [
    { pathname: '/work', label: 'My Work', component: <Work /> },
    { pathname: '/resume', label: 'Resumé', component: <Resume /> },
    { pathname: '/contact', label: 'Contact', component: <Contact /> },
-];
-const PathnameToLink = getPathnameToLinkMap(navigationLinks);
-const links = Object.values(PathnameToLink).map(
-   (navigationLink) => navigationLink.link
-);
+].map((navigationLink, index) => ({ ...navigationLink, position: index }));
 
-const navigatedLeft = (current: INavigationLink, previous: INavigationLink) => {
+const navigatedLeft = (current: INavigationLink, previous?: INavigationLink) => {
    return previous
       && current.pathname !== previous.pathname
       && current.position < previous.position;
 };
 
-const getClassNames = (current: INavigationLink, previous: INavigationLink) => {
+const getClassNames = (current: INavigationLink, previous?: INavigationLink) => {
    return navigatedLeft(current, previous) ? 'main-reverse' : 'main';
 };
 
 const Portfolio = () => {
-   const [mainComponent, setMainComponent] = useState(null);
+   const [component, setComponent] = useState(null);
    const [showComponent, setShowComponent] = useState(false);
    const [classNames, setClassNames] = useState('main');
    const pathname = useLocation().pathname;
    const nodeRef = useRef(null);
 
+   const currentLink = navigationLinks.find(
+      (link) => link.pathname === pathname
+   );
+   const previousLink: INavigationLink = usePrevious(currentLink);
+   useEffect(() => {
+      setClassNames(getClassNames(currentLink, previousLink));
+   }, [currentLink.pathname]);
+
    useEffect(() => {
       setShowComponent(false);
 
       const timeoutId = setTimeout(() => {
-         setMainComponent(currentLink.component);
+         setComponent(currentLink.component);
          setShowComponent(true);
       }, TRANSITION_TIME);
 
       return () => clearTimeout(timeoutId);
    }, [pathname]);
 
-   const currentLink = PathnameToLink[pathname];
-   const previousLink: INavigationLink = usePrevious(currentLink);
-   useEffect(() => {
-      setClassNames(getClassNames(currentLink, previousLink));
-   }, [currentLink.pathname]);
+   const links = navigationLinks.map((navigationLink) => ({
+      ...navigationLink,
+      current: navigationLink.pathname === currentLink.pathname,
+   }));
 
    return (
       <React.Fragment>
          <header>
-            <NavigationBar links={links} />
+            <NavigationBar navigationLinks={links} />
          </header>
          <CSSTransition
             in={showComponent}
@@ -79,7 +79,7 @@ const Portfolio = () => {
             onExiting={hideCanvas}
          >
             <main ref={nodeRef}>
-               {mainComponent}
+               {component}
             </main>
          </CSSTransition>
          <footer>

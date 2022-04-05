@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { GameOfLife } from '../../../canvas/GameOfLife';
 import { useCanvas } from '../../common/util';
@@ -9,7 +9,7 @@ import {
 } from '../../../common/constants';
 
 import Project, { IProjectProps } from './Project';
-import Scroll, { IScrollProps } from '../../common/Scroll';
+import Scroll from '../../common/Scroll';
 
 const PIXELS_PER_CELL = 4;
 
@@ -54,14 +54,6 @@ const Work = () => {
       deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
    }));
    useCanvas(gameOfLife, '0.5');
-
-   useEffect(() => {
-      document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
-
-      return () => {
-         document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
-      };
-   }, []);
 
    return (
       <div id='work' className='container'>

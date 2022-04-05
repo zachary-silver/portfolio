@@ -4,40 +4,29 @@ import { Link } from 'react-router-dom';
 import './NavigationBar.css';
 
 interface INavigationBarProps {
-   links: JSX.Element[];
+   navigationLinks: INavigationLink[];
 };
 
 interface INavigationLink {
-   component: JSX.Element,
-   pathname: string,
-   label: string,
-   position?: number,
-   link?: JSX.Element,
+   component: JSX.Element;
+   pathname: string;
+   label: string;
+   position?: number;
+   current?: boolean;
 };
 
-const getPathnameToLinkMap = (navigationLinks: INavigationLink[]) => {
-   return navigationLinks.reduce(
-      (navigationLinks, navigationLink, index) => ({
-         ...navigationLinks,
-         [navigationLink.pathname]: {
-            ...navigationLink,
-            position: index,
-            link: (
-               <Link
-                  to={navigationLink.pathname}
-                  key={index}
-                  className='text-container clickable'
-               >
-                  <h4>{navigationLink.label}</h4>
-               </Link>
-            )
-         }
-      }),
-      {} as { [pathname: string]: INavigationLink }
-   );
-};
+const NavigationBar = ({ navigationLinks }: INavigationBarProps) => {
+   const links = navigationLinks.map((navLink) => (
+      <Link
+         to={navLink.pathname}
+         id={navLink.current ? 'current-link' : null}
+         key={navLink.pathname}
+         className='text-container clickable'
+      >
+         <h4>{navLink.label}</h4>
+      </Link>
+   ));
 
-const NavigationBar = ({ links }: INavigationBarProps) => {
    return (
       <nav className='container'>
          {links}
@@ -47,7 +36,6 @@ const NavigationBar = ({ links }: INavigationBarProps) => {
 
 export {
    INavigationLink,
-   getPathnameToLinkMap,
 };
 
 export default NavigationBar;

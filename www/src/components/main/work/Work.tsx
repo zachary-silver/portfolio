@@ -11,6 +11,8 @@ import {
 import Project, { IProjectProps } from './Project';
 import Scroll from '../../common/Scroll';
 
+import './Work.css';
+
 const PIXELS_PER_CELL = 4;
 
 const PROJECTS: IProjectProps[] = [
@@ -53,7 +55,7 @@ const Work = () => {
       liveCellColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
       deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
    }));
-   useCanvas(gameOfLife, '0.5');
+   useCanvas(gameOfLife, '0.3');
 
    return (
       <div id='work' className='container'>

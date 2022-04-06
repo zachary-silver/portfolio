@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
    faCaretLeft,
@@ -11,8 +11,43 @@ interface IScrollProps {
    components: JSX.Element[];
 };
 
+const addMarginStyling = (components: number) => {
+   const margin = 25;
+   const firstMargin = margin * 4 * components - margin * 3;
+   const styleSheet = document.styleSheets[0];
+
+   return [
+      `#first-scroll-component { margin-left: ${firstMargin}vw; }`,
+      `.scroll-component { margin-left: ${margin}vw; margin-right: ${margin}vw; }`,
+   ].map((rule) => styleSheet.insertRule(rule));
+};
+
 const Scroll = ({ components }: IScrollProps) => {
    const [index, setIndex] = useState(0);
+   const initializedRef = useRef(false);
+
+   useEffect(() => {
+      const ruleIndices = addMarginStyling(components.length);
+
+      return () => {
+         const styleSheet = document.styleSheets[0];
+         ruleIndices.forEach((index) => styleSheet.deleteRule(index));
+      };
+   }, []);
+
+   useEffect(() => {
+      if (!initializedRef.current) {
+         initializedRef.current = true;
+         return;
+      }
+
+      const components = document.getElementsByClassName('scroll-component');
+      components[index].scrollIntoView({
+         behavior: 'smooth',
+         inline: 'center',
+         block: 'end'
+      });
+   }, [index]);
 
    const scrollLeft = () => {
       setIndex((components.length + index - 1) % components.length);
@@ -23,28 +58,31 @@ const Scroll = ({ components }: IScrollProps) => {
    };
 
    const children = components.map(
-      (component) => <div className='component'>{component}</div>
+      (component, index) => (
+         <div
+            id={index === 0 ? 'first-scroll-component' : null}
+            key={index}
+            className='scroll-component'
+         >
+            {component}
+         </div>
+      )
    );
-
-   useEffect(() => {
-      const element = document.getElementsByClassName('component')[index];
-      element.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-   }, [index]);
 
    return (
       <div id='scroll' className='container'>
          <button
-            id='scroll-left'
+            id='scroll-left-button'
             className='text-container clickable'
             onClick={scrollLeft}
          >
             <FontAwesomeIcon id='caret-left' icon={faCaretLeft as any} />
          </button>
-         <div id='components' className='container'>
+         <div id='scroll-components' className='container'>
             {children}
          </div>
          <button
-            id='scroll-right'
+            id='scroll-right-button'
             className='text-container clickable'
             onClick={scrollRight}
          >

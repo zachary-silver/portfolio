@@ -78,12 +78,11 @@ const Portfolio = () => {
             unmountOnExit
             onExiting={hideCanvas}
          >
-            <main ref={nodeRef}>
+            <main ref={nodeRef} className='container'>
                {component}
             </main>
          </CSSTransition>
-         <footer>
-         </footer>
+         <footer />
       </React.Fragment>
    );
 };

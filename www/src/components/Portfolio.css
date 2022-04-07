@@ -1,14 +1,17 @@
 main {
   width: 100%;
+  margin-top: 2rem;
 }
 
 .main-enter {
   transform: translateX(100vw);
+  opacity: 0;
 }
 
 .main-enter-active {
   transform: translateX(0vw);
-  transition: transform 0.5s;
+  opacity: 1;
+  transition: 0.5s;
 }
 
 .main-enter-done {
@@ -21,16 +24,19 @@ main {
 
 .main-exit-active {
   transform: translateX(-100vw);
-  transition: transform 0.5s;
+  transition: 0.5s;
+  opacity: 0;
 }
 
 .main-reverse-enter {
   transform: translateX(-100vw);
+  opacity: 0;
 }
 
 .main-reverse-enter-active {
   transform: translateX(0vw);
-  transition: transform 0.5s;
+  transition: 0.5s;
+  opacity: 1;
 }
 
 .main-reverse-enter-done {
@@ -39,9 +45,11 @@ main {
 
 .main-reverse-exit {
   transform: translateX(0vw);
+  opacity: 1;
 }
 
 .main-reverse-exit-active {
   transform: translateX(100vw);
-  transition: transform 0.5s;
+  transition: 0.5s;
+  opacity: 0;
 }

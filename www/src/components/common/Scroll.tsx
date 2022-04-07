@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+   fa0,
    faCaretLeft,
    faCaretRight,
 } from '@fortawesome/free-solid-svg-icons';
+
+import { CSSTransition } from 'react-transition-group';
+import { usePrevious } from './util';
 
 import './Scroll.css';
 
@@ -11,63 +15,49 @@ interface IScrollProps {
    components: JSX.Element[];
 };
 
-const addMarginStyling = (components: number) => {
-   const margin = 25;
-   const firstMargin = margin * 4 * components - margin * 3;
-   const styleSheet = document.styleSheets[0];
+const navigatedLeft = (current: number, previous?: number) => {
+   return previous && (current < previous || current === 0);
+};
 
-   return [
-      `#first-scroll-component { margin-left: ${firstMargin}vw; }`,
-      `.scroll-component { margin-left: ${margin}vw; margin-right: ${margin}vw; }`,
-   ].map((rule) => styleSheet.insertRule(rule));
+const getClassNames = (current: number, previous?: number) => {
+   return navigatedLeft(current, previous) ? 'scroll-reverse' : 'scroll';
 };
 
 const Scroll = ({ components }: IScrollProps) => {
    const [index, setIndex] = useState(0);
-   const initializedRef = useRef(false);
+   const [classNames, setClassNames] = useState('main');
+   const [showComponent, setShowComponent] = useState(true);
+   const [component, setComponent] = useState(components[0]);
+   const [scrolling, setScrolling] = useState(false);
+   const nodeRef = useRef(null);
 
+   const previousIndex: number = usePrevious(index);
    useEffect(() => {
-      const ruleIndices = addMarginStyling(components.length);
-
-      return () => {
-         const styleSheet = document.styleSheets[0];
-         ruleIndices.forEach((index) => styleSheet.deleteRule(index));
-      };
-   }, []);
-
-   useEffect(() => {
-      if (!initializedRef.current) {
-         initializedRef.current = true;
+      if (components[index] === component) {
          return;
       }
 
-      const components = document.getElementsByClassName('scroll-component');
-      components[index].scrollIntoView({
-         behavior: 'smooth',
-         inline: 'center',
-         block: 'end'
-      });
+      setShowComponent(false);
+      setClassNames(getClassNames(index, previousIndex));
+
+      const timeoutId = setTimeout(() => {
+         setComponent(components[index]);
+         setShowComponent(true);
+         setScrolling(false);
+      }, 300);
+
+      return () => clearTimeout(timeoutId);
    }, [index]);
 
    const scrollLeft = () => {
+      setScrolling(true);
       setIndex((components.length + index - 1) % components.length);
    };
 
    const scrollRight = () => {
+      setScrolling(true);
       setIndex((index + 1) % components.length);
    };
-
-   const children = components.map(
-      (component, index) => (
-         <div
-            id={index === 0 ? 'first-scroll-component' : null}
-            key={index}
-            className='scroll-component'
-         >
-            {component}
-         </div>
-      )
-   );
 
    return (
       <div id='scroll' className='container'>
@@ -75,16 +65,26 @@ const Scroll = ({ components }: IScrollProps) => {
             id='scroll-left-button'
             className='text-container clickable'
             onClick={scrollLeft}
+            disabled={scrolling}
          >
             <FontAwesomeIcon id='caret-left' icon={faCaretLeft as any} />
          </button>
-         <div id='scroll-components' className='container'>
-            {children}
-         </div>
+         <CSSTransition
+            in={showComponent}
+            timeout={500}
+            classNames={classNames}
+            nodeRef={nodeRef}
+            unmountOnExit
+         >
+            <div ref={nodeRef}>
+               {component}
+            </div>
+         </CSSTransition>
          <button
             id='scroll-right-button'
             className='text-container clickable'
             onClick={scrollRight}
+            disabled={scrolling}
          >
             <FontAwesomeIcon id='caret-right' icon={faCaretRight as any} />
          </button>

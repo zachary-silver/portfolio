@@ -1,11 +1,6 @@
 #scroll {
   flex-direction: row;
-  width: 100%;
-}
-
-#scroll-components {
-  flex-direction: row;
-  overflow: hidden;
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -17,14 +12,66 @@
 #scroll-left-button, #scroll-right-button {
   border: none;
   cursor: pointer;
+  z-index: 1;
 }
 
 #scroll-left-button {
-  margin-right: -10vw;
   padding-right: 0;
+  margin-right: 2rem;
 }
 
 #scroll-right-button {
-  margin-left: -10vw;
   padding-left: 0;
+  margin-left: 2rem;
+}
+
+.scroll-enter {
+  transform: translateX(50vw);
+  opacity: 0;
+}
+
+.scroll-enter-active {
+  transform: translateX(0vw);
+  opacity: 1;
+  transition: 0.5s;
+}
+
+.scroll-enter-done {
+  transform: translateX(0vw);
+}
+
+.scroll-exit {
+  transform: translateX(0vw);
+}
+
+.scroll-exit-active {
+  transform: translateX(-50vw);
+  transition: 0.5s;
+  opacity: 0;
+}
+
+.scroll-reverse-enter {
+  transform: translateX(-50vw);
+  opacity: 0;
+}
+
+.scroll-reverse-enter-active {
+  transform: translateX(0vw);
+  transition: 0.5s;
+  opacity: 1;
+}
+
+.scroll-reverse-enter-done {
+  transform: translateX(0vw);
+}
+
+.scroll-reverse-exit {
+  transform: translateX(0vw);
+  opacity: 1;
+}
+
+.scroll-reverse-exit-active {
+  transform: translateX(50vw);
+  transition: 0.5s;
+  opacity: 0;
 }

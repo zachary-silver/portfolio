@@ -1,10 +1,14 @@
+#about {
+  height: 100%;
+}
+
 #bio, #hobbies {
-  width: 50vw;
+  width: 50%;
   align-items: start;
 }
 
-#hobbies {
-  margin-top: 2rem;
+#bio {
+  margin-bottom: 2rem;
 }
 
 #bio-description {

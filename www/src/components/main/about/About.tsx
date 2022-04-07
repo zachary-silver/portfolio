@@ -6,7 +6,7 @@ import {
    faGamepad,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { FractalTree } from '../../../canvas/FractalTree';
+import { GameOfLife } from '../../../canvas/GameOfLife';
 import { useCanvas } from '../../common/util';
 import {
    DOCUMENT_STYLE,
@@ -18,6 +18,8 @@ import { getTypingRate } from '../../../common/util';
 import Hobby from './Hobby';
 
 import './About.css';
+
+const PIXELS_PER_CELL = 4;
 
 const BIO_PARAGRAPHS = [
    `
@@ -36,9 +38,11 @@ computers for fun.
 I've been developing software for school, work, and fun ever since I wrote my first
 "Hello, World!" program in 2015 and wouldn't have it any other way.
    `
-];
+].map((paragraph, index) => (
+   <p key={index} className='bio-paragraph'>{paragraph}</p>
+));
 
-const HOBBIES: { [key: string]: string } = {
+const HOBBIES = Object.entries({
    'Guitar': `
 I started teaching myself how to play guitar in 2015 and I'm always learning
 how to play new songs. I love playing the blues and Jimi Hendrix is my all time
@@ -56,30 +60,29 @@ beginning of my time as a gamer. From Pokémon, RuneScape, and World of Warcraft
 to Call of Duty and Battlefield, I've spent thousands of hours throughout my life
 playing games like these.
 `,
-};
-
-const bioParagraphs = BIO_PARAGRAPHS.map(
-   (paragraph, index) => <p key={index} className='bio-paragraph'>{paragraph}</p>
-);
-
-const HobbyToIcon: { [hobby: string]: IconDefinition } = {
-   'Guitar': faGuitar,
-   'Programming': faTerminal,
-   'Video Games': faGamepad,
-};
-
-const hobbies = Object.entries(HOBBIES).map(
-   ([hobby, description], index) => (
-      <Hobby
-         key={index}
-         name={hobby}
-         description={description}
-         icon={HobbyToIcon[hobby] as any}
-      />
-   )
-);
+}).map(([hobby, description], index) => (
+   <Hobby
+      key={index}
+      name={hobby}
+      description={description}
+      icon={{
+         'Guitar': faGuitar,
+         'Programming': faTerminal,
+         'Video Games': faGamepad,
+      }[hobby] as any}
+   />
+));
 
 const About = () => {
+   const [gameOfLife, _] = useState(() => new GameOfLife({
+      rows: Math.ceil(VIEWPORT_HEIGHT / PIXELS_PER_CELL + PIXELS_PER_CELL),
+      columns: Math.ceil(VIEWPORT_WIDTH / PIXELS_PER_CELL + PIXELS_PER_CELL),
+      pixelsPerCell: PIXELS_PER_CELL,
+      liveCellColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
+      deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
+   }));
+   useCanvas(gameOfLife, '0.3');
+
    return (
       <div id='about' className='container'>
          <div id='bio' className='container'>
@@ -91,7 +94,7 @@ const About = () => {
             </h4>
             <div id='bio-paragraphs-container' className='text-container'>
                <div id='bio-paragraphs'>
-                  {bioParagraphs}
+                  {BIO_PARAGRAPHS}
                </div>
             </div>
          </div>
@@ -102,7 +105,7 @@ const About = () => {
                   {<TerminalText text={''} rate={getTypingRate('')} />}
                </span>
             </h4>
-            {hobbies}
+            {HOBBIES}
          </div>
       </div>
    );

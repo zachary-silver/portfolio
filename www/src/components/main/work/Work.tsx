@@ -8,14 +8,14 @@ import {
    VIEWPORT_WIDTH,
 } from '../../../common/constants';
 
-import Project, { IProjectProps } from './Project';
+import Project from './Project';
 import Scroll from '../../common/Scroll';
 
 import './Work.css';
 
 const PIXELS_PER_CELL = 4;
 
-const PROJECTS: IProjectProps[] = [
+const PROJECTS = [
    {
       name: 'Twitch Chat Sentiment Analysis Dashboard',
       url: 'https://github.com/zachary-silver/twitch-sentiment-analysis',
@@ -41,11 +41,7 @@ const PROJECTS: IProjectProps[] = [
       url: 'https://github.com/zachary-silver/silver-calculator',
       imageSrc: 'silver-calculator.jpg',
    },
-];
-
-const projects = PROJECTS.map(
-   (projectProps, index) => <Project key={index} {...projectProps} />
-);
+].map((projectProps, index) => <Project key={index} {...projectProps} />);
 
 const Work = () => {
    const [gameOfLife, _] = useState(() => new GameOfLife({
@@ -59,7 +55,7 @@ const Work = () => {
 
    return (
       <div id='work' className='container'>
-         <Scroll components={projects} />
+         <Scroll components={PROJECTS} />
       </div>
    );
 };

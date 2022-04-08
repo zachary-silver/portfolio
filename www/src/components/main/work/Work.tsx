@@ -2,18 +2,12 @@ import React, { useState } from 'react';
 
 import { GameOfLife } from '../../../canvas/GameOfLife';
 import { useCanvas } from '../../common/util';
-import {
-   DOCUMENT_STYLE,
-   VIEWPORT_HEIGHT,
-   VIEWPORT_WIDTH,
-} from '../../../common/constants';
 
 import Project from './Project';
 import Scroll from '../../common/Scroll';
 
 import './Work.css';
-
-const PIXELS_PER_CELL = 4;
+import { getDocumentStyle, getWindowProperties } from '../../../common/util';
 
 const PROJECTS = [
    {
@@ -43,13 +37,18 @@ const PROJECTS = [
    },
 ].map((projectProps, index) => <Project key={index} {...projectProps} />);
 
+const PIXELS_PER_CELL = 4;
+
 const Work = () => {
+   const documentStyle = getDocumentStyle();
+   const { width, height } = getWindowProperties();
    const [gameOfLife, _] = useState(() => new GameOfLife({
-      rows: Math.ceil(VIEWPORT_HEIGHT / PIXELS_PER_CELL + PIXELS_PER_CELL),
-      columns: Math.ceil(VIEWPORT_WIDTH / PIXELS_PER_CELL + PIXELS_PER_CELL),
+      rows: Math.ceil(height / PIXELS_PER_CELL + PIXELS_PER_CELL),
+      columns: Math.ceil(width / PIXELS_PER_CELL + PIXELS_PER_CELL),
       pixelsPerCell: PIXELS_PER_CELL,
-      liveCellColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
-      deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
+      liveCellColor: documentStyle.getPropertyValue('--light-blue'),
+      deadCellColor: documentStyle.getPropertyValue('--main-bg-color'),
+      canvasId: 'canvas',
    }));
    useCanvas(gameOfLife, '0.3');
 

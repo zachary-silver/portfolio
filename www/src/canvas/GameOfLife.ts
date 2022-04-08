@@ -15,6 +15,7 @@ interface IGameOfLifeConfig {
    pixelsPerCell: number,
    liveCellColor: string,
    deadCellColor: string,
+   canvasId: string,
 };
 
 class GameOfLife extends Canvas {
@@ -27,7 +28,7 @@ class GameOfLife extends Canvas {
       const canvasConfig: ICanvasConfig = {
          height: gameOfLifeConfig.rows * gameOfLifeConfig.pixelsPerCell,
          width: gameOfLifeConfig.columns * gameOfLifeConfig.pixelsPerCell,
-         id: 'canvas',
+         id: gameOfLifeConfig.canvasId,
       };
       super(canvasConfig);
 

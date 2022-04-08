@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-   IconDefinition,
    faGuitar,
    faTerminal,
    faGamepad,
@@ -8,13 +7,12 @@ import {
 
 import { GameOfLife } from '../../../canvas/GameOfLife';
 import { useCanvas } from '../../common/util';
-import {
-   DOCUMENT_STYLE,
-   VIEWPORT_HEIGHT,
-   VIEWPORT_WIDTH,
-} from '../../../common/constants';
 import TerminalText from '../../common/TerminalText';
-import { getTypingRate } from '../../../common/util';
+import {
+   getTypingRate,
+   getDocumentStyle,
+   getWindowProperties
+} from '../../../common/util';
 import Hobby from './Hobby';
 
 import './About.css';
@@ -74,12 +72,15 @@ playing games like these.
 ));
 
 const About = () => {
+   const documentStyle = getDocumentStyle();
+   const { height, width } = getWindowProperties();
    const [gameOfLife, _] = useState(() => new GameOfLife({
-      rows: Math.ceil(VIEWPORT_HEIGHT / PIXELS_PER_CELL + PIXELS_PER_CELL),
-      columns: Math.ceil(VIEWPORT_WIDTH / PIXELS_PER_CELL + PIXELS_PER_CELL),
+      rows: Math.ceil(height / PIXELS_PER_CELL + PIXELS_PER_CELL),
+      columns: Math.ceil(width / PIXELS_PER_CELL + PIXELS_PER_CELL),
       pixelsPerCell: PIXELS_PER_CELL,
-      liveCellColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
-      deadCellColor: DOCUMENT_STYLE.getPropertyValue('--main-bg-color'),
+      liveCellColor: documentStyle.getPropertyValue('--light-blue'),
+      deadCellColor: documentStyle.getPropertyValue('--main-bg-color'),
+      canvasId: 'canvas',
    }));
    useCanvas(gameOfLife, '0.3');
 

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
+import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
 import { FractalTree } from '../../../canvas/FractalTree';
 import { useCanvas } from '../../common/util';
 import {
-   VIEWPORT_WIDTH,
-   VIEWPORT_HEIGHT,
-   DOCUMENT_STYLE,
-} from '../../../common/constants';
-import { getTypingRate } from '../../../common/util';
-import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
+   getDocumentStyle,
+   getTypingRate,
+   getWindowProperties,
+   hideElement,
+   showElement
+} from '../../../common/util';
 
 import './Contact.css';
 
@@ -19,28 +20,32 @@ const copyEmailToClipboard = (_event?: React.MouseEvent<HTMLElement>) => {
 };
 
 const showTooltip = () => {
-   document.getElementById('email-tooltip').style.opacity = '1';
+   showElement('email-tooltip', '1');
    setTimeout(() => {
-      document.getElementById('email-tooltip').style.opacity = '0';
+      hideElement('email-tooltip');
    }, 1000);
 };
 
 const Contact = () => {
+   const { width, height } = getWindowProperties();
    const [tree, _] = useState(() => new FractalTree({
-      positions: [
-         {
-            x: VIEWPORT_WIDTH / 2,
-            y: VIEWPORT_HEIGHT,
-         },
-      ],
-      height: VIEWPORT_HEIGHT,
-      width: VIEWPORT_WIDTH,
-      branchLength: VIEWPORT_HEIGHT / 5,
+      positions: [{
+         x: width / 2,
+         y: height,
+      }],
+      height,
+      width,
+      branchLength: height / 5,
       branchWidth: 10,
       startingAngle: 8,
       endingAngle: 45,
       maxDepth: 10,
-      treeColor: DOCUMENT_STYLE.getPropertyValue('--light-blue'),
+      treeColor: {
+         red: '104',
+         green: '167',
+         blue: '212',
+      },
+      canvasId: 'canvas',
    }));
    useCanvas(tree, '0.5');
 
@@ -54,7 +59,10 @@ const Contact = () => {
          <a
             href={`mailto:${EMAIL}`}
             className='text-container clickable'
-            onClick={() => { copyEmailToClipboard(); showTooltip(); }}
+            onClick={() => {
+               copyEmailToClipboard();
+               showTooltip();
+            }}
          >
             <h4 id='contact-terminal'>
                {'> '}<TerminalText {...props} />

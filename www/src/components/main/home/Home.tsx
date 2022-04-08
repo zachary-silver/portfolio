@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 
 import { TreeOfPythagoras } from '../../../canvas/TreeOfPythagoras';
+import { getWindowProperties } from '../../../common/util';
 import { useCanvas } from '../../common/util';
-import {
-   DOCUMENT_STYLE,
-   VIEWPORT_HEIGHT,
-   VIEWPORT_WIDTH,
-} from '../../../common/constants';
 
 import Author from './Author';
 import Greeting from './Greeting';
@@ -14,12 +10,18 @@ import Greeting from './Greeting';
 import './Home.css';
 
 const Home = () => {
+   const { height, width } = getWindowProperties();
    const [tree, _] = useState(() => new TreeOfPythagoras({
-      height: VIEWPORT_HEIGHT,
-      width: VIEWPORT_WIDTH,
-      trunkWidth: VIEWPORT_WIDTH / 11,
+      height,
+      width,
+      trunkWidth: width / 11,
       maxDepth: 9,
-      treeColor: DOCUMENT_STYLE.getPropertyValue('--ice'),
+      treeColor: {
+         red: '104',
+         green: '167',
+         blue: '212'
+      },
+      canvasId: 'canvas',
    }));
    useCanvas(tree, '0.5');
 

@@ -6,13 +6,11 @@ import {
    faGithub,
 } from '@fortawesome/free-brands-svg-icons'
 
-import {
-   TWITTER_LINK,
-   LINKEDIN_LINK,
-   GITHUB_LINK,
-} from '../../../common/constants';
-
 import './Author.css';
+
+const GITHUB_LINK = 'https://github.com/zachary-silver';
+const LINKEDIN_LINK = 'https://www.linkedin.com/in/zachary-silver/';
+const TWITTER_LINK = 'https://twitter.com/zmansilver';
 
 const Author = () => {
    return (

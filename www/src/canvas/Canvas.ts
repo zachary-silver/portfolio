@@ -3,6 +3,7 @@ interface ICanvas {
    stopRendering: () => void,
    initializeCanvas: () => void,
    clearCanvas: () => void,
+   getId: () => string,
 };
 
 interface ICanvasConfig {
@@ -28,6 +29,7 @@ abstract class Canvas implements ICanvas {
       this.clearCanvas = this.clearCanvas.bind(this);
       this.startRendering = this.startRendering.bind(this);
       this.stopRendering = this.stopRendering.bind(this);
+      this.getId = this.getId.bind(this);
    }
 
    protected abstract render(): void;
@@ -51,6 +53,10 @@ abstract class Canvas implements ICanvas {
 
    public stopRendering() {
       this.shouldRender = false;
+   }
+
+   public getId() {
+      return this.canvasConfig.id;
    }
 }
 

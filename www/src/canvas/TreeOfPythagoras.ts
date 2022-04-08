@@ -7,10 +7,9 @@ import {
 } from './Canvas';
 import {
    IPosition,
-   mousePosition,
+   IrgbColor,
+   MOUSE_POSITION,
 } from '../common/util';
-
-const TREE_COLOR_RGB = '104, 167, 212';
 
 interface ITreeOfPythagoras extends ICanvas { };
 
@@ -19,7 +18,8 @@ interface ITreeOfPythagorasConfig {
    height: number,
    trunkWidth: number,
    maxDepth: number,
-   treeColor: string,
+   treeColor: IrgbColor,
+   canvasId: string,
 };
 
 class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
@@ -31,7 +31,7 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
       const canvasConfig: ICanvasConfig = {
          width: treeConfig.width,
          height: treeConfig.height,
-         id: 'canvas',
+         id: treeConfig.canvasId,
       };
       super(canvasConfig);
 
@@ -53,7 +53,10 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
       this.context.save();
       this.context.rotate(-this.trunk.left_angle());
       this.context.translate(0, -leftWidth);
-      this.context.fillStyle = `rgba(${TREE_COLOR_RGB}, ${depth * 0.1})`;
+      this.context.fillStyle = `rgba(${this.treeConfig.treeColor.red
+         }, ${this.treeConfig.treeColor.green
+         }, ${this.treeConfig.treeColor.blue
+         }, ${depth * 0.1})`;
       this.context.fillRect(0, 0, leftWidth, leftWidth);
       this.drawBranches(leftWidth, depth);
       this.context.restore();
@@ -66,7 +69,10 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
       this.context.translate(width, 0);
       this.context.rotate(this.trunk.right_angle());
       this.context.translate(-rightWidth, -rightWidth);
-      this.context.fillStyle = `rgba(${TREE_COLOR_RGB}, ${depth * 0.1})`;
+      this.context.fillStyle = `rgba(${this.treeConfig.treeColor.red
+         }, ${this.treeConfig.treeColor.green
+         }, ${this.treeConfig.treeColor.blue
+         }, ${depth * 0.1})`;
       this.context.fillRect(0, 0, rightWidth, rightWidth);
       this.drawBranches(rightWidth, depth);
       this.context.restore();
@@ -90,7 +96,10 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
          (this.treeConfig.width / 2) - (this.treeConfig.trunkWidth / 2),
          this.treeConfig.height - this.treeConfig.trunkWidth
       );
-      this.context.fillStyle = `rgba(${TREE_COLOR_RGB}, 0.1)`;
+      this.context.fillStyle = `rgba(${this.treeConfig.treeColor.red
+         }, ${this.treeConfig.treeColor.green
+         }, ${this.treeConfig.treeColor.blue
+         }, 0.1)`;
       this.context.fillRect(
          0,
          0,
@@ -107,8 +116,8 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
 
                this.drawTrunk(
                   {
-                     x: mousePosition.x,
-                     y: mousePosition.y + this.treeConfig.trunkWidth * 2,
+                     x: MOUSE_POSITION.x,
+                     y: MOUSE_POSITION.y + this.treeConfig.trunkWidth * 2,
                   },
                   this.treeConfig.maxDepth
                );

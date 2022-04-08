@@ -76,7 +76,7 @@ const Scroll = ({ components }: IScrollProps) => {
             nodeRef={nodeRef}
             unmountOnExit
          >
-            <div ref={nodeRef}>
+            <div ref={nodeRef} id='inner-scroll-component'>
                {component}
             </div>
          </CSSTransition>

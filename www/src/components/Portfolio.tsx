@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 
 import NavigationBar, { INavigationLink } from './header/NavigationBar';
 import { usePrevious } from './common/util';
-import { hideCanvas } from '../common/util';
+import { hideElement } from '../common/util';
 
 import About from './main/about/About';
 import Contact from './main/contact/Contact';
@@ -76,7 +76,7 @@ const Portfolio = () => {
             classNames={classNames}
             nodeRef={nodeRef}
             unmountOnExit
-            onExiting={hideCanvas}
+            onExiting={() => hideElement('canvas')}
          >
             <main ref={nodeRef} className='container'>
                {component}

@@ -1,35 +1,51 @@
-const getTypingRate = (text: string) => {
-   return 30 + 1000 * (1 / (text.length * text.length));
-};
-
-const showCanvas = (opacity: string) => {
-   document.getElementById('canvas').style.opacity = opacity;
-};
-
-const hideCanvas = () => {
-   document.getElementById('canvas').style.opacity = '0';
-};
-
 interface IPosition {
    x: number,
    y: number,
 };
 
-const mousePosition: IPosition = {
+interface IrgbColor {
+   red: string,
+   green: string,
+   blue: string,
+}
+
+const getDocumentStyle = () => getComputedStyle(document.documentElement);
+
+const getWindowProperties = () => ({
+   height: window.innerHeight,
+   width: window.innerWidth,
+});
+
+const getTypingRate = (text: string) => {
+   return 30 + 1000 * (1 / (text.length * text.length));
+};
+
+const showElement = (id: string, opacity: string) => {
+   document.getElementById(id).style.opacity = opacity;
+};
+
+const hideElement = (id: string) => {
+   document.getElementById(id).style.opacity = '0';
+};
+
+const MOUSE_POSITION: IPosition = {
    x: 0,
    y: 0,
 };
 
 onmousemove = (event) => {
-   mousePosition.x = event.clientX;
-   mousePosition.y = event.clientY;
+   MOUSE_POSITION.x = event.clientX;
+   MOUSE_POSITION.y = event.clientY;
 };
 
 export {
-   getTypingRate,
-   showCanvas,
-   hideCanvas,
    IPosition,
-   mousePosition,
+   IrgbColor,
+   getDocumentStyle,
+   getWindowProperties,
+   getTypingRate,
+   showElement,
+   hideElement,
+   MOUSE_POSITION,
 };
 

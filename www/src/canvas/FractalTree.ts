@@ -3,9 +3,7 @@ import {
    ICanvas,
    ICanvasConfig,
 } from './Canvas';
-import { IPosition } from '../common/util';
-
-const TREE_COLOR_RGB = '104, 167, 212';
+import { IPosition, IrgbColor } from '../common/util';
 
 const TRANSITION_WAIT_TIME = 4000;
 const STARTING_ANGLE_RATIO = 0.9;
@@ -22,7 +20,8 @@ interface IFractalTreeConfig {
    startingAngle: number,
    endingAngle: number,
    maxDepth: number,
-   treeColor: string,
+   treeColor: IrgbColor,
+   canvasId: string,
 };
 
 class FractalTree extends Canvas implements IFractalTree {
@@ -32,7 +31,7 @@ class FractalTree extends Canvas implements IFractalTree {
       const canvasConfig: ICanvasConfig = {
          width: treeConfig.width,
          height: treeConfig.height,
-         id: 'canvas',
+         id: treeConfig.canvasId,
       };
       super(canvasConfig);
 
@@ -40,8 +39,6 @@ class FractalTree extends Canvas implements IFractalTree {
 
       this.draw = this.draw.bind(this);
       this.isTargetAngle = this.isTargetAngle.bind(this);
-
-      // this.render = this.render.bind(this);
    }
 
    private draw(
@@ -57,7 +54,10 @@ class FractalTree extends Canvas implements IFractalTree {
       this.context.beginPath();
       this.context.save();
 
-      this.context.strokeStyle = `rgba(${TREE_COLOR_RGB}, ${depth * 0.1})`;
+      this.context.strokeStyle = `rgba(${this.treeConfig.treeColor.red
+         }, ${this.treeConfig.treeColor.green
+         }, ${this.treeConfig.treeColor.blue
+         }, ${depth * 0.1})`;
 
       this.context.translate(position.x, position.y);
       this.context.rotate(angle * Math.PI / 180);

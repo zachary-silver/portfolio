@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { ICanvas } from '../../canvas/Canvas';
-import { showCanvas } from '../../common/util';
+import { showElement } from '../../common/util';
 
 const usePrevious = (value: any) => {
    const ref = useRef();
@@ -19,7 +19,7 @@ const useCanvas = (canvas: ICanvas, opacity: string) => {
       const timeoutId = setTimeout(() => {
          canvas.initializeCanvas();
          canvas.startRendering();
-         showCanvas(opacity);
+         showElement(canvas.getId(), opacity);
       }, 10);
 
       return () => {

@@ -11,14 +11,12 @@ interface IProjectProps {
 const Project = ({ name, url, imageSrc }: IProjectProps) => {
    return (
       <div id='project' className='container'>
-         <div id='project-name-container'>
-            <a href={url} target={'_blank'}>
-               <h4 id='project-name' className='text-container clickable'>
-                  {name}
-               </h4>
-               <img id='project-image' src={imageSrc} />
-            </a>
-         </div>
+         <a href={url} target={'_blank'}>
+            <h4 id='project-name' className='text-container clickable'>
+               {name}
+            </h4>
+            <img id='project-image' src={imageSrc} />
+         </a>
       </div>
    );
 };

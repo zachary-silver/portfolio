@@ -1,4 +1,7 @@
 #resume-pdf {
-  height: 80vh;
+  height: 85vh;
   width: 80vw;
+  border: none;
+  padding: 0;
+  margin-top: -2rem;
 }

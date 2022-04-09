@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 
 import NavigationBar, { INavigationLink } from './header/NavigationBar';
 import { usePrevious } from './common/util';
-import { hideElement } from '../common/util';
+import { hideElement, CANVAS_ID, TRANSITION_TIME } from '../common/util';
 
 import About from './main/about/About';
 import Contact from './main/contact/Contact';
@@ -13,8 +13,6 @@ import Resume from './main/resume/Resume';
 import Work from './main/work/Work';
 
 import './Portfolio.css';
-
-const TRANSITION_TIME = 500;
 
 const navigationLinks: INavigationLink[] = [
    { pathname: '/', label: 'Home', component: <Home /> },
@@ -41,9 +39,9 @@ const Portfolio = () => {
    const pathname = useLocation().pathname;
    const nodeRef = useRef(null);
 
-   const currentLink = navigationLinks.find(
-      (link) => link.pathname === pathname
-   );
+   const currentLink = navigationLinks.find((link) => {
+      return link.pathname === pathname;
+   });
    const previousLink: INavigationLink = usePrevious(currentLink);
    useEffect(() => {
       setClassNames(getClassNames(currentLink, previousLink));
@@ -76,7 +74,7 @@ const Portfolio = () => {
             classNames={classNames}
             nodeRef={nodeRef}
             unmountOnExit
-            onExiting={() => hideElement('canvas')}
+            onExiting={() => hideElement(CANVAS_ID)}
          >
             <main ref={nodeRef} className='container'>
                {component}

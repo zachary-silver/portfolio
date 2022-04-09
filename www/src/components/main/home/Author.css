@@ -11,8 +11,8 @@
 }
 
 #social-media-links a {
-  color: white;
-  margin: 0rem 0.5rem 0rem 0.5rem;
+  color: var(--main-text-color);
+  margin: var(--alt-margin);
   font-size: 1.5rem;
   transition: var(--default-transition-speed);
   cursor: alias;

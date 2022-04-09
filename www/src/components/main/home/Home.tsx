@@ -12,8 +12,6 @@ import './Home.css';
 const Home = () => {
    const { height, width } = getWindowProperties();
    const [tree, _] = useState(() => new TreeOfPythagoras({
-      height,
-      width,
       trunkWidth: width / 11,
       maxDepth: 9,
       treeColor: {
@@ -21,7 +19,11 @@ const Home = () => {
          green: '167',
          blue: '212'
       },
-      canvasId: 'canvas',
+      canvasConfig: {
+         height,
+         width,
+         id: 'canvas',
+      },
    }));
    useCanvas(tree, '0.5');
 

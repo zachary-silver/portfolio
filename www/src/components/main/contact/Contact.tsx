@@ -4,7 +4,6 @@ import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
 import { FractalTree } from '../../../canvas/FractalTree';
 import { useCanvas } from '../../common/util';
 import {
-   getDocumentStyle,
    getTypingRate,
    getWindowProperties,
    hideElement,
@@ -33,8 +32,6 @@ const Contact = () => {
          x: width / 2,
          y: height,
       }],
-      height,
-      width,
       branchLength: height / 5,
       branchWidth: 10,
       startingAngle: 8,
@@ -45,7 +42,11 @@ const Contact = () => {
          green: '167',
          blue: '212',
       },
-      canvasId: 'canvas',
+      canvasConfig: {
+         height,
+         width,
+         id: 'canvas',
+      },
    }));
    useCanvas(tree, '0.5');
 

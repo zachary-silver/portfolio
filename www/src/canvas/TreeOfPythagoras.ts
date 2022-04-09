@@ -14,12 +14,10 @@ import {
 interface ITreeOfPythagoras extends ICanvas { };
 
 interface ITreeOfPythagorasConfig {
-   width: number,
-   height: number,
    trunkWidth: number,
    maxDepth: number,
    treeColor: IrgbColor,
-   canvasId: string,
+   canvasConfig: ICanvasConfig,
 };
 
 class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
@@ -28,14 +26,10 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
    private treeConfig: ITreeOfPythagorasConfig;
 
    constructor(treeConfig: ITreeOfPythagorasConfig) {
-      const canvasConfig: ICanvasConfig = {
-         width: treeConfig.width,
-         height: treeConfig.height,
-         id: treeConfig.canvasId,
-      };
+      const { canvasConfig } = treeConfig;
       super(canvasConfig);
 
-      this.trunk = TreeTrunk.new(treeConfig.width, treeConfig.height);
+      this.trunk = TreeTrunk.new(canvasConfig.width, canvasConfig.height);
 
       this.treeConfig = treeConfig;
 
@@ -93,8 +87,8 @@ class TreeOfPythagoras extends Canvas implements ITreeOfPythagoras {
       this.trunk.update(x, y, maxDepth);
 
       this.context.translate(
-         (this.treeConfig.width / 2) - (this.treeConfig.trunkWidth / 2),
-         this.treeConfig.height - this.treeConfig.trunkWidth
+         (this.canvasConfig.width / 2) - (this.treeConfig.trunkWidth / 2),
+         this.canvasConfig.height - this.treeConfig.trunkWidth
       );
       this.context.fillStyle = `rgba(${this.treeConfig.treeColor.red
          }, ${this.treeConfig.treeColor.green

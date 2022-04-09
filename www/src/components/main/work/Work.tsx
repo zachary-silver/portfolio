@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 
 import { GameOfLife } from '../../../canvas/GameOfLife';
+import { getDocumentStyle, getWindowProperties } from '../../../common/util';
 import { useCanvas } from '../../common/util';
-
-import Project from './Project';
 import Scroll from '../../common/Scroll';
+import Project from './Project';
 
 import './Work.css';
-import { getDocumentStyle, getWindowProperties } from '../../../common/util';
 
 const PROJECTS = [
    {

@@ -7,9 +7,8 @@ import {
 
 import { GameOfLife } from '../../../canvas/GameOfLife';
 import { useCanvas } from '../../common/util';
-import TerminalText from '../../common/TerminalText';
+import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
 import {
-   getTypingRate,
    getDocumentStyle,
    getWindowProperties
 } from '../../../common/util';
@@ -84,14 +83,16 @@ const About = () => {
    }));
    useCanvas(gameOfLife, '0.3');
 
+   const props: ITerminalTextProps = {
+      text: '',
+      rate: 0,
+   };
+
    return (
       <div id='about' className='container'>
          <div id='bio' className='container'>
             <h4 id='bio-description' className='description text-container'>
-               <span>
-                  {'> Bio.exe'}
-                  {<TerminalText text={''} rate={getTypingRate('')} />}
-               </span>
+               {'> Bio.exe'}<TerminalText {...props} />
             </h4>
             <div id='bio-paragraphs-container' className='text-container'>
                <div id='bio-paragraphs'>
@@ -101,10 +102,7 @@ const About = () => {
          </div>
          <div id='hobbies' className='container'>
             <h4 className='description text-container'>
-               <span>
-                  {'> Hobbies.exe'}
-                  {<TerminalText text={''} rate={getTypingRate('')} />}
-               </span>
+               {'> Hobbies.exe'}<TerminalText {...props} />
             </h4>
             {HOBBIES}
          </div>

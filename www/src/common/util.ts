@@ -17,7 +17,7 @@ const getWindowProperties = () => ({
 });
 
 const getTypingRate = (text: string) => {
-   return 30 + 1000 * (1 / (text.length * text.length));
+   return 30 - Math.log2(text.length) % 30;
 };
 
 const showElement = (id: string, opacity: string) => {
@@ -27,6 +27,10 @@ const showElement = (id: string, opacity: string) => {
 const hideElement = (id: string) => {
    document.getElementById(id).style.opacity = '0';
 };
+
+const CANVAS_ID = 'canvas';
+
+const TRANSITION_TIME = 500;
 
 const MOUSE_POSITION: IPosition = {
    x: 0,
@@ -46,6 +50,8 @@ export {
    getTypingRate,
    showElement,
    hideElement,
+   CANVAS_ID,
+   TRANSITION_TIME,
    MOUSE_POSITION,
 };
 

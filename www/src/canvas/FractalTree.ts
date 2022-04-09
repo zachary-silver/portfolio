@@ -13,27 +13,20 @@ interface IFractalTree extends ICanvas { };
 
 interface IFractalTreeConfig {
    positions: IPosition[],
-   width: number,
-   height: number,
    branchLength: number,
    branchWidth: number,
    startingAngle: number,
    endingAngle: number,
    maxDepth: number,
    treeColor: IrgbColor,
-   canvasId: string,
+   canvasConfig: ICanvasConfig,
 };
 
 class FractalTree extends Canvas implements IFractalTree {
    private treeConfig: IFractalTreeConfig;
 
    constructor(treeConfig: IFractalTreeConfig) {
-      const canvasConfig: ICanvasConfig = {
-         width: treeConfig.width,
-         height: treeConfig.height,
-         id: treeConfig.canvasId,
-      };
-      super(canvasConfig);
+      super(treeConfig.canvasConfig);
 
       this.treeConfig = treeConfig;
 

@@ -10,6 +10,8 @@ import Portfolio from './components/Portfolio';
 
 import './index.css';
 
+console.log(`Running in ${process.env.NODE_ENV} mode!`);
+
 ReactDOM.render(
    <React.StrictMode>
       <BrowserRouter>

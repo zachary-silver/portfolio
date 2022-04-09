@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-   fa0,
-   faCaretLeft,
-   faCaretRight,
-} from '@fortawesome/free-solid-svg-icons';
-
 import { CSSTransition } from 'react-transition-group';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
+
+import { TRANSITION_TIME } from '../../common/util';
 import { usePrevious } from './util';
 
 import './Scroll.css';
@@ -15,12 +12,12 @@ interface IScrollProps {
    components: JSX.Element[];
 };
 
-const navigatedLeft = (current: number, previous?: number) => {
+const scrolledLeft = (current: number, previous?: number) => {
    return previous && (current < previous || current === 0);
 };
 
 const getClassNames = (current: number, previous?: number) => {
-   return navigatedLeft(current, previous) ? 'scroll-reverse' : 'scroll';
+   return scrolledLeft(current, previous) ? 'scroll-reverse' : 'scroll';
 };
 
 const Scroll = ({ components }: IScrollProps) => {
@@ -44,7 +41,7 @@ const Scroll = ({ components }: IScrollProps) => {
          setComponent(components[index]);
          setShowComponent(true);
          setScrolling(false);
-      }, 300);
+      }, TRANSITION_TIME / 2);
 
       return () => clearTimeout(timeoutId);
    }, [index]);
@@ -71,7 +68,7 @@ const Scroll = ({ components }: IScrollProps) => {
          </button>
          <CSSTransition
             in={showComponent}
-            timeout={500}
+            timeout={TRANSITION_TIME}
             classNames={classNames}
             nodeRef={nodeRef}
             unmountOnExit

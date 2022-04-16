@@ -26,7 +26,7 @@ const Resume = () => {
          <iframe
             id='resume-pdf'
             className='text-container'
-            src='ZacharySilverResume.pdf'
+            src='zachary-silver-resume.pdf'
          />
       </div>
    );

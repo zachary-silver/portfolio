@@ -34,7 +34,11 @@ const Greeting = () => {
    };
 
    return (
-      <p id='greeting-terminal' className='text-container'>
+      <p
+         id='greeting-terminal'
+         className='text-container'
+         aria-description={GREETINGS.join('. ')}
+      >
          {'> '}<TerminalText {...props} />
       </p>
    );

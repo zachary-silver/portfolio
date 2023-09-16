@@ -36,7 +36,7 @@ const Contact = () => {
       branchWidth: 10,
       startingAngle: 8,
       endingAngle: 45,
-      maxDepth: 10,
+      maxDepth: 12,
       treeColor: {
          red: '104',
          green: '167',

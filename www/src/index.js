@@ -10,7 +10,17 @@ import Portfolio from './components/Portfolio';
 
 import './index.css';
 
-console.log(`Running in ${process.env.NODE_ENV} mode!`);
+const env = process.env.NODE_ENV;
+if (env === 'development') {
+   console.log(`Running in ${env} mode!`);
+} else {
+   // Disable console in production
+   console.log = () => { };
+   console.info = () => { };
+   console.warn = () => { };
+   console.debug = () => { };
+   console.error = () => { };
+}
 
 ReactDOM.render(
    <React.StrictMode>

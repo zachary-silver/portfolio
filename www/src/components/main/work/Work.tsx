@@ -8,7 +8,7 @@ import Project from './Project';
 
 import './Work.css';
 
-const PROJECTS = [
+const PROJECTS_PROPS = [
    {
       name: 'Twitch Chat Sentiment Analysis Dashboard',
       url: 'https://github.com/zachary-silver/twitch-sentiment-analysis',
@@ -34,7 +34,10 @@ const PROJECTS = [
       url: 'https://github.com/zachary-silver/silver-calculator',
       imageSrc: 'silver-calculator.jpg',
    },
-].map((projectProps, index) => <Project key={index} {...projectProps} />);
+];
+
+const PROJECTS = PROJECTS_PROPS
+   .map((projectProps, index) => <Project key={index} {...projectProps} />);
 
 const PIXELS_PER_CELL = 4;
 
@@ -56,6 +59,10 @@ const Work = () => {
          <Scroll components={PROJECTS} />
       </div>
    );
+};
+
+export {
+   PROJECTS_PROPS,
 };
 
 export default Work;

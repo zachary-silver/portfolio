@@ -42,9 +42,25 @@ onmousemove = (event) => {
    MOUSE_POSITION.y = event.clientY;
 };
 
+const cacheImages = async (urls: string[]) => {
+   console.log('caching images...');
+   const requests = urls.map(url => {
+      return new Promise((resolve, reject) => {
+         const image = new Image();
+         image.src = url;
+         image.onload = resolve;
+         image.onerror = reject;
+      });
+   });
+
+   await Promise.allSettled(requests);
+   console.log('done caching images');
+};
+
 export {
    IPosition,
    IrgbColor,
+   cacheImages,
    getDocumentStyle,
    getWindowProperties,
    getTypingRate,

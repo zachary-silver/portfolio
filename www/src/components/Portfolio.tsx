@@ -4,13 +4,13 @@ import { CSSTransition } from 'react-transition-group';
 
 import NavigationBar, { INavigationLink } from './header/NavigationBar';
 import { usePrevious } from './common/util';
-import { hideElement, CANVAS_ID, TRANSITION_TIME } from '../common/util';
+import { hideElement, CANVAS_ID, TRANSITION_TIME, cacheImages } from '../common/util';
 
 import About from './main/about/About';
 import Contact from './main/contact/Contact';
 import Home from './main/home/Home';
 import Resume from './main/resume/Resume';
-import Work from './main/work/Work';
+import Work, { PROJECTS_PROPS } from './main/work/Work';
 
 import './Portfolio.css';
 
@@ -57,6 +57,10 @@ const Portfolio = () => {
 
       return () => clearTimeout(timeoutId);
    }, [pathname]);
+
+   useEffect(() => {
+      cacheImages(PROJECTS_PROPS.map(props => props.imageSrc));
+   }, []);
 
    const links = navigationLinks.map((navigationLink) => ({
       ...navigationLink,

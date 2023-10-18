@@ -16,10 +16,6 @@ const getLinkAriaLabel = (linkName: string) => {
    return `${linkName} link`;
 };
 
-const getLinkAriaDescription = (linkName: string) => {
-   return `Link to Zachary Silver's ${linkName} profile`;
-};
-
 const Author = () => {
    return (
       <div id='author' className='container text-container'>
@@ -30,7 +26,6 @@ const Author = () => {
                href={TWITTER_LINK}
                target='_blank'
                aria-label={getLinkAriaLabel('Twitter')}
-               aria-description={getLinkAriaDescription('Twitter')}
             >
                <FontAwesomeIcon icon={faTwitter} />
             </a>
@@ -38,7 +33,6 @@ const Author = () => {
                href={LINKEDIN_LINK}
                target='_blank'
                aria-label={getLinkAriaLabel('LinkedIn')}
-               aria-description={getLinkAriaDescription('LinkedIn')}
             >
                <FontAwesomeIcon icon={faLinkedin} />
             </a>
@@ -46,7 +40,6 @@ const Author = () => {
                href={GITHUB_LINK}
                target='_blank'
                aria-label={getLinkAriaLabel('GitHub')}
-               aria-description={getLinkAriaDescription('GitHub')}
             >
                <FontAwesomeIcon icon={faGithub} />
             </a>

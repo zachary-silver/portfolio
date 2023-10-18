@@ -10,7 +10,8 @@ import { useCanvas } from '../../common/util';
 import TerminalText, { ITerminalTextProps } from '../../common/TerminalText';
 import {
    getDocumentStyle,
-   getWindowProperties
+   getWindowProperties,
+   showElements,
 } from '../../../common/util';
 import Hobby from './Hobby';
 
@@ -83,18 +84,35 @@ const About = () => {
    }));
    useCanvas(gameOfLife, '0.3');
 
+   const showParagraphs = () => {
+      setTimeout(() => {
+         showElements('fade-in', '100%')
+      }, 100);
+   };
+
+   const showBioParagraphs = () => {
+      setTimeout(() => {
+         showElements(
+            'fade-in',
+            '100%',
+            (element) => element.id === 'bio-paragraphs-container'
+         )
+      }, 100);
+   };
+
    const props: ITerminalTextProps = {
       text: '',
-      rate: 0,
+      rate: 50,
+      prompt: '> ',
    };
 
    return (
       <div id='about' className='container'>
          <div id='bio' className='container'>
             <h4 id='bio-description' className='description text-container'>
-               {'> Bio.exe'}<TerminalText {...props} />
+               <TerminalText {...props} text={'Bio.exe'} done={showBioParagraphs} />
             </h4>
-            <div id='bio-paragraphs-container' className='text-container'>
+            <div id='bio-paragraphs-container' className='text-container fade-in'>
                <div id='bio-paragraphs'>
                   {BIO_PARAGRAPHS}
                </div>
@@ -102,7 +120,7 @@ const About = () => {
          </div>
          <div id='hobbies' className='container'>
             <h4 className='description text-container'>
-               {'> Hobbies.exe'}<TerminalText {...props} />
+               <TerminalText {...props} text={'Hobbies.exe'} done={showParagraphs} />
             </h4>
             {HOBBIES}
          </div>

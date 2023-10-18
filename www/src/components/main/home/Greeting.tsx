@@ -6,7 +6,7 @@ import { getTypingRate } from '../../../common/util';
 import './Greeting.css';
 
 const GREETINGS = [
-   "Hi, I'm Zack",
+   "Hi, I'm Zack.",
    "Thanks for taking the time to check out my portfolio!",
 ];
 
@@ -28,18 +28,16 @@ const Greeting = () => {
 
    const props: ITerminalTextProps = {
       text: greeting,
+      accessibleText: GREETINGS.join(' '),
       rate: getTypingRate(greeting),
       delay: 1500,
       done: showNextGreeting,
+      prompt: '> ',
    };
 
    return (
-      <p
-         id='greeting-terminal'
-         className='text-container'
-         aria-description={GREETINGS.join('. ')}
-      >
-         {'> '}<TerminalText {...props} />
+      <p id='greeting-terminal' className='text-container'>
+         <TerminalText {...props} />
       </p>
    );
 };

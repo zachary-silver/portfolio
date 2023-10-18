@@ -68,3 +68,9 @@ body {
 .clickable:active {
   box-shadow: var(--alt-box-shadow);
 }
+
+.fade-in {
+  transition: opacity 1s;
+  opacity: 0%;
+}
+

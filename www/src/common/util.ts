@@ -28,6 +28,31 @@ const hideElement = (id: string) => {
    document.getElementById(id).style.opacity = '0';
 };
 
+type ElementFilter = (element: HTMLElement) => boolean;
+const showElements = (
+   className: string,
+   opacity: string,
+   filter: ElementFilter = () => true
+) => {
+   Array.from(document.getElementsByClassName(className))
+      .filter(filter)
+      .forEach((element: HTMLElement) => {
+         element.style.opacity = opacity;
+      });
+};
+
+const hideElements = (
+   className: string,
+   filter: ElementFilter = () => true
+) => {
+   Array
+      .from(document.getElementsByClassName(className))
+      .filter(filter)
+      .forEach((element: HTMLElement) => {
+         element.style.opacity = '0';
+      });
+};
+
 const CANVAS_ID = 'canvas';
 
 const TRANSITION_TIME = 500;
@@ -66,6 +91,8 @@ export {
    getTypingRate,
    showElement,
    hideElement,
+   showElements,
+   hideElements,
    CANVAS_ID,
    TRANSITION_TIME,
    MOUSE_POSITION,

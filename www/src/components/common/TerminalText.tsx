@@ -9,9 +9,11 @@ interface ITerminalTextProps {
    rate: number,
    delay?: number,
    done?: Function,
+   accessibleText?: string,
+   prompt?: string,
 };
 
-const TerminalText = ({ text, rate, delay, done }: ITerminalTextProps) => {
+const TerminalText = ({ text, rate, delay, done, accessibleText, prompt }: ITerminalTextProps) => {
    const [currentText, setCurrentText] = useState('');
    const [showCursor, setShowCursor] = useState(true);
    const [reverse, setReverse] = useState(false);
@@ -67,9 +69,9 @@ const TerminalText = ({ text, rate, delay, done }: ITerminalTextProps) => {
    };
 
    return (
-      <React.Fragment>
-         {currentText}{showCursor ? CURSOR : WHITE_SPACE}
-      </React.Fragment>
+      <span aria-label={accessibleText || text}>
+         {prompt}{currentText}{showCursor ? CURSOR : WHITE_SPACE}
+      </span>
    );
 };
 

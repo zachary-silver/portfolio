@@ -12,7 +12,7 @@ interface IHobbyProps {
 
 const Hobby = ({ description, icon }: IHobbyProps) => {
    return (
-      <div id='hobby' className='container'>
+      <div id='hobby' className='container fade-in'>
          <FontAwesomeIcon
             id='hobby-icon'
             icon={icon}

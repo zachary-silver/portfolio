@@ -68,7 +68,6 @@ onmousemove = (event) => {
 };
 
 const cacheImages = async (urls: string[]) => {
-   console.log('caching images...');
    const requests = urls.map(url => {
       return new Promise((resolve, reject) => {
          const image = new Image();
@@ -79,7 +78,6 @@ const cacheImages = async (urls: string[]) => {
    });
 
    await Promise.allSettled(requests);
-   console.log('done caching images');
 };
 
 export {
